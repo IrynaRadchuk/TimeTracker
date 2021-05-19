@@ -12,7 +12,6 @@ public class LogoutCommand implements Command {
         HttpSession session = request.getSession(false);
         if (session != null)
             session.invalidate();
-
         return Path.PAGE_LOGIN;
     }
 }

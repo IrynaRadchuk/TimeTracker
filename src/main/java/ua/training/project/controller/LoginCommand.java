@@ -25,10 +25,12 @@ public class LoginCommand implements Command {
         }
         User user = userRepository.getUserFromDB(email);
         if (user.getEmail() == null) {
+            //Todo change into output
             System.out.println("User doesn't exist");
             return PAGE_LOGIN;
         }
         if (!user.getPassword().equals(password)) {
+            //Todo change into output
             System.out.println("Wrong password");
             return PAGE_LOGIN;
         }
@@ -39,7 +41,7 @@ public class LoginCommand implements Command {
         HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
                 .getAttribute(USER_EMAIL);
         if (loggedUsers.stream().anyMatch(email::equals)) {
-            return "/WEB-INF/error.jsp";
+            return ERROR_PAGE;
         }
         HttpSession session = request.getSession();
         session.setAttribute(USER_EMAIL, user.getEmail());
