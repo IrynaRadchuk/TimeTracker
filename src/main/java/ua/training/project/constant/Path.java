@@ -1,4 +1,4 @@
-package ua.training.project;
+package ua.training.project.constant;
 
 public interface Path {
 String PAGE_LOGIN = "/login.jsp";

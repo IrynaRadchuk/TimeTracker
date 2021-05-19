@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ua.training.project.Path.PAGE_HOMEPAGE;
-import static ua.training.project.Path.REDIRECT;
+import static ua.training.project.constant.Path.PAGE_HOMEPAGE;
+import static ua.training.project.constant.Path.REDIRECT;
 
 @WebServlet("/app")
 public class Servlet extends HttpServlet {

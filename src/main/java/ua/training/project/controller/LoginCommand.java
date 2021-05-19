@@ -6,8 +6,8 @@ import ua.training.project.model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static ua.training.project.Path.*;
-import static ua.training.project.SessionCall.AUTHORIZED_USER;
+import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.AUTHORIZED_USER;
 
 public class LoginCommand implements Command {
     UserRepository userRepository = UserRepository.getInstance();

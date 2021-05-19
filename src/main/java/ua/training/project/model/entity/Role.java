@@ -1,4 +1,5 @@
 package ua.training.project.model.entity;
 
 public enum Role {
+    USER,ADMIN;
 }

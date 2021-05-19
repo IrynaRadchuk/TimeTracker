@@ -2,9 +2,9 @@ package ua.training.project.model.entity;
 
 public class UserRole {
     private int id;
-    private String name;
+    private Role name;
 
-    public UserRole(int id, String name) {
+    public UserRole(int id, Role name) {
         this.id = id;
         this.name = name;
     }
@@ -17,11 +17,11 @@ public class UserRole {
         this.id = id;
     }
 
-    public String getName() {
+    public Role getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Role name) {
         this.name = name;
     }
 }

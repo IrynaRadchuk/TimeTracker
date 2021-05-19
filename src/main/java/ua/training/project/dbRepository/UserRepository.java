@@ -1,6 +1,6 @@
 package ua.training.project.dbRepository;
 
-import ua.training.project.DBStatements;
+import ua.training.project.constant.DBStatements;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.entity.User;

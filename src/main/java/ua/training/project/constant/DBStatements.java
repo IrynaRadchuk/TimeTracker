@@ -1,4 +1,4 @@
-package ua.training.project;
+package ua.training.project.constant;
 
 public interface DBStatements {
     String USER_CREATE = "insert into user (user_email, user_password, user_name, user_surname, role_id)  values (?,?,?,?,?);";
