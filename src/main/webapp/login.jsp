@@ -10,8 +10,9 @@
 
         <h1>Sign in</h1><br/>
         <form method="post" action="${pageContext.request.contextPath}/app/login">
-
+        <p><b>Email:</b><br>
             <input type="text" name="email"><br/>
+            <p><b>Password:</b><br>
             <input type="password" name="password"><br/><br/>
             <input class="button" type="submit" value="Enter">
 

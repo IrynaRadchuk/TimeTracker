@@ -4,19 +4,19 @@ public class User {
     private int id;
     private String email;
     private String password;
-    private String name;
-    private String surname;
-    private int roleId;
+    private String firstName;
+    private String lastName;
+    private Role role;
 
     public User() {
     }
 
-    public User(String email, String password, String name, String surname, int roleId) {
+    public User(String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.roleId = roleId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
     }
 
     public int getId() {
@@ -43,28 +43,36 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getRoleId() {
-        return roleId;
+        return role.getRoleId();
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public User(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -73,9 +81,9 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", roleId=" + roleId +
+                ", name='" + firstName + '\'' +
+                ", surname='" + lastName + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

@@ -1,8 +1,9 @@
-package ua.training.project.dbRepository;
+package ua.training.project.model.repository;
 
-import ua.training.project.constant.DBStatements;
+import ua.training.project.constant.DBStatement;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,11 +35,11 @@ public class UserRepository implements AutoCloseable {
     }
 
     public void insertUser(User user) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatements.USER_CREATE, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
-            statement.setString(3, user.getName());
-            statement.setString(4, user.getSurname());
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
             statement.setInt(5, user.getRoleId());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -54,7 +55,7 @@ public class UserRepository implements AutoCloseable {
     }
 
     public void deleteUser(User user) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatements.USER_DELETE)) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DELETE)) {
             statement.setString(1, user.getEmail());
             statement.executeUpdate();
         } catch (SQLException throwable) {
@@ -63,7 +64,7 @@ public class UserRepository implements AutoCloseable {
     }
 
     public void changeEmail(String emailOld, String emailNew) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatements.USER_CHANGE_EMAIL)) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_EMAIL)) {
             statement.setString(1, emailNew);
             statement.setString(2, emailOld);
             statement.executeUpdate();
@@ -74,16 +75,16 @@ public class UserRepository implements AutoCloseable {
 
     public User getUserFromDB(String email) {
         User user = new User();
-        try (PreparedStatement statement = connection.prepareStatement(DBStatements.USER_FIND)){
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)){
              statement.setString(1, email);
              ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user.setId(resultSet.getInt("user_id"));
                 user.setEmail(resultSet.getString("user_email"));
                 user.setPassword(resultSet.getString("user_password"));
-                user.setName(resultSet.getString("user_name"));
-                user.setSurname(resultSet.getString("user_surname"));
-                user.setRoleId(resultSet.getInt("role_id"));
+                user.setFirstName(resultSet.getString("user_first_name"));
+                user.setLastName(resultSet.getString("user_last_name"));
+                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -93,7 +94,7 @@ public class UserRepository implements AutoCloseable {
 
     public int countUsers () {
         int result =0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatements.USER_COUNT)){
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_COUNT)){
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
            result = resultSet.getInt(1);
