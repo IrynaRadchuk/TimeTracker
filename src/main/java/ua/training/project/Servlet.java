@@ -1,7 +1,6 @@
 package ua.training.project;
 
-import ua.training.project.controller.Command;
-import ua.training.project.controller.LoginCommand;
+import ua.training.project.controller.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,36 +11,41 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ua.training.project.constant.Path.PAGE_HOMEPAGE;
+import static ua.training.project.constant.Path.HOMEPAGE;
 import static ua.training.project.constant.Path.REDIRECT;
 
-@WebServlet("/app")
+@WebServlet("/TimeTracker")
 public class Servlet extends HttpServlet {
 
-    private Map<String, Command> commands = new HashMap<>();
+    private Map<String, Command> getCommands = new HashMap<>();
+    private Map<String, Command> postCommands = new HashMap<>();
 
     public void init() {
-        commands.put("login", new LoginCommand());
+        System.out.println("SERVLET");
+        getCommands.put("login", new LoginGetCommand());
+        postCommands.put("login", new LoginPostCommand());
+        getCommands.put("registration", new RegistrationGetCommand());
+        postCommands.put("registration", new RegistrationPostCommand());
     }
 
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
             throws IOException, ServletException {
-        processRequest(request, response);
+        processRequest(request, response,getCommands);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        processRequest(request, response);
+        processRequest(request, response, postCommands);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response)
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, Map<String, Command> commands)
             throws ServletException, IOException {
-        String path = request.getRequestURI().replaceAll(".*/app/", "");
+        String path = request.getRequestURI().replaceAll(".*/TimeTracker/", "");
         Command command = commands.getOrDefault(path,
-                (r) -> PAGE_HOMEPAGE);
+                (r) -> HOMEPAGE);
         String page = command.execute(request);
         if (page.contains(REDIRECT)) {
             response.sendRedirect(page.replace(REDIRECT, "/api"));

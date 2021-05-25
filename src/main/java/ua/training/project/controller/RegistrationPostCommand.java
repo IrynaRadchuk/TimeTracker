@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ua.training.project.constant.CredentialValidationRegex.*;
-import static ua.training.project.constant.Path.ERROR_PAGE;
-import static ua.training.project.constant.Path.PAGE_HOMEPAGE;
+import static ua.training.project.constant.Path.*;
 
-public class RegistrationCommand implements Command{
+public class RegistrationPostCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         String email = request.getParameter("email");
@@ -26,7 +25,7 @@ public class RegistrationCommand implements Command{
         }
         UserService service = new UserService();
         service.userRegistration(userDTO);
-        return PAGE_HOMEPAGE;
+        return HOMEPAGE;
     }
 
     private List<String> inputValidation (UserRegistrationDTO userDTO) {
@@ -44,18 +43,22 @@ public class RegistrationCommand implements Command{
             errorMessages.add("Last name cannot be empty");
         }
         if(!ValidationUtil.validate(EMAIL_REGEX, userDTO.getEmail())){
+            System.out.println("EMAILREG");
             errorMessages.add("Wrong email form");
         }
         if(!ValidationUtil.validate(PASSWORD_REGEX, userDTO.getPassword())){
+            System.out.println("PAssReg");
             errorMessages.add("Password must contain at least one digit [0-9].\n" +
                     "Password must contain at least one lowercase Latin character [a-z].\n" +
                     "Password must contain at least one uppercase Latin character [A-Z]." +
                     "Password must contain from 6 to 20 digits.");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getFirstName())){
+            System.out.println("NAMEReg");
             errorMessages.add("Name must be written in latin and start with capital letter");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getLastName())){
+            System.out.println("LASTReg");
             errorMessages.add("Surname must be written with latin letters and start with capital letter");
         }
         return errorMessages;

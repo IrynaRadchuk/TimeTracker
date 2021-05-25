@@ -18,10 +18,11 @@ public class UserRepository implements AutoCloseable {
     }
 
     public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
-        InputStream file = new FileInputStream("src/main/resources/db.properties");
+        InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
         Properties prop = new Properties();
         prop.load(file);
         String property = prop.getProperty(connectionUrl);
+        System.out.println(property);
         return DriverManager.getConnection(property);
     }
 
@@ -29,7 +30,7 @@ public class UserRepository implements AutoCloseable {
         try {
             connection = UserRepository.getConnection("db.url");
         } catch (SQLException | IOException throwable) {
-            throw new TimeTrackerException(200, ExceptionMessage.DB_CONNECTION);
+            throw new TimeTrackerException(500, ExceptionMessage.DB_CONNECTION);
         }
         return new UserRepository();
     }
