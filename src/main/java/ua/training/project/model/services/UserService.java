@@ -9,7 +9,6 @@ public class UserService {
     private final UserRepository repository = UserRepository.getInstance();
 
     public User userRegistration(UserRegistrationDTO userDTO) {
-        System.out.println("%%%%%%%%%%%%%%%");
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
@@ -17,7 +16,6 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setRole(Role.USER);
         repository.insertUser(user);
-        System.out.println("RRRRRRRR");
         return user;
     }
 }

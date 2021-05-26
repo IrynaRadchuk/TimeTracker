@@ -9,7 +9,7 @@
 <body>
 
         <h1>Sign in</h1><br/>
-        <form method="post" action="${pageContext.request.contextPath}/TimeTracker/registration">
+        <form method="post" action="${pageContext.request.contextPath}/tracker/registration">
         <p><b>Email:</b><br>
         <input type="text" name="email"><br/>
         <p><b>Password:</b><br>
@@ -25,7 +25,6 @@
         <input class="button" type="submit" value="Enter">
         </form>
         <br/>
-        <a href="${pageContext.request.contextPath}/TimeTracker/logout">Home</a>
 
 </body>
 </html>

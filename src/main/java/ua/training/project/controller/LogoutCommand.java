@@ -8,10 +8,9 @@ import javax.servlet.http.HttpSession;
 public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
-
         HttpSession session = request.getSession(false);
         if (session != null)
             session.invalidate();
-        return Path.LOGIN_PAGE;
+        return Path.HOMEPAGE;
     }
 }

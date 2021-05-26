@@ -1,7 +1,8 @@
 package ua.training.project.exception;
 
 public enum ExceptionMessage {
-    DB_CONNECTION("Unable to connect to database");
+    DB_CONNECTION("Unable to connect to database"),
+    NOT_AVAILABLE_ACTIVITY("Activity is not available for user");
 
     private String message;
 

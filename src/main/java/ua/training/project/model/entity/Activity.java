@@ -10,6 +10,15 @@ public class Activity {
         this.category_id = category_id;
     }
 
+    public Activity(int id, String name, int category_id) {
+        this.id = id;
+        this.name = name;
+        this.category_id = category_id;
+    }
+
+    public Activity() {
+    }
+
     public int getId() {
         return id;
     }

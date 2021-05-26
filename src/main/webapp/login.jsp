@@ -7,18 +7,18 @@
     <title>Login Page</title>
 </head>
 <body>
-
         <h1>Sign in</h1><br/>
-        <form method="post" action="${pageContext.request.contextPath}/TimeTracker/login">
+        <form method="post" action="${pageContext.request.contextPath}/tracker/login">
         <p><b>Email:</b><br>
-            <input type="text" name="email"><br/>
-            <p><b>Password:</b><br>
-            <input type="password" name="password"><br/><br/>
-            <input class="button" type="submit" value="Enter">
-
+        <input type="text" name="email"><br/>
+        <p><b>Password:</b><br>
+        <input type="password" name="password"><br/><br/>
+        <input class="button" type="submit" value="Enter">
         </form>
         <br/>
-        <a href="${pageContext.request.contextPath}/TimeTracker/logout">Home</a>
+        <a href="${pageContext.request.contextPath}/tracker/">Home</a>
+        <p> <c:set var="message" value='${requestScope["error"]}' /> message = <c:out value="${message}"/> </p>
+
 
 </body>
 </html>

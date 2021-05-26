@@ -43,23 +43,19 @@ public class RegistrationPostCommand implements Command{
             errorMessages.add("Last name cannot be empty");
         }
         if(!ValidationUtil.validate(EMAIL_REGEX, userDTO.getEmail())){
-            System.out.println("EMAILREG");
             errorMessages.add("Wrong email form");
         }
         if(!ValidationUtil.validate(PASSWORD_REGEX, userDTO.getPassword())){
-            System.out.println("PAssReg");
             errorMessages.add("Password must contain at least one digit [0-9].\n" +
                     "Password must contain at least one lowercase Latin character [a-z].\n" +
                     "Password must contain at least one uppercase Latin character [A-Z]." +
                     "Password must contain from 6 to 20 digits.");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getFirstName())){
-            System.out.println("NAMEReg");
-            errorMessages.add("Name must be written in latin and start with capital letter");
+            errorMessages.add("First name must be written in latin and start with capital letter");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getLastName())){
-            System.out.println("LASTReg");
-            errorMessages.add("Surname must be written with latin letters and start with capital letter");
+            errorMessages.add("Last name must be written with latin letters and start with capital letter");
         }
         return errorMessages;
     }
