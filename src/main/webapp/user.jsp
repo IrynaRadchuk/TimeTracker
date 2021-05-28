@@ -1,19 +1,20 @@
+<%@include file="templateLogged.jsp" %>
+
 <!doctype html>
-<html lang="en">
+
   <head>
-  	<title>Calendar 04</title>
+  	<title>Activities Tracker</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
 	<link rel="stylesheet" href="/css/style.css">
-
+    <link rel="stylesheet" href="/css/background.css">
 	</head>
+
 	<body>
-	<section class="ftco-section">
+	<br/>
+		<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
@@ -80,8 +81,8 @@
 				            <input type="button" value="Cancel" class="button" id="cancel-button">
 				            <input type="submit" value="OK" class="button button-white" id="ok-button">
 				            </div>
-				            <input class="input" type="text" id="date" name="date">
-				            <input class="input" type="text" id="day" name="day">
+				            <input class="input" type="hidden" id="date" name="date">
+				            <input class="input" type="hidden" id="day" name="day">
 				          </div>
 				        </form>
 				      </div>

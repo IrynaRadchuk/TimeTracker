@@ -21,7 +21,8 @@ public class RegistrationPostCommand implements Command{
         String lastName = request.getParameter("lastName");
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
         if(!inputValidation(userDTO).isEmpty()){
-            return ERROR_PAGE;
+            request.setAttribute("error", inputValidation(userDTO));
+            return REGISTRATION_PAGE;
         }
         UserService service = new UserService();
         service.userRegistration(userDTO);
@@ -31,31 +32,31 @@ public class RegistrationPostCommand implements Command{
     private List<String> inputValidation (UserRegistrationDTO userDTO) {
         List<String> errorMessages = new ArrayList<>();
         if (userDTO.getEmail().isEmpty()){
-            errorMessages.add("Email cannot be empty");
+            errorMessages.add("Email cannot be empty\n");
         }
         if (userDTO.getPassword().isEmpty()){
-            errorMessages.add("Password cannot be empty");
+            errorMessages.add("Password cannot be empty\n");
         }
         if (userDTO.getFirstName().isEmpty()){
-            errorMessages.add("First name cannot be empty");
+            errorMessages.add("First name cannot be empty\n");
         }
         if (userDTO.getLastName().isEmpty()){
-            errorMessages.add("Last name cannot be empty");
+            errorMessages.add("Last name cannot be empty\n");
         }
         if(!ValidationUtil.validate(EMAIL_REGEX, userDTO.getEmail())){
-            errorMessages.add("Wrong email form");
+            errorMessages.add("Wrong email form\n");
         }
         if(!ValidationUtil.validate(PASSWORD_REGEX, userDTO.getPassword())){
-            errorMessages.add("Password must contain at least one digit [0-9].\n" +
-                    "Password must contain at least one lowercase Latin character [a-z].\n" +
-                    "Password must contain at least one uppercase Latin character [A-Z]." +
-                    "Password must contain from 6 to 20 digits.");
+            errorMessages.add("Wrong password form (password must contain at least one digit [0-9],\n" +
+                    "one lowercase Latin character [a-z],\n" +
+                    "one uppercase Latin character [A-Z],\n" +
+                    "password must contain from 6 to 20 digits)\n");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getFirstName())){
-            errorMessages.add("First name must be written in latin and start with capital letter");
+            errorMessages.add("First name must be written in latin and start with capital letter\n");
         }
         if(!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getLastName())){
-            errorMessages.add("Last name must be written with latin letters and start with capital letter");
+            errorMessages.add("Last name must be written with latin letters and start with capital letter\n");
         }
         return errorMessages;
     }

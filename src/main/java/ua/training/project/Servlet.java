@@ -31,6 +31,7 @@ public class Servlet extends HttpServlet {
         getCommands.put("login", new LoginGetCommand());
         getCommands.put("registration", new RegistrationGetCommand());
         getCommands.put("user", new PersonalAccountGetCommand());
+        getCommands.put("profile", new UserProfileGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("registration", new RegistrationPostCommand());

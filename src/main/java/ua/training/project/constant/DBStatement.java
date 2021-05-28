@@ -25,4 +25,8 @@ public interface DBStatement {
     String SHOW_USER_WORK_BY_DATE = "select user.user_first_name, sum(user_activity.activity_duration) as \"total_working_time\", count(user_activity.activity_id) as \"quantity_of_activities\" from user_activity LEFT JOIN user on user_activity.user_id = user.user_id where user_activity.activity_date = ? group by user.user_first_name;";
     String SHOW_ACTIVITIES_BY_USER_QUANTITY = "select activity.activity_name, count(user_activity.user_id) as \"quantity_of_users\" from user_activity LEFT JOIN activity on user_activity.activity_id = activity.activity_id group by user_activity.activity_id;";
     String USER_ALLOWED_ACTIVITY_FIND = "SELECT user.user_email, user_allowed_activity.status, user_allowed_activity.activity_id, activity.activity_name FROM user_allowed_activity LEFT JOIN user ON user.user_id = user_allowed_activity.user_id LEFT JOIN activity ON activity.activity_id = user_allowed_activity.activity_id  WHERE user.user_email = ? AND activity.activity_name = ?;";
+    String USER_ALLOWED_ACTIVITY_CREATE = "insert into user_allowed_activity (user_id, activity_id, status) values (?,?,'PENDING');";
+    String USER_ALLOWED_ACTIVITY_APPROVE = "update user_allowed_activity set status = 'APPROVED' where user_id=? and activity_id=?;";
+    String USER_DENY_ACTIVITY = "delete from user_allowed_activity where user_id=? and activity_id=?;";
+    String ACTIVITY_BY_DATE_DURATION = "select sum(activity_duration) from user_activity where activity_date = ?;";
 }

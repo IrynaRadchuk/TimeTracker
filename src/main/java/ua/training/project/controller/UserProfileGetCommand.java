@@ -15,6 +15,7 @@ public class UserProfileGetCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         User user = userRepository.getUserFromDB(servletUtil.getSessionEmail(request));
+        request.setAttribute("user", userRepository.getUserFromDB(servletUtil.getSessionEmail(request)));
         return PROFILE_PAGE;
     }
 }

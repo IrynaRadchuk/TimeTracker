@@ -1,10 +1,10 @@
 package ua.training.project.controller;
 
+import ua.training.project.constant.CredentialValidationRegex;
 import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,7 +26,7 @@ public class ActivityTimePostCommand implements Command{
         String date = request.getParameter("date");
         String day = request.getParameter("day");
         String dateFormat = "";
-        Pattern pattern = Pattern.compile ("[A-z]+\\s(?<key>\\b[A-z]+\\s+\\d+\\s+\\d+\\b)");
+        Pattern pattern = Pattern.compile (CredentialValidationRegex.DATE_REGEX);
         Matcher matcher =pattern.matcher(date);
         while (matcher.find()) {
             dateFormat = matcher.group("key").replace("01",day);
@@ -35,9 +35,7 @@ public class ActivityTimePostCommand implements Command{
         LocalDate localDate = LocalDate.parse(dateFormat,formatter);
         System.out.println(date);
         System.out.println(activityName + " activity + duration  " + duration + " date " + localDate);
-        HttpSession session = request.getSession();
         String email = (String) request.getSession().getAttribute(USER_EMAIL);
-        System.out.println(userActivityRepository.getAllUserActivities("ivan@i.ua"));
         try {
             userActivityRepository.addActivityForUser(email,activityName,localDate,duration);
         } catch (SQLException throwables) {

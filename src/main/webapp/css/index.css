@@ -1,0 +1,12 @@
+body {
+     font-family: Arial, sans-serif;
+      color: #782FEF;
+    }
+    .letter {
+     color: #58595B;
+     font-weight: bold;
+     font-size: 200%;
+     font-family: serif;
+     position: relative;
+     top: 5px;
+    }

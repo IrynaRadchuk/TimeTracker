@@ -1,30 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@include file="templateGuest.jsp" %>
 
 <html>
 <head>
+<link rel="stylesheet" href="/css/background.css">
+<link rel="stylesheet" href="/css/login.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Login Page</title>
 </head>
 <body>
-
-        <h1>Sign in</h1><br/>
-        <form method="post" action="${pageContext.request.contextPath}/tracker/registration">
-        <p><b>Email:</b><br>
-        <input type="text" name="email"><br/>
-        <p><b>Password:</b><br>
-        <input type="password" name="password"><br/><br/>
-        <p><b>First Name (English):</b><br>
-        <input type="text" name="firstName"><br/>
-<!--        <p><b>First Name (Ukrainian):</b><br>
-        <input type="text" name="first_name_uk"><br/><br/> -->
-        <p><b>Last Name (English):</b><br>
-        <input type="text" name="lastName"><br/>
-<!--       <p><b>Last Name (Ukrainian):</b><br>
-        <input type="text" name="last_name_uk"><br/><br/> -->
-        <input class="button" type="submit" value="Enter">
-        </form>
-        <br/>
-
+<h4>Please sign up to continue using Time Tracker</h4>
+<h4>Already registered ? <a href ="login">Sign In</a></h4>
+  <form method="post" action="registration">
+  <div class="container">
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email">
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password">
+    <label for="firstName"><b>First Name</b></label>
+    <input type="text" placeholder="Enter First Name" name="firstName">
+    <label for="lastName"><b>Last Name</b></label>
+    <input type="text" placeholder="Enter Last Name" name="lastName">
+    <input class="button" type="submit" value="Sign In">
+    </form>
+  </div>
+    <form action="index">
+        <input class="cancelbtn" type="submit" value="Cancel">
 </body>
 </html>

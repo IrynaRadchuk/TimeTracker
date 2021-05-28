@@ -1,0 +1,13 @@
+  .error{
+  font-weight: bold;
+  font-size: 200%;
+  font-family: serif;
+  color: black;
+  position: relative;
+    width: 100%;
+    padding: 5px 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #FF6A61;
+    }

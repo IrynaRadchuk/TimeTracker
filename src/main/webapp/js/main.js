@@ -87,6 +87,7 @@ function date_click(event) {
     $(".active-date").removeClass("active-date");
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
+
 };
 
 // Event handler for when a month is clicked
@@ -149,10 +150,10 @@ function new_event(event) {
         var name = $("#name").val().trim();
         var count = parseInt($("#count").val().trim());
         var day = parseInt($(".active-date").html());
-                        var encryptDate = date;
-                         $("#date").val(encryptDate);
-                                                 var encryptDay = day;
-                                                  $("#day").val(encryptDay);
+        var encryptDate = date;
+        $("#date").val(encryptDate);
+        var encryptDay = day;
+        $("#day").val(encryptDay);
         // Basic form validation
         if(name.length === 0) {
             $("#name").addClass("error-input");
@@ -191,7 +192,7 @@ function show_events(events, month, day) {
     // If there are no events for this date, notify the user
     if(events.length===0) {
         var event_card = $("<div class='event-card'></div>");
-        var event_name = $("<div class='event-name'>There are no activities planned for "+month+" "+day+".</div>");
+        var event_name = $("<div class='event-name'>No activities on "+month+" "+day+".</div>");
         $(event_card).css({ "border-left": "10px solid #FF1744" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);

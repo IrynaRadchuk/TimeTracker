@@ -30,7 +30,7 @@ public class UserRepository implements AutoCloseable {
         try {
             connection = UserRepository.getConnection("db.url");
         } catch (SQLException | IOException throwable) {
-            throw new TimeTrackerException(500, ExceptionMessage.DB_CONNECTION);
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return new UserRepository();
     }
@@ -68,6 +68,35 @@ public class UserRepository implements AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_EMAIL)) {
             statement.setString(1, emailNew);
             statement.setString(2, emailOld);
+            statement.executeUpdate();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+    }
+    public void changePassword(String passOld, String passNew) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_PASSWORD)) {
+            statement.setString(1, passNew);
+            statement.setString(2, passOld);
+            statement.executeUpdate();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    public void changeFirstName(String nameOld, String nameNew) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_FIRST_NAME)) {
+            statement.setString(1, nameNew);
+            statement.setString(2, nameOld);
+            statement.executeUpdate();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    public void changeLastName (String nameOld, String nameNew) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_LAST_NAME)) {
+            statement.setString(1, nameNew);
+            statement.setString(2, nameOld);
             statement.executeUpdate();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
