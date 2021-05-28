@@ -1,5 +1,7 @@
 package ua.training.project.model.repository;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.TimeTrackerException;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class UserRepository implements AutoCloseable {
+    private static final Logger log = LogManager.getLogger(UserRepository.class);
     private static Connection connection = null;
 
     private UserRepository() {
@@ -25,7 +28,6 @@ public class UserRepository implements AutoCloseable {
         Properties prop = new Properties();
         prop.load(file);
         String property = prop.getProperty(connectionUrl);
-        System.out.println(property);
         return DriverManager.getConnection(property);
     }
 
@@ -33,6 +35,7 @@ public class UserRepository implements AutoCloseable {
         try {
             connection = UserRepository.getConnection("db.url");
         } catch (SQLException | IOException throwable) {
+            log.error(throwable.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return new UserRepository();
@@ -53,8 +56,9 @@ public class UserRepository implements AutoCloseable {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -72,8 +76,9 @@ public class UserRepository implements AutoCloseable {
                 user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
                 users.add(user);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return users;
     }
@@ -82,8 +87,9 @@ public class UserRepository implements AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DELETE)) {
             statement.setString(1, user.getEmail());
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -92,8 +98,9 @@ public class UserRepository implements AutoCloseable {
             statement.setString(1, emailNew);
             statement.setString(2, emailOld);
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -102,8 +109,9 @@ public class UserRepository implements AutoCloseable {
             statement.setString(1, passNew);
             statement.setString(2, passOld);
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -112,8 +120,9 @@ public class UserRepository implements AutoCloseable {
             statement.setString(1, nameNew);
             statement.setString(2, nameOld);
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -122,8 +131,9 @@ public class UserRepository implements AutoCloseable {
             statement.setString(1, nameNew);
             statement.setString(2, nameOld);
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -140,8 +150,9 @@ public class UserRepository implements AutoCloseable {
                 user.setLastName(resultSet.getString("user_last_name"));
                 user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return user;
     }
@@ -159,8 +170,9 @@ public class UserRepository implements AutoCloseable {
                 user.setLastName(resultSet.getString("user_last_name"));
                 user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return user;
     }
@@ -172,17 +184,11 @@ public class UserRepository implements AutoCloseable {
             if (resultSet.next()) {
                 result = resultSet.getInt(1);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return result;
-    }
-
-    @Override
-    public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
     }
 
     public void updateUser(User user, int id) {
@@ -193,8 +199,16 @@ public class UserRepository implements AutoCloseable {
             statement.setString(4, user.getLastName());
             statement.setInt(5, id);
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
         }
     }
 }

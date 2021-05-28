@@ -48,34 +48,6 @@
             <c:out value="${user_last_name}"/>
          </span>
       </div>
-      <div class="card-text">
-         <div> <label for="user_activities"><b>Approved activities</b></label></div>
-         <span>
-            <c:set var="user_activities" value='${requestScope["user_activities"]}'/>
-         </span>
-         <span>
-            <c:out value="${user_activities}"/>
-         </span>
-         <hr>
-         <label for="all_activities">Choose activity to approve:</label>
-         <select name="all_activities" id="all_activities">
-            <c:forEach items="${all_activities}" var="activity">
-               <option value="${activity}">
-                  ${activity}
-               </option>
-            </c:forEach>
-         </select>
-         <hr>
-         <label for="user_activities">Choose activity to approve:</label>
-         <select name="user_activities" id="user_activities">
-            <c:forEach items="${user_activities}" var="act">
-               <option value="${act}">
-                  ${act}
-               </option>
-            </c:forEach>
-         </select>
-         <hr>
-      </div>
       <form method="get" action="update">
          <input class="button" type="submit" value="Update Profile">
       </form>

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface Command {
     /**
-     *
      * @param request http server request
      * @return page address
      */

@@ -4,7 +4,6 @@ import ua.training.project.controller.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +14,6 @@ import java.util.Map;
 
 import static ua.training.project.constant.Path.HOMEPAGE;
 import static ua.training.project.constant.Path.REDIRECT;
-import static ua.training.project.constant.SessionCall.USER_EMAIL;
 import static ua.training.project.constant.SessionCall.USER_ID;
 
 public class Servlet extends HttpServlet {
@@ -40,14 +38,14 @@ public class Servlet extends HttpServlet {
         postCommands.put("registration", new RegistrationPostCommand());
         postCommands.put("user", new ActivityTimePostCommand());
         postCommands.put("update", new UserProfileChangePostCommand());
-        getCommands.put("activities", new ActivityRequestPostCommand());
+        postCommands.put("activities", new ActivityRequestPostCommand());
     }
 
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
             throws IOException, ServletException {
-        processRequest(request, response,getCommands);
+        processRequest(request, response, getCommands);
     }
 
     @Override

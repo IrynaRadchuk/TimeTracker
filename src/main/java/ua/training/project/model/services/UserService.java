@@ -1,9 +1,9 @@
 package ua.training.project.model.services;
 
-import ua.training.project.model.repository.UserRepository;
 import ua.training.project.model.dto.UserRegistrationDTO;
 import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
+import ua.training.project.model.repository.UserRepository;
 
 public class UserService {
     private final UserRepository repository = UserRepository.getInstance();

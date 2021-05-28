@@ -1,7 +1,6 @@
 package ua.training.project.model.services;
 
 import ua.training.project.model.dto.UserRegistrationDTO;
-import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
 import ua.training.project.model.repository.UserRepository;
 
@@ -14,7 +13,7 @@ public class UserUpdateService {
         user.setPassword(userDTO.getPassword());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
-        repository.updateUser(user,id);
+        repository.updateUser(user, id);
         return user;
     }
 }

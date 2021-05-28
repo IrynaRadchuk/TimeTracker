@@ -7,7 +7,6 @@ import ua.training.project.model.repository.UserActivityRepository;
 import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class UserProfileGetCommand implements Command {
     public String execute(HttpServletRequest request) {
         User user = userRepository.getUserFromDB(servletUtil.getSessionID(request));
         List<UserActivity> activities = userActivityRepository.getAllUserActivities(user.getEmail());
-        List<String>activityNames = new ArrayList<>();
-        for (UserActivity activity:activities) {
+        List<String> activityNames = new ArrayList<>();
+        for (UserActivity activity : activities) {
             activityNames.add(activity.getActivity().getName());
         }
         request.setAttribute("user_email", user.getEmail());

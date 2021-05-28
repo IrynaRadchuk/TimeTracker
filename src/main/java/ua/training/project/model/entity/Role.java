@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public enum Role {
-    GUEST(0),USER(1),ADMIN(2);
+    GUEST(0), USER(1), ADMIN(2);
     private int id;
 
     Role(int id) {
@@ -23,7 +23,7 @@ public enum Role {
         return this.id;
     }
 
-    public static Role getRoleById(int roleId){
-        return Arrays.stream(Role.values()).filter(x->x.getRoleId()==roleId).findFirst().orElseThrow(NoSuchElementException::new);
+    public static Role getRoleById(int roleId) {
+        return Arrays.stream(Role.values()).filter(x -> x.getRoleId() == roleId).findFirst().orElseThrow(NoSuchElementException::new);
     }
 }

@@ -1,13 +1,13 @@
 package ua.training.project.controller.util;
 
 import ua.training.project.model.entity.Role;
-import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
-import static ua.training.project.constant.SessionCall.*;
+import static ua.training.project.constant.SessionCall.USER_ID;
+import static ua.training.project.constant.SessionCall.USER_ROLE;
 
 public class ServletUtil {
 
@@ -58,9 +58,4 @@ public class ServletUtil {
             session.getServletContext().setAttribute(USER_ID, logged);
         }
     }
-
-//    public int getLoggedUserId(HttpServletRequest req) {
-//        UserRepository userRepository = UserRepository.getInstance();
-//        return userRepository.getUserFromDB(getSessionEmail(req)).getId();
-//    }
 }

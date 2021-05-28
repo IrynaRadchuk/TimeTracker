@@ -1,5 +1,7 @@
 package ua.training.project.model.repository;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
 import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class UserActivityRepository implements AutoCloseable {
+    private static final Logger log = LogManager.getLogger(UserActivityRepository.class);
     private static Connection connection = null;
 
     private UserActivityRepository() {
@@ -27,7 +30,6 @@ public class UserActivityRepository implements AutoCloseable {
         Properties prop = new Properties();
         prop.load(file);
         String property = prop.getProperty(connectionUrl);
-        System.out.println(property);
         return DriverManager.getConnection(property);
     }
 
@@ -35,40 +37,30 @@ public class UserActivityRepository implements AutoCloseable {
         try {
             connection = UserActivityRepository.getConnection("db.url");
         } catch (SQLException | IOException throwable) {
+            log.error(throwable.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return new UserActivityRepository();
     }
-    public int getUserID(String email){
+
+    public int getActivityID(String activity) {
         int id = 0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)){
-            statement.setString(1,email);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                id = resultSet.getInt("user_id");
-            }
-        } catch (SQLException e) {
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
-        }
-        return id;
-    }
-    public int getActivityID(String activity){
-        int id = 0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_FIND)){
-            statement.setString(1,activity);
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_FIND)) {
+            statement.setString(1, activity);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 id = resultSet.getInt("activity_id");
             }
         } catch (SQLException e) {
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return id;
     }
 
-    public ActivityStatus checkUserActivityStatus(String email, String activity) {
+    public ActivityStatus checkUserActivityStatus(int id, String activity) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_FIND)) {
-            statement.setString(1, email);
+            statement.setInt(1, id);
             statement.setString(2, activity);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -77,29 +69,30 @@ public class UserActivityRepository implements AutoCloseable {
             String status = resultSet.getString("status");
             return ActivityStatus.valueOf(status);
         } catch (SQLException e) {
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
 
     }
 
-    public void addActivityForUser(String email, String activity, LocalDate date, int duration) throws SQLException {
+    public void addActivityForUser(int id, String activity, LocalDate date, int duration) throws SQLException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(email, activity) != ActivityStatus.APPROVED) {
+        if (checkUserActivityStatus(id, activity) != ActivityStatus.APPROVED) {
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
-        if (timeValidation(date)+duration>8){
+        if (timeValidation(date) + duration > 8) {
             throw new TimeTrackerException(ExceptionMessage.OVERTIME);
         }
-        int userId = getUserID(email);
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ACTIVITY_CREATE)) {
-            statement.setInt(1, userId);
+            statement.setInt(1, id);
             statement.setInt(2, activityId);
             statement.setDate(3, Date.valueOf(date));
             statement.setInt(4, duration);
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
+            log.error(e.getMessage());
             connection.rollback();
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         } finally {
@@ -128,65 +121,66 @@ public class UserActivityRepository implements AutoCloseable {
                 activities.add(userActivity);
             }
         } catch (SQLException e) {
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
 
-    public void requestActivity(String email, String activity) throws SQLException {
+    public void requestActivity(int id, String activity) throws SQLException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(email, activity) != ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(id, activity) != ActivityStatus.ABSENT) {
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
-        int userId = getUserID(email);
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_CREATE)) {
-            statement.setInt(1, userId);
+            statement.setInt(1, id);
+            statement.setInt(2, activityId);
+            statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
+
+    public void approveActivity(int id, String activity) throws SQLException {
+        connection.setAutoCommit(false);
+        if (checkUserActivityStatus(id, activity) == ActivityStatus.APPROVED) {
+            throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
+        }
+        int activityId = getActivityID(activity);
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_APPROVE)) {
+            statement.setInt(1, id);
             statement.setInt(2, activityId);
             statement.executeQuery();
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
         }
     }
 
-    public void approveActivity(String email, String activity) throws SQLException {
+    public void denyActivity(int id, String activity) throws SQLException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(email, activity) == ActivityStatus.APPROVED) {
-            throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
-        }
-        int userId = getUserID(email);
-        int activityId = getActivityID(activity);
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_APPROVE)) {
-            statement.setInt(1, userId);
-            statement.setInt(2, activityId);
-            statement.executeQuery();
-            connection.commit();
-        } catch (SQLException throwable) {
-            connection.rollback();
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
-        } finally {
-            connection.setAutoCommit(true);
-        }
-    }
-
-    public void denyActivity(String email, String activity) throws SQLException {
-        connection.setAutoCommit(false);
-        if (checkUserActivityStatus(email, activity) == ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(id, activity) == ActivityStatus.ABSENT) {
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
-        int userId = getUserID(email);
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DENY_ACTIVITY)) {
-            statement.setInt(1, userId);
+            statement.setInt(1, id);
             statement.setInt(2, activityId);
             statement.executeQuery();
             connection.commit();
-        } catch (SQLException throwable) {
+        } catch (SQLException e) {
             connection.rollback();
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
@@ -198,15 +192,17 @@ public class UserActivityRepository implements AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_BY_DATE_DURATION)) {
             statement.setString(1, String.valueOf(date));
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-               time = resultSet.getInt("sum(activity_duration)");
+            if (resultSet.next()) {
+                time = resultSet.getInt("sum(activity_duration)");
             }
         } catch (SQLException e) {
+            log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return time;
     }
-        @Override
+
+    @Override
     public void close() throws Exception {
         if (connection != null && !connection.isClosed()) {
             connection.close();

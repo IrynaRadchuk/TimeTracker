@@ -10,43 +10,26 @@
    </div>
    <div class="card-body">
    <div class="card-text">
-   <div> <label for="user_activities"><b>Approved activities</b></label></div>
-   <span>
-      <c:set var="user_activities" value='${requestScope["user_activities"]}'/>
-   </span>
-   <span>
-      <c:out value="${user_activities}"/>
-   </span>
-   <hr>
-   <label for="activity">Choose activity to approve:</label>
-   <select name="activity" id="activity">
-      <optgroup label="Swedish Cars">
-         <option value="volvo">Volvo</option>
-         <option value="saab">Saab</option>
-      </optgroup>
-      <optgroup label="German Cars">
-         <option value="mercedes">Mercedes</option>
-         <option value="audi">Audi</option>
-      </optgroup>
-   </select>
-   <div class="card-text">
-      <div> <label for="user_activities"><b>Approved activities</b></label></div>
+      <div> <label for="user_activities"><b>Approved activities:</b></label></div>
       <span>
-         <c:set var="user_activities" value='${requestScope["user_activities"]}'/>
-      </span>
-      <span>
-         <c:out value="${user_activities}"/>
+      <ul>
+                  <c:forEach items="${user_activities}" var="act">
+                  <li>
+                     <option value="${act}"> ${act}
+                     </li>
+                     </c:forEach>
+                     </ul>
       </span>
       <hr>
+      <form method="post" action="activities">
       <label for="all_activities">Choose activity to approve:</label>
       <select name="all_activities" id="all_activities">
-         <c:forEach items="${all_activities}" var="activity">
-            <option value="${activity}">
-               ${activity}
+         <c:forEach items="${all_activities}" var="activity_add">
+            <option value="${activity_add}">
+               ${activity_add}
             </option>
          </c:forEach>
       </select>
-      <form method="post" action="activities">
          <input class="button" type="submit" value="Request">
       </form>
 </body>

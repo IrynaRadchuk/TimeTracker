@@ -18,6 +18,7 @@
    <nav class="w3-bar w3-black">
       <a href="index" class="w3-button w3-bar-item"><b>Home</b></a>
       <a href="index" class="w3-button w3-bar-item"><b>Sign Out</b></a>
+      <a href="user" class="w3-button w3-bar-item"><b>Calendar</b></a>
       <a href="profile" class="w3-button w3-bar-item"><b>Profile</b></a>
       <a href="activities" class="w3-button w3-bar-item"><b>Activities</b></a>
    </nav>
