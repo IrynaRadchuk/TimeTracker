@@ -3,17 +3,17 @@ package ua.training.project.model.entity;
 public class Activity {
     private int id;
     private String name;
-    private int category_id;
+    private int categoryId;
 
-    public Activity(String name, int category_id) {
+    public Activity(String name, int categoryId) {
         this.name = name;
-        this.category_id = category_id;
+        this.categoryId = categoryId;
     }
 
-    public Activity(int id, String name, int category_id) {
+    public Activity(int id, String name, int categoryId) {
         this.id = id;
         this.name = name;
-        this.category_id = category_id;
+        this.categoryId = categoryId;
     }
 
     public Activity() {
@@ -35,12 +35,12 @@ public class Activity {
         this.name = name;
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Activity {
         return "Activity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", category_id=" + category_id +
+                ", categoryId=" + categoryId +
                 '}';
     }
 }

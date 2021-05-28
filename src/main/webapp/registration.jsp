@@ -21,7 +21,7 @@
     <input type="text" placeholder="Enter First Name" name="firstName">
     <label for="lastName"><b>Last Name</b></label>
     <input type="text" placeholder="Enter Last Name" name="lastName">
-    <input class="button" type="submit" value="Sign In">
+    <input class="button" type="submit" value="Sign Up">
     </form>
   </div>
     <form action="index">

@@ -127,9 +127,28 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
-    public User getUserFromDB(String email) {
+    public User getUserFromDB(int id) {
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt("user_id"));
+                user.setEmail(resultSet.getString("user_email"));
+                user.setPassword(resultSet.getString("user_password"));
+                user.setFirstName(resultSet.getString("user_first_name"));
+                user.setLastName(resultSet.getString("user_last_name"));
+                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return user;
+    }
+
+    public User getUserFromDBByEmail(String email) {
+        User user = new User();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND_BY_EMAIL)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -166,14 +185,14 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user, int id) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_UPDATE)) {
             statement.setString(1, user.getEmail());
-            statement.setString(1, user.getPassword());
-            statement.setString(1, user.getFirstName());
-            statement.setString(1, user.getLastName());
-            statement.setInt(1, user.getId());
-            statement.executeQuery();
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
+            statement.setInt(5, id);
+            statement.executeUpdate();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }

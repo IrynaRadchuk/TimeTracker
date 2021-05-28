@@ -9,7 +9,8 @@ public interface DBStatement {
     String USER_CHANGE_LAST_NAME = "update user set user_last_name = ? where user_id = ?;";
     String USER_CHANGE_PASSWORD = "update user set user_password = ? where user_id = ?;";
     String USER_UPDATE = "update user set user_email = ?, user_password = ?, user_first_name = ?, user_last_name = ? where user_id =?";
-    String USER_FIND = "select*from user where user_email = ?;";
+    String USER_FIND = "select*from user where user_id = ?;";
+    String USER_FIND_BY_EMAIL = "select*from user where user_email = ?;";
     String GET_ALL_USERS = "select*from user";
     String USER_COUNT = "select count(*) from user;";
     String ROLE_CREATE = "insert into user_role (user_id, user_name) values (?,?);";
@@ -19,6 +20,7 @@ public interface DBStatement {
     String ACTIVITY_CHANGE_NAME = "update activity set activity_name = ? where activity_id = ?;";
     String ACTIVITY_SORT_BY_NAME = "select * from activity order by activity_name;";
     String ACTIVITY_FIND = "select*from activity where activity_name = ?;";
+    String GET_ALL_ACTIVITIES = "select*from activity";
     String CATEGORY_CREATE = "insert into activity_category (category_id, category_name)  values (?,?);";
     String CATEGORY_DELETE = "delete from activity_category where category_id = ?;";
     String CATEGORY_CHANGE_NAME = "update activity_category set category_name = ? where category_id = ?;";

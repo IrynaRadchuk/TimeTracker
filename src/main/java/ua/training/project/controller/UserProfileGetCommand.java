@@ -20,7 +20,7 @@ public class UserProfileGetCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        User user = userRepository.getUserFromDB(servletUtil.getSessionEmail(request));
+        User user = userRepository.getUserFromDB(servletUtil.getSessionID(request));
         List<UserActivity> activities = userActivityRepository.getAllUserActivities(user.getEmail());
         List<String>activityNames = new ArrayList<>();
         for (UserActivity activity:activities) {

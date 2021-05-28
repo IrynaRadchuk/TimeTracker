@@ -11,4 +11,5 @@ String ERROR_PAGE = "/error.jsp";
 String REGISTRATION_PAGE = "/registration.jsp";
 String PROFILE_PAGE = "/profile.jsp";
 String UPDATE_PAGE = "/update.jsp";
+String ACTIVITY_REQUEST_PAGE = "/activities.jsp";
 }

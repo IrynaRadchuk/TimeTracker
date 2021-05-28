@@ -11,8 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 
 import static ua.training.project.constant.Path.*;
-import static ua.training.project.constant.SessionCall.USER_EMAIL;
-import static ua.training.project.constant.SessionCall.USER_ROLE;
+import static ua.training.project.constant.SessionCall.*;
 
 public class LoginPostCommand implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
@@ -21,41 +20,26 @@ public class LoginPostCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         String email = request.getParameter("email");
+        System.out.println(email);
         String password = request.getParameter("password");
+        System.out.println(password);
         if (email == null || email.equals("") || password == null || password.equals("")) {
             return LOGIN_PAGE;
         }
-        User user = userRepository.getUserFromDB(email);
+        User user = userRepository.getUserFromDBByEmail(email);
+        System.out.println(user.getId());
         if (user.getEmail() == null) {
-            //TODO: change into output
             request.setAttribute("error", "User doesn't exist");
             System.out.println("User doesn't exist");
             return LOGIN_PAGE;
         }
         if (!user.getPassword().equals(password)) {
-            //Todo change into output
             request.setAttribute("error", "Wrong password");
             System.out.println("Wrong password");
             return LOGIN_PAGE;
         }
-
-
-//        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
-//                .getAttribute(USER_EMAIL);
-//        if (loggedUsers.stream().anyMatch(email::equals)) {
-//            return ERROR_PAGE;
-//        }
-        servletUtil.setUserEmailRoleToSession(request, user.getRole(), user.getEmail());
-        servletUtil.addToContext(request, email);
-
-//        HttpSession session = request.getSession();
-//        session.setAttribute(USER_EMAIL, user.getEmail());
-//        ServletContext context = request.getServletContext();
-//        context.setAttribute(USER_EMAIL, email);
-//        session.setAttribute(USER_ROLE, userRole);
-//        loggedUsers.add(email);
-//        request.getSession().getServletContext()
-//                .setAttribute(USER_EMAIL, loggedUsers);
+        servletUtil.setUserEmailRoleToSession(request, user.getRole(), user.getId());
+        servletUtil.addToContext(request, user.getId());
         Role userRole = Role.getRole(user);
         if (userRole == Role.ADMIN)
             return LOGIN_ADMIN;

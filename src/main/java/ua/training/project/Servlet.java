@@ -16,6 +16,7 @@ import java.util.Map;
 import static ua.training.project.constant.Path.HOMEPAGE;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.USER_EMAIL;
+import static ua.training.project.constant.SessionCall.USER_ID;
 
 public class Servlet extends HttpServlet {
 
@@ -25,7 +26,7 @@ public class Servlet extends HttpServlet {
     public void init(ServletConfig config) {
 
         config.getServletContext()
-                .setAttribute(USER_EMAIL, new HashMap<String, HttpSession>());
+                .setAttribute(USER_ID, new HashMap<String, HttpSession>());
 
         System.out.println("SERVLET");
         getCommands.put("login", new LoginGetCommand());
@@ -33,11 +34,13 @@ public class Servlet extends HttpServlet {
         getCommands.put("user", new PersonalAccountGetCommand());
         getCommands.put("profile", new UserProfileGetCommand());
         getCommands.put("update", new UserProfileChangeGetCommand());
+        getCommands.put("activities", new ActivityRequestGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("registration", new RegistrationPostCommand());
         postCommands.put("user", new ActivityTimePostCommand());
         postCommands.put("update", new UserProfileChangePostCommand());
+        getCommands.put("activities", new ActivityRequestPostCommand());
     }
 
     @Override

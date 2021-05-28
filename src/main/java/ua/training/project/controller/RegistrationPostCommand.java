@@ -26,7 +26,7 @@ public class RegistrationPostCommand implements Command{
         }
         UserService service = new UserService();
         service.userRegistration(userDTO);
-        return HOMEPAGE;
+        return LOGIN_PAGE;
     }
 
     private List<String> inputValidation (UserRegistrationDTO userDTO) {

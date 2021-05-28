@@ -7,31 +7,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
-import static ua.training.project.constant.SessionCall.USER_EMAIL;
-import static ua.training.project.constant.SessionCall.USER_ROLE;
+import static ua.training.project.constant.SessionCall.*;
 
 public class ServletUtil {
 
-    public void addToContext(HttpServletRequest request, String email) {
+    public void addToContext(HttpServletRequest request, Integer id) {
         HttpSession session = request.getSession();
         @SuppressWarnings("unchecked")
-        HashMap<String, HttpSession> logged = (HashMap<String, HttpSession>) session.getServletContext()
-                .getAttribute(USER_EMAIL);
-        if (logged.containsKey(email)) {
+        HashMap<Integer, HttpSession> logged = (HashMap<Integer, HttpSession>) session.getServletContext()
+                .getAttribute(USER_ID);
+        if (logged.containsKey(id)) {
             deleteUserFromContextAndSession(request);
         }
-        logged.put(email, session);
-        request.getSession().getServletContext().setAttribute(USER_EMAIL, logged);
+        logged.put(id, session);
+        request.getSession().getServletContext().setAttribute(USER_ID, logged);
     }
 
-    public void setUserEmailRoleToSession(HttpServletRequest req, Role role, String email) {
+    public void setUserEmailRoleToSession(HttpServletRequest req, Role role, Integer id) {
         HttpSession session = req.getSession();
-        session.setAttribute(USER_EMAIL, email);
+        session.setAttribute(USER_ID, id);
         session.setAttribute(USER_ROLE, role);
     }
 
-    public String getSessionEmail(HttpServletRequest request) {
-        return (String) request.getSession().getAttribute(USER_EMAIL);
+    public Integer getSessionID(HttpServletRequest request) {
+        return (Integer) request.getSession().getAttribute(USER_ID);
     }
 
 
@@ -43,25 +42,25 @@ public class ServletUtil {
     public void deleteUserFromContextAndSession(HttpServletRequest req) {
 
 
-        String email = (String) req.getSession().getAttribute(USER_EMAIL);
+        Integer id = (Integer) req.getSession().getAttribute(USER_ID);
         HttpSession session = req.getSession();
 
         @SuppressWarnings("unchecked")
         HashMap<String, HttpSession> logged = (HashMap<String, HttpSession>) session.getServletContext()
-                .getAttribute(USER_EMAIL);
-        if (logged.containsKey(email)) {
+                .getAttribute(USER_ID);
+        if (logged.containsKey(id)) {
             try {
-                logged.get(email).invalidate();
+                logged.get(id).invalidate();
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-            logged.remove(email);
-            session.getServletContext().setAttribute(USER_EMAIL, logged);
+            logged.remove(id);
+            session.getServletContext().setAttribute(USER_ID, logged);
         }
     }
 
-    public int getLoggedUserId(HttpServletRequest req) {
-        UserRepository userRepository = UserRepository.getInstance();
-        return userRepository.getUserFromDB(getSessionEmail(req)).getId();
-    }
+//    public int getLoggedUserId(HttpServletRequest req) {
+//        UserRepository userRepository = UserRepository.getInstance();
+//        return userRepository.getUserFromDB(getSessionEmail(req)).getId();
+//    }
 }

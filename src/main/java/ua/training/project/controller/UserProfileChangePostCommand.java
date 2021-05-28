@@ -12,10 +12,12 @@ import java.util.List;
 import static ua.training.project.constant.CredentialValidationRegex.*;
 import static ua.training.project.constant.CredentialValidationRegex.NAME_REGEX_EN;
 import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.USER_ID;
 
 public class UserProfileChangePostCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
+        Integer id = (Integer) request.getSession().getAttribute(USER_ID);
         String email = request.getParameter("user_email");
         String password = request.getParameter("user_password");
         String firstName = request.getParameter("user_first_name");
@@ -26,7 +28,7 @@ public class UserProfileChangePostCommand implements Command{
             return UPDATE_PAGE;
         }
         UserUpdateService service = new UserUpdateService();
-        service.userUpdate(userDTO);
+        service.userUpdate(userDTO, id);
         return PROFILE_PAGE;
     }
 
