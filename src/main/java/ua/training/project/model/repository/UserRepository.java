@@ -5,10 +5,13 @@ import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class UserRepository implements AutoCloseable {
@@ -55,6 +58,26 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_USERS)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setEmail(resultSet.getString("user_email"));
+                user.setPassword(resultSet.getString("user_password"));
+                user.setFirstName(resultSet.getString("user_first_name"));
+                user.setLastName(resultSet.getString("user_last_name"));
+                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
+                users.add(user);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return users;
+    }
+
     public void deleteUser(User user) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DELETE)) {
             statement.setString(1, user.getEmail());
@@ -73,6 +96,7 @@ public class UserRepository implements AutoCloseable {
             throwable.printStackTrace();
         }
     }
+
     public void changePassword(String passOld, String passNew) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_PASSWORD)) {
             statement.setString(1, passNew);
@@ -93,7 +117,7 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
-    public void changeLastName (String nameOld, String nameNew) {
+    public void changeLastName(String nameOld, String nameNew) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_LAST_NAME)) {
             statement.setString(1, nameNew);
             statement.setString(2, nameOld);
@@ -105,9 +129,9 @@ public class UserRepository implements AutoCloseable {
 
     public User getUserFromDB(String email) {
         User user = new User();
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)){
-             statement.setString(1, email);
-             ResultSet resultSet = statement.executeQuery();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user.setId(resultSet.getInt("user_id"));
                 user.setEmail(resultSet.getString("user_email"));
@@ -122,12 +146,12 @@ public class UserRepository implements AutoCloseable {
         return user;
     }
 
-    public int countUsers () {
-        int result =0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_COUNT)){
+    public int countUsers() {
+        int result = 0;
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_COUNT)) {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-           result = resultSet.getInt(1);
+                result = resultSet.getInt(1);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -139,6 +163,19 @@ public class UserRepository implements AutoCloseable {
     public void close() throws Exception {
         if (connection != null && !connection.isClosed()) {
             connection.close();
+        }
+    }
+
+    public void updateUser(User user) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_UPDATE)) {
+            statement.setString(1, user.getEmail());
+            statement.setString(1, user.getPassword());
+            statement.setString(1, user.getFirstName());
+            statement.setString(1, user.getLastName());
+            statement.setInt(1, user.getId());
+            statement.executeQuery();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 }

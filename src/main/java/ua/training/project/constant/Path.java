@@ -10,4 +10,5 @@ String USER_PERSONAL_ACCOUNT = "/user.jsp";
 String ERROR_PAGE = "/error.jsp";
 String REGISTRATION_PAGE = "/registration.jsp";
 String PROFILE_PAGE = "/profile.jsp";
+String UPDATE_PAGE = "/update.jsp";
 }

@@ -32,10 +32,12 @@ public class Servlet extends HttpServlet {
         getCommands.put("registration", new RegistrationGetCommand());
         getCommands.put("user", new PersonalAccountGetCommand());
         getCommands.put("profile", new UserProfileGetCommand());
+        getCommands.put("update", new UserProfileChangeGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("registration", new RegistrationPostCommand());
         postCommands.put("user", new ActivityTimePostCommand());
+        postCommands.put("update", new UserProfileChangePostCommand());
     }
 
     @Override

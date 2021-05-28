@@ -26,7 +26,6 @@ public class ServletUtil {
 
     public void setUserEmailRoleToSession(HttpServletRequest req, Role role, String email) {
         HttpSession session = req.getSession();
-
         session.setAttribute(USER_EMAIL, email);
         session.setAttribute(USER_ROLE, role);
     }
@@ -42,6 +41,7 @@ public class ServletUtil {
 
 
     public void deleteUserFromContextAndSession(HttpServletRequest req) {
+
 
         String email = (String) req.getSession().getAttribute(USER_EMAIL);
         HttpSession session = req.getSession();

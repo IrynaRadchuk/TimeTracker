@@ -58,9 +58,9 @@ public class LoginPostCommand implements Command {
 //                .setAttribute(USER_EMAIL, loggedUsers);
         Role userRole = Role.getRole(user);
         if (userRole == Role.ADMIN)
-            return REDIRECT+LOGIN_ADMIN;
+            return LOGIN_ADMIN;
         if (userRole == Role.USER)
-            return REDIRECT + LOGIN_USER;
+            return LOGIN_USER;
         else {
             request.setAttribute("error", "Unspecified role");
             System.out.println("Wrong role");
