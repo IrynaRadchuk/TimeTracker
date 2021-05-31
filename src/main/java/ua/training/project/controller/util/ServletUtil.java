@@ -20,9 +20,13 @@ public class ServletUtil {
         addToContext(req, id);
     }
 
-    public void setErrorToSession(HttpServletRequest req, ExceptionMessage errorMessage) {
+    public void setPRGToSession(HttpServletRequest req, String url) {
         HttpSession session = req.getSession();
-        session.setAttribute(ERROR, errorMessage.getMessage());
+        session.setAttribute(PRG, url);
+    }
+    public void setErrorToSession(HttpServletRequest req, String errorMessage) {
+        HttpSession session = req.getSession();
+        session.setAttribute(ERROR, errorMessage);
     }
     public void setErrorMessagesToSession(HttpServletRequest req, List<String> errorMessages) {
         HttpSession session = req.getSession();
@@ -42,7 +46,11 @@ public class ServletUtil {
         request.getSession().setAttribute(ERROR, StringUtils.EMPTY);
         return error;
     }
-
+    public String getPrgUrl (HttpServletRequest request) {
+        String prg = (String) request.getSession().getAttribute(PRG);
+        request.getSession().setAttribute(PRG, StringUtils.EMPTY);
+        return prg;
+    }
 
     public void deleteUserFromContextAndSession(HttpServletRequest req) {
         Integer id = (Integer) req.getSession().getAttribute(USER_ID);

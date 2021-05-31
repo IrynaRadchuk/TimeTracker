@@ -42,8 +42,8 @@
                </select>
                </td>
                <td>
-                  <input class="button" type="submit" formaction="manageUsers" value="Change">
-                  <input class="cancelbtn" type="submit" formaction="deleteUsers" value="Delete">
+                  <input class="button" type="submit" formaction="manageActivities" value="Change">
+                  <input class="cancelbtn" type="submit" formaction="deleteActivities" value="Delete">
                </td>
             </tr>
          </form>
@@ -73,7 +73,7 @@
             </select>
             </td>
             <td>
-               <input class="button" type="submit" formaction="addUsers" value="Add">
+               <input class="button" type="submit" formaction="addActivities" value="Add">
             </td>
       </form>
       </tr>

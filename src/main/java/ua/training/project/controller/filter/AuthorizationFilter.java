@@ -23,11 +23,13 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-        List<String> guestPages = Arrays.asList("/", LOGIN, LOGIN_PRG, REGISTRATION, REGISTRATION_PRG);
+        List<String> guestPages = Arrays.asList("/", LOGIN, REGISTRATION);
         acceptablePages.put(Role.GUEST, guestPages);
         List<String> userPages = Arrays.asList(USER, PROFILE, UPDATE, ACTIVITY_REQUEST, LOGOUT);
         acceptablePages.put(Role.USER, userPages);
-        List<String> adminPages = Arrays.asList(MANAGE_USERS,MANAGE_ACTIVITIES,MANAGE_REQUESTS, LOGOUT, DELETE_ACTIVITIES, ADD_ACTIVITIES, ADD_USERS,DELETE_USERS);
+        List<String> adminPages = Arrays.asList(MANAGE_USERS, LOGOUT,
+                DELETE_ACTIVITIES, ADD_ACTIVITIES, MANAGE_ACTIVITIES,
+                ADD_USERS, DELETE_USERS, MANAGE_REQUESTS, USER_STAT, ACTIVITY_STAT);
         acceptablePages.put(Role.ADMIN, adminPages);
     }
 
@@ -48,7 +50,7 @@ public class AuthorizationFilter implements Filter {
                 role = Role.GUEST;
             }
             if (acceptablePages.get(role).contains(reqUri)) {
-                System.out.println("acceptable uri  = " +reqUri +" role = " + role);
+                System.out.println("acceptable uri  = " + reqUri + " role = " + role);
                 chain.doFilter(req, resp);
             } else {
                 System.err.println("YOU DONT HAVE PERMISSIONS TO BE HERE" + reqUri);

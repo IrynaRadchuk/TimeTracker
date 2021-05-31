@@ -37,10 +37,4 @@
          <c:out value="${message}"/>
       </div>
    </c:if>
-      <c:if test="${not empty requestScope['success']}">
-         <div class="success"align="center">
-            <c:set var="message" value='${requestScope["success"]}' />
-            <c:out value="${message}"/>
-         </div>
-      </c:if>
 </body>

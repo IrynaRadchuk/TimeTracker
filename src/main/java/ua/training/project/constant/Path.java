@@ -32,7 +32,8 @@ public interface Path {
     String ADD_ACTIVITIES = "/addActivities";
     String MANAGE_REQUESTS = "/manageRequests";
     String MANAGE_REQUESTS_PAGE = "/manageRequests.jsp";
-
-
-
+    String USER_STAT_PAGE = "/userStat.jsp";
+    String USER_STAT = "/userStat";
+    String ACTIVITY_STAT_PAGE = "/activityStat.jsp";
+    String ACTIVITY_STAT = "/activityStat";
 }

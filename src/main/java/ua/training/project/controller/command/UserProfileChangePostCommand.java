@@ -11,6 +11,7 @@ import ua.training.project.model.services.validation.InputValidation;
 import javax.servlet.http.HttpServletRequest;
 
 import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.PRG_UPDATE_PROFILE;
 
 public class UserProfileChangePostCommand implements Command {
     private static final Logger log = LogManager.getLogger(UserProfileChangePostCommand.class);
@@ -26,14 +27,15 @@ public class UserProfileChangePostCommand implements Command {
         String lastName = request.getParameter("user_last_name");
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
         if (!validation.inputValidation(userDTO).isEmpty()) {
-            request.setAttribute("error", validation.inputValidation(userDTO));
+            servletUtil.setErrorMessagesToSession(request, validation.inputValidation(userDTO));
             log.error(validation.inputValidation(userDTO));
-            return UPDATE_PAGE;
+            servletUtil.setPRGToSession(request, PRG_UPDATE_PROFILE);
+            return REDIRECT + UPDATE;
         }
         UserUpdateService service = new UserUpdateService();
         service.userUpdate(userDTO, id);
         log.info(LoggerInfo.UPDATE_SUCCESS.getMessage());
-        return USER_PAGE;
+        return REDIRECT + PROFILE;
     }
 
 

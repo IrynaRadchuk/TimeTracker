@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.PRG_REQUEST_ACTIVITY;
 
 public class ActivityRequestPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(ActivityRequestPostCommand.class);
@@ -24,14 +25,14 @@ public class ActivityRequestPostCommand implements Command {
         try {
             userActivityRepository.requestActivity(id, activity);
             log.info(LoggerInfo.ACTIVITY_REQUESTED.getMessage());
-            request.setAttribute("success", LoggerInfo.ACTIVITY_REQUESTED.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());
-            return ERROR_PAGE;
-        } catch (TimeTrackerException e){
+            return REDIRECT + ERROR;
+        } catch (TimeTrackerException e) {
             log.error(e.getMessage());
-            request.setAttribute("error", e.getMessage());
-            return ACTIVITY_REQUEST_PAGE;
+            servletUtil.setErrorToSession(request, e.getMessage());
+            servletUtil.setPRGToSession(request, PRG_REQUEST_ACTIVITY);
+            return REDIRECT + ACTIVITY_REQUEST;
         }
         return REDIRECT + ACTIVITY_REQUEST;
     }

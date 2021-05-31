@@ -14,8 +14,7 @@ import java.util.Map;
 
 import static ua.training.project.constant.Path.HOMEPAGE;
 import static ua.training.project.constant.Path.REDIRECT;
-import static ua.training.project.constant.SessionCall.ERROR;
-import static ua.training.project.constant.SessionCall.USER_ID;
+import static ua.training.project.constant.SessionCall.*;
 
 public class Servlet extends HttpServlet {
 
@@ -25,19 +24,21 @@ public class Servlet extends HttpServlet {
     public void init(ServletConfig config) {
         config.getServletContext().setAttribute(USER_ID, new HashMap<Integer, HttpSession>());
         config.getServletContext().setAttribute(ERROR, "");
+        config.getServletContext().setAttribute(PRG,"");
 
         System.out.println("SERVLET");
         getCommands.put("login", new LoginGetCommand());
         getCommands.put("registration", new RegistrationGetCommand());
-        getCommands.put("user", new PersonalAccountGetCommand());
+        getCommands.put("user", new ActivityTimeGetCommand());
         getCommands.put("profile", new UserProfileGetCommand());
         getCommands.put("update", new UserProfileChangeGetCommand());
         getCommands.put("activities", new ActivityRequestGetCommand());
-        getCommands.put("loginPrg", new LoginPRGCommand());
         getCommands.put("logout", new LogoutCommand());
-        getCommands.put("registrationPrg", new RegistrationPRGCommand());
         getCommands.put("manageUsers", new AdminManageUsersGetCommand());
         getCommands.put("manageActivities", new AdminManageActivitiesGetCommand());
+        getCommands.put("manageRequests", new AdminManageRequestsGetCommand());
+        getCommands.put("activityStat", new AdminActivityStatisticsGetCommand());
+        getCommands.put("userStat", new AdminUserStatisticsGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("logout", new LogoutCommand());
@@ -49,8 +50,11 @@ public class Servlet extends HttpServlet {
         postCommands.put("deleteActivities", new AdminDeleteActivitiesPostCommand());
         postCommands.put("addActivities", new AdminAddActivitiesPostCommand());
         postCommands.put("manageUsers", new AdminManageUsersPostCommand());
+        postCommands.put("manageRequests", new AdminManageRequestsPostCommand());
         postCommands.put("deleteUsers", new AdminDeleteUsersPostCommand());
         postCommands.put("addUsers", new AdminAddUsersPostCommand());
+        postCommands.put("activityStat", new AdminActivityStatisticsPostCommand());
+        postCommands.put("userStat", new AdminUserStatisticsPostCommand());
     }
 
     @Override

@@ -1,17 +1,17 @@
 package ua.training.project.controller.command;
 
-import ua.training.project.model.entity.Role;
-import ua.training.project.model.entity.User;
+import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static ua.training.project.constant.Path.MANAGE_USERS_PAGE;
+import static ua.training.project.constant.Path.MANAGE_USERS;
+import static ua.training.project.constant.Path.REDIRECT;
+import static ua.training.project.constant.SessionCall.PRG_UPDATE_USER;
 
 public class AdminManageUsersPostCommand implements Command {
-    UserRepository userRepository = UserRepository.getInstance();
+    private UserRepository userRepository = UserRepository.getInstance();
+    private ServletUtil servletUtil = new ServletUtil();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -20,7 +20,8 @@ public class AdminManageUsersPostCommand implements Command {
         String firstName = request.getParameter("user_first_name");
         String lastName = request.getParameter("user_last_name");
         String role = request.getParameter("all_roles");
-        userRepository.changeUser(email,firstName,lastName,role,id);
-        return MANAGE_USERS_PAGE;
+        userRepository.changeUser(email, firstName, lastName, role, id);
+        servletUtil.setPRGToSession(request, PRG_UPDATE_USER);
+        return REDIRECT + MANAGE_USERS;
     }
 }

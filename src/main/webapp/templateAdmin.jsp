@@ -23,6 +23,9 @@
       <a href="manageUsers" class="w3-button w3-bar-item"><b>Manage Users</b></a>
       <a href="manageActivities" class="w3-button w3-bar-item"><b>Manage Activities</b></a>
       <a href="manageRequests" class="w3-button w3-bar-item"><b>Manage Requests</b></a>
+      <a href="activityStat" class="w3-button w3-bar-item"><b>Activity Statistics</b></a>
+      <a href="userStat" class="w3-button w3-bar-item"><b>User Statistics</b></a>
+
    </nav>
    <form>
       <div class="mt-5">

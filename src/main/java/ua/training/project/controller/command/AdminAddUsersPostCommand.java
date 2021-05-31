@@ -1,13 +1,17 @@
 package ua.training.project.controller.command;
 
+import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static ua.training.project.constant.Path.MANAGE_USERS_PAGE;
+import static ua.training.project.constant.Path.MANAGE_USERS;
+import static ua.training.project.constant.Path.REDIRECT;
+import static ua.training.project.constant.SessionCall.PRG_ADD_USER;
 
 public class AdminAddUsersPostCommand implements Command {
-    UserRepository userRepository = UserRepository.getInstance();
+    private UserRepository userRepository = UserRepository.getInstance();
+    private ServletUtil servletUtil = new ServletUtil();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -16,6 +20,7 @@ public class AdminAddUsersPostCommand implements Command {
         String lastName = request.getParameter("add_user_last_name");
         String role = request.getParameter("all_roles");
         userRepository.addUser(email, firstName, lastName, role);
-        return MANAGE_USERS_PAGE;
+        servletUtil.setPRGToSession(request, PRG_ADD_USER);
+        return REDIRECT + MANAGE_USERS;
     }
 }

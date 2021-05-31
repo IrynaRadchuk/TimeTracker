@@ -12,6 +12,7 @@ import ua.training.project.model.services.validation.InputValidation;
 import javax.servlet.http.HttpServletRequest;
 
 import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.PRG_REGISTRATION;
 
 public class RegistrationPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(RegistrationPostCommand.class);
@@ -29,11 +30,12 @@ public class RegistrationPostCommand implements Command {
         if (!validation.inputValidation(userDTO).isEmpty()) {
             servletUtil.setErrorMessagesToSession(request, validation.inputValidation(userDTO));
             log.error(validation.inputValidation(userDTO));
-            return REDIRECT + REGISTRATION_PRG;
+            servletUtil.setPRGToSession(request, PRG_REGISTRATION);
+            return REDIRECT + REGISTRATION;
         }
         UserService service = new UserService();
         service.userRegistration(userDTO);
         log.info(LoggerInfo.REGISTRATION_SUCCESS.getMessage());
-        return REDIRECT + REGISTRATION_PRG;
+        return REDIRECT + LOGIN;
     }
 }
