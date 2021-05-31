@@ -3,8 +3,10 @@ package ua.training.project.model.repository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
+import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.model.dao.ActivityDao;
 import ua.training.project.model.entity.Activity;
 
 import java.io.FileInputStream;
@@ -40,6 +42,25 @@ public class ActivityRepository implements AutoCloseable {
         return new ActivityRepository();
     }
 
+    public List<ActivityDao> getActivitiesWithCategories() {
+        List<ActivityDao> activities = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_ACTIVITIES_WITH_CATEGORIES)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ActivityDao activity = new ActivityDao();
+                activity.setId(resultSet.getInt("activity.activity_id"));
+                activity.setName(resultSet.getString("activity.activity_name"));
+                activity.setCategoryId(resultSet.getInt("activity.category_id"));
+                activity.setCategory(resultSet.getString("activity_category.category_name"));
+                activities.add(activity);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+        return activities;
+    }
+
     public List<Activity> getAllActivities() {
         List<Activity> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_ACTIVITIES)) {
@@ -58,10 +79,72 @@ public class ActivityRepository implements AutoCloseable {
         return activities;
     }
 
+    public int categoryGetId(String category) {
+        int categoryId = 0;
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.CATEGORY_GET_ID)) {
+            statement.setString(1, category);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                categoryId = resultSet.getInt("category_id");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+        return categoryId;
+    }
+
+    public void updateActivity(int activityId, String activity, String category) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CHANGE)) {
+            statement.setString(1, activity);
+            statement.setString(2, category);
+            statement.setInt(3, activityId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
+    public void deleteActivity(int activityId) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_DELETE)) {
+            statement.setInt(1, activityId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
+    public void createActivity( String activity, String category) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CREATE)) {
+            statement.setString(1, activity);
+            statement.setString(2, category);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
     @Override
     public void close() throws Exception {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
+    }
+
+    public List<String> getAllCategories() {
+        List<String> categories = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.CATEGORY_GET_ALL)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                categories.add(resultSet.getString("category_name"));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+        return categories;
     }
 }

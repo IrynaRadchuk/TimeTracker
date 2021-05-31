@@ -1,4 +1,4 @@
-package ua.training.project.controller;
+package ua.training.project.controller.command;
 
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.entity.User;

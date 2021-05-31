@@ -1,4 +1,4 @@
-package ua.training.project.controller;
+package ua.training.project.controller.command;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static ua.training.project.constant.Path.USER_PERSONAL_ACCOUNT;
+import static ua.training.project.constant.Path.*;
 
 public class ActivityTimePostCommand implements Command {
     private static final Logger log = LogManager.getLogger(ActivityTimePostCommand.class);
@@ -39,14 +39,16 @@ public class ActivityTimePostCommand implements Command {
         LocalDate localDate = LocalDate.parse(dateFormat, formatter);
         Integer id = servletUtil.getSessionID(request);
         try {
-            userActivityRepository.addActivityForUser(id, activityName, localDate, duration);
-            log.info(LoggerInfo.ACTIVITY_TIME_ADD);
+            userActivityRepository.addActivityForUser(id, activityName, localDate, duration,request);
+            request.setAttribute("success", LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
+            log.info(LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());
+            return ERROR_PAGE;
         } catch (PermissionDeniedException e) {
             log.error(e.getMessage());
             request.setAttribute("error", e.getMessage());
         }
-        return USER_PERSONAL_ACCOUNT;
+        return USER_PAGE;
     }
 }

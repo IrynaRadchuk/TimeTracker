@@ -15,7 +15,7 @@
       <ul>
                   <c:forEach items="${user_activities}" var="act">
                   <li>
-                     <option value="${act}"> ${act}
+                     <option value="${act}"> ${act.activityName} = ${act.activityStatus}
                      </li>
                      </c:forEach>
                      </ul>

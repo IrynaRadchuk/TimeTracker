@@ -1,4 +1,4 @@
-package ua.training.project.controller;
+package ua.training.project.controller.command;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -10,8 +10,7 @@ import ua.training.project.model.services.validation.InputValidation;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static ua.training.project.constant.Path.PROFILE_PAGE;
-import static ua.training.project.constant.Path.UPDATE_PAGE;
+import static ua.training.project.constant.Path.*;
 
 public class UserProfileChangePostCommand implements Command {
     private static final Logger log = LogManager.getLogger(UserProfileChangePostCommand.class);
@@ -33,8 +32,8 @@ public class UserProfileChangePostCommand implements Command {
         }
         UserUpdateService service = new UserUpdateService();
         service.userUpdate(userDTO, id);
-        log.info(LoggerInfo.UPDATE_SUCCESS);
-        return PROFILE_PAGE;
+        log.info(LoggerInfo.UPDATE_SUCCESS.getMessage());
+        return USER_PAGE;
     }
 
 

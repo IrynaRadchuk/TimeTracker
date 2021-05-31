@@ -24,6 +24,12 @@ public class UserRepository implements AutoCloseable {
     }
 
     public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        //InputStream file = new FileInputStream(ResourceBundle.getBundle("resources").getString("db.url"));
         InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
         Properties prop = new Properties();
         prop.load(file);
@@ -39,6 +45,20 @@ public class UserRepository implements AutoCloseable {
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
         }
         return new UserRepository();
+    }
+
+    public boolean checkUserEmailInDB(String email) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND_BY_EMAIL)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+        return false;
     }
 
     public void insertUser(User user) {
@@ -83,53 +103,9 @@ public class UserRepository implements AutoCloseable {
         return users;
     }
 
-    public void deleteUser(User user) {
+    public void deleteUser(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DELETE)) {
-            statement.setString(1, user.getEmail());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-    }
-
-    public void changeEmail(String emailOld, String emailNew) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_EMAIL)) {
-            statement.setString(1, emailNew);
-            statement.setString(2, emailOld);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-    }
-
-    public void changePassword(String passOld, String passNew) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_PASSWORD)) {
-            statement.setString(1, passNew);
-            statement.setString(2, passOld);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-    }
-
-    public void changeFirstName(String nameOld, String nameNew) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_FIRST_NAME)) {
-            statement.setString(1, nameNew);
-            statement.setString(2, nameOld);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-    }
-
-    public void changeLastName(String nameOld, String nameNew) {
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CHANGE_LAST_NAME)) {
-            statement.setString(1, nameNew);
-            statement.setString(2, nameOld);
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -211,4 +187,32 @@ public class UserRepository implements AutoCloseable {
             connection.close();
         }
     }
+
+    public void changeUser(String email, String firstName, String lastName, String role, int id) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_UPDATE_BY_ADMIN)) {
+            statement.setString(1, email);
+            statement.setString(2, firstName);
+            statement.setString(3, lastName);
+            statement.setString(4, role);
+            statement.setInt(5, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
+    public void addUser(String email, String firstName, String lastName, String role) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CREATE_BY_ADMIN)) {
+            statement.setString(1, email);
+            statement.setString(2, firstName);
+            statement.setString(3, lastName);
+            statement.setString(4, role);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
 }
+

@@ -19,12 +19,13 @@ import java.util.List;
 import static ua.training.project.constant.SessionCall.USER_ID;
 
 public class TestClass {
+    private static UserRepository userRepository = UserRepository.getInstance();
+    private static ActivityRepository activityRepository = ActivityRepository.getInstance();
     private static ServletUtil servletUtil = new ServletUtil();
     private static UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();
 
-    public static void main(String[] args) throws SQLException {
-        Integer id = 29;
-            userActivityRepository.requestActivity(id,"q&a");
-    }
 
+    public static void main(String[] args) {
+        activityRepository.updateActivity(3, "LESW", "organization");
+    }
 }

@@ -1,4 +1,4 @@
-  .error{
+  .success{
   font-weight: bold;
   font-size: 150%;
   font-family: serif;
@@ -9,5 +9,5 @@
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    background-color: #FF6A61;
+    background-color: #B5FBDD;
     }

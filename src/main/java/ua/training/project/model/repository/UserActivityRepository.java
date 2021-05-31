@@ -7,8 +7,10 @@ import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.model.dao.UserActivityDao;
 import ua.training.project.model.entity.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,25 +69,27 @@ public class UserActivityRepository implements AutoCloseable {
                 return ActivityStatus.ABSENT;
             }
             String status = resultSet.getString("status");
+            System.out.println("STATUS"+ActivityStatus.valueOf(status));
             return ActivityStatus.valueOf(status);
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
-
     }
 
-    public void addActivityForUser(int id, String activity, LocalDate date, int duration) throws SQLException {
+    public void addActivityForUser(int userId, String activity, LocalDate date, int duration, HttpServletRequest request) throws SQLException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity) != ActivityStatus.APPROVED) {
-            throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
+        if (checkUserActivityStatus(userId, activity) != ActivityStatus.APPROVED) {
+            request.setAttribute("error", ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
+            throw new TimeTrackerException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
         if (timeValidation(date) + duration > 8) {
+            request.setAttribute("error", ExceptionMessage.OVERTIME);
             throw new TimeTrackerException(ExceptionMessage.OVERTIME);
         }
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ACTIVITY_CREATE)) {
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             statement.setInt(2, activityId);
             statement.setDate(3, Date.valueOf(date));
             statement.setInt(4, duration);
@@ -100,7 +104,25 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
-    public List<UserActivity> getAllUserActivities(String email) {
+    public List<UserActivityDao> getAllUserActivities(Integer id) {
+        List<UserActivityDao> activities = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_All_USER_ACTIVITIES)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                UserActivityDao userActivity = new UserActivityDao();
+                userActivity.setActivityName(resultSet.getString("activity.activity_name"));
+                userActivity.setActivityStatus(
+                        ActivityStatus.valueOf(resultSet.getString("user_allowed_activity.status")));
+                activities.add(userActivity);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return activities;
+    }
+
+    public List<UserActivity> getAllUserActivitiesFrom(String email) {
         List<UserActivity> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_USER_ACTIVITIES)) {
             statement.setString(1, email);
@@ -127,14 +149,15 @@ public class UserActivityRepository implements AutoCloseable {
         return activities;
     }
 
-    public void requestActivity(int id, String activity) throws SQLException {
+    public void requestActivity(int userId, String activity) throws SQLException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity) != ActivityStatus.ABSENT) {
-            throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
+        if (checkUserActivityStatus(userId, activity) != ActivityStatus.ABSENT) {
+            connection.setAutoCommit(true);
+            throw new TimeTrackerException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_CREATE)) {
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             statement.setInt(2, activityId);
             statement.executeUpdate();
             connection.commit();

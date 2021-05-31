@@ -1,9 +1,11 @@
 package ua.training.project.model.services.validation;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.model.dto.UserRegistrationDTO;
+import ua.training.project.model.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import static ua.training.project.constant.CredentialValidationRegex.*;
 
 public class InputValidation {
     private static final Logger log = LogManager.getLogger(InputValidation.class);
+    UserRepository userRepository = UserRepository.getInstance();
 
     public List<String> inputValidation(UserRegistrationDTO userDTO) {
         List<String> errorMessages = new ArrayList<>();
@@ -46,6 +49,10 @@ public class InputValidation {
         if (!ValidationUtil.validate(NAME_REGEX_EN, userDTO.getLastName())) {
             errorMessages.add(ExceptionMessage.LAST_NAME_MATCH.getMessage());
             log.error(ExceptionMessage.LAST_NAME_MATCH);
+        }
+        if (StringUtils.isNoneEmpty(userDTO.getEmail()) && userRepository.checkUserEmailInDB(userDTO.getEmail())){
+            errorMessages.add(ExceptionMessage.EMAIL_USED.getMessage());
+            log.error(ExceptionMessage.EMAIL_USED);
         }
         return errorMessages;
     }

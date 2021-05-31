@@ -20,9 +20,9 @@
    <nav class="w3-bar w3-black">
       <a href="index" class="w3-button w3-bar-item"><b>Home</b></a>
       <a href="logout" class="w3-button w3-bar-item"><b>Sign Out</b></a>
-      <a href="user" class="w3-button w3-bar-item"><b>Calendar</b></a>
-      <a href="profile" class="w3-button w3-bar-item"><b>Profile</b></a>
-      <a href="activities" class="w3-button w3-bar-item"><b>Activities</b></a>
+      <a href="manageUsers" class="w3-button w3-bar-item"><b>Manage Users</b></a>
+      <a href="manageActivities" class="w3-button w3-bar-item"><b>Manage Activities</b></a>
+      <a href="manageRequests" class="w3-button w3-bar-item"><b>Manage Requests</b></a>
    </nav>
    <form>
       <div class="mt-5">

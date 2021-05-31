@@ -1,6 +1,6 @@
-package ua.training.project;
+package ua.training.project.controller;
 
-import ua.training.project.controller.*;
+import ua.training.project.controller.command.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static ua.training.project.constant.Path.HOMEPAGE;
 import static ua.training.project.constant.Path.REDIRECT;
+import static ua.training.project.constant.SessionCall.ERROR;
 import static ua.training.project.constant.SessionCall.USER_ID;
 
 public class Servlet extends HttpServlet {
@@ -22,9 +23,8 @@ public class Servlet extends HttpServlet {
     private Map<String, Command> postCommands = new HashMap<>();
 
     public void init(ServletConfig config) {
-
-        config.getServletContext()
-                .setAttribute(USER_ID, new HashMap<String, HttpSession>());
+        config.getServletContext().setAttribute(USER_ID, new HashMap<Integer, HttpSession>());
+        config.getServletContext().setAttribute(ERROR, "");
 
         System.out.println("SERVLET");
         getCommands.put("login", new LoginGetCommand());
@@ -33,12 +33,24 @@ public class Servlet extends HttpServlet {
         getCommands.put("profile", new UserProfileGetCommand());
         getCommands.put("update", new UserProfileChangeGetCommand());
         getCommands.put("activities", new ActivityRequestGetCommand());
+        getCommands.put("loginPrg", new LoginPRGCommand());
+        getCommands.put("logout", new LogoutCommand());
+        getCommands.put("registrationPrg", new RegistrationPRGCommand());
+        getCommands.put("manageUsers", new AdminManageUsersGetCommand());
+        getCommands.put("manageActivities", new AdminManageActivitiesGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
+        postCommands.put("logout", new LogoutCommand());
         postCommands.put("registration", new RegistrationPostCommand());
         postCommands.put("user", new ActivityTimePostCommand());
         postCommands.put("update", new UserProfileChangePostCommand());
         postCommands.put("activities", new ActivityRequestPostCommand());
+        postCommands.put("manageActivities", new AdminManageActivitiesPostCommand());
+        postCommands.put("deleteActivities", new AdminDeleteActivitiesPostCommand());
+        postCommands.put("addActivities", new AdminAddActivitiesPostCommand());
+        postCommands.put("manageUsers", new AdminManageUsersPostCommand());
+        postCommands.put("deleteUsers", new AdminDeleteUsersPostCommand());
+        postCommands.put("addUsers", new AdminAddUsersPostCommand());
     }
 
     @Override
@@ -64,6 +76,7 @@ public class Servlet extends HttpServlet {
         Command command = commands.getOrDefault(path, (r) -> HOMEPAGE);
         String page = command.execute(request);
         if (page.contains(REDIRECT)) {
+            System.out.println("Redirect to: "+ page);
             response.sendRedirect(page.replace(REDIRECT, "/tracker"));
         } else {
             System.out.println("forwarding" + page);

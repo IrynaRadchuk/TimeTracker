@@ -1,16 +1,15 @@
-package ua.training.project.controller;
+package ua.training.project.controller.command;
 
 import ua.training.project.constant.Path;
+import ua.training.project.controller.util.ServletUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null)
-            session.invalidate();
+        ServletUtil servletUtil = new ServletUtil();
+        servletUtil.deleteUserFromContextAndSession(request);
         return Path.HOMEPAGE;
     }
 }

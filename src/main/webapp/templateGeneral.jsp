@@ -9,6 +9,7 @@
 <fmt:setBundle basename="resources" />
 <head>
    <link rel="stylesheet" href="/css/error.css">
+   <link rel="stylesheet" href="/css/success.css">
    <link rel="stylesheet" href="/css/background.css">
    <link rel="stylesheet" href="/css/w3.css">
    <meta charset="UTF-8">
@@ -36,4 +37,10 @@
          <c:out value="${message}"/>
       </div>
    </c:if>
+      <c:if test="${not empty requestScope['success']}">
+         <div class="success"align="center">
+            <c:set var="message" value='${requestScope["success"]}' />
+            <c:out value="${message}"/>
+         </div>
+      </c:if>
 </body>
