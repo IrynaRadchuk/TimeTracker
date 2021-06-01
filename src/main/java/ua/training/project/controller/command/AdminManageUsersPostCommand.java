@@ -9,6 +9,12 @@ import static ua.training.project.constant.Path.MANAGE_USERS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_USER;
 
+/**
+ * Command for admin to change users
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminManageUsersPostCommand implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

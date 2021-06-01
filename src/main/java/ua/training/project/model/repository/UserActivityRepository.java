@@ -8,41 +8,32 @@ import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.dao.*;
-import ua.training.project.model.entity.*;
+import ua.training.project.model.entity.ActivityStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class UserActivityRepository implements AutoCloseable {
+/**
+ * Class to handle statements to user activity database
+ *
+ * @author Iryna Radchuk
+ * @see ConnectionHandler
+ * @see AutoCloseable
+ */
+public class UserActivityRepository extends ConnectionHandler implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(UserActivityRepository.class);
     private static Connection connection = null;
 
     private UserActivityRepository() {
     }
 
-    public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
-        Properties prop = new Properties();
-        prop.load(file);
-        String property = prop.getProperty(connectionUrl);
-        return DriverManager.getConnection(property);
-    }
-
     public static UserActivityRepository getInstance() {
         try {
-            connection = UserActivityRepository.getConnection("db.url");
+            connection = getConnection("db.url");
         } catch (SQLException | IOException throwable) {
             log.error(throwable.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
@@ -50,6 +41,9 @@ public class UserActivityRepository implements AutoCloseable {
         return new UserActivityRepository();
     }
 
+    /**
+     * Get activity id by activity name
+     */
     public int getActivityID(String activity) {
         int id = 0;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_FIND)) {
@@ -65,9 +59,12 @@ public class UserActivityRepository implements AutoCloseable {
         return id;
     }
 
-    public ActivityStatus checkUserActivityStatus(int id, String activity) {
+    /**
+     * Get user activity status
+     */
+    public ActivityStatus checkUserActivityStatus(int userId, String activity) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_FIND)) {
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             statement.setString(2, activity);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -82,6 +79,9 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Add new activity with date and time by user
+     */
     public void addActivityForUser(int userId, String activity, LocalDate date, int duration, HttpServletRequest request) throws SQLException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(userId, activity) != ActivityStatus.APPROVED) {
@@ -109,6 +109,9 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Get all activities by user id
+     */
     public List<UserActivityDao> getAllUserActivities(Integer id) {
         List<UserActivityDao> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_All_USER_ACTIVITIES)) {
@@ -128,6 +131,9 @@ public class UserActivityRepository implements AutoCloseable {
         return activities;
     }
 
+    /**
+     * Get all activities by date for a user
+     */
     public List<DateActivityDao> getAllUserActivitiesByDate(int id, LocalDate date) {
         List<DateActivityDao> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_USER_ACTIVITIES_BY_DATE)) {
@@ -149,6 +155,9 @@ public class UserActivityRepository implements AutoCloseable {
         return activities;
     }
 
+    /**
+     * Get a list of pending activities for admin to approve
+     */
     public List<PendingActivity> getAllPendingActivities() {
         List<PendingActivity> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_PENDING_ACTIVITIES)) {
@@ -169,6 +178,9 @@ public class UserActivityRepository implements AutoCloseable {
         return activities;
     }
 
+    /**
+     * Request activity by user
+     */
     public void requestActivity(int userId, String activity) throws SQLException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(userId, activity) != ActivityStatus.ABSENT) {
@@ -190,6 +202,9 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Approve user activity by admin
+     */
     public void approveActivity(int id, String activity) throws SQLException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(id, activity) == ActivityStatus.APPROVED) {
@@ -210,6 +225,9 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Deny user activity by admin
+     */
     public void denyActivity(int id, String activity) throws SQLException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(id, activity) == ActivityStatus.ABSENT) {
@@ -230,6 +248,9 @@ public class UserActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Check total activities time for certain date
+     */
     public int timeValidation(LocalDate date) {
         int time = 0;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_BY_DATE_DURATION)) {
@@ -245,7 +266,10 @@ public class UserActivityRepository implements AutoCloseable {
         return time;
     }
 
-    public List<ActivityStatisticsDao> getActivityStatistics(){
+    /**
+     * Get full activity statistics
+     */
+    public List<ActivityStatisticsDao> getActivityStatistics() {
         List<ActivityStatisticsDao> activityStatistics = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_STATISTICS)) {
             ResultSet resultSet = statement.executeQuery();
@@ -263,7 +287,10 @@ public class UserActivityRepository implements AutoCloseable {
         return activityStatistics;
     }
 
-    public List<UserStatisticsDao> getUserStatistics(){
+    /**
+     * Get full user statistics
+     */
+    public List<UserStatisticsDao> getUserStatistics() {
         List<UserStatisticsDao> userStatistics = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS)) {
             ResultSet resultSet = statement.executeQuery();

@@ -9,6 +9,12 @@ import java.util.List;
 import static ua.training.project.constant.Path.MANAGE_ACTIVITIES_PAGE;
 import static ua.training.project.constant.SessionCall.*;
 
+/**
+ * Command for admin see list of activities
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminManageActivitiesGetCommand extends PRG implements Command {
     ActivityRepository activityRepository = ActivityRepository.getInstance();
 

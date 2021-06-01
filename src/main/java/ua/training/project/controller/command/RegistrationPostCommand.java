@@ -14,6 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_REGISTRATION;
 
+/**
+ * Command for guest to register
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class RegistrationPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(RegistrationPostCommand.class);
     private InputValidation validation = new InputValidation();

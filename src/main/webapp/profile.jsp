@@ -20,16 +20,6 @@
       </div>
       <hr>
       <div class="card-text">
-         <div> <label for="user_password"><b>Password</b></label></div>
-         <span>
-            <c:set var="user_password" value='${requestScope["user_password"]}' />
-         </span>
-         <span>
-            <c:out value="${user_password}"/>
-         </span>
-      </div>
-      <hr>
-      <div class="card-text">
          <div> <label for="user_first_name"><b>First Name</b></label></div>
          <span>
             <c:set var="user_first_name" value='${requestScope["user_first_name"]}' />

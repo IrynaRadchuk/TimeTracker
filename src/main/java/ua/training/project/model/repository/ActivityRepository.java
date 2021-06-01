@@ -9,32 +9,31 @@ import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.dao.ActivityDao;
 import ua.training.project.model.entity.Activity;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class ActivityRepository implements AutoCloseable {
+/**
+ * Class to handle statements to activity database
+ *
+ * @author Iryna Radchuk
+ * @see ConnectionHandler
+ * @see AutoCloseable
+ */
+public class ActivityRepository extends ConnectionHandler implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(ActivityRepository.class);
     private static Connection connection = null;
 
     private ActivityRepository() {
     }
 
-    public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
-        InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
-        Properties prop = new Properties();
-        prop.load(file);
-        String property = prop.getProperty(connectionUrl);
-        return DriverManager.getConnection(property);
-    }
-
     public static ActivityRepository getInstance() {
         try {
-            connection = UserActivityRepository.getConnection("db.url");
+            connection = getConnection("db.url");
         } catch (SQLException | IOException throwable) {
             log.error(throwable.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
@@ -42,6 +41,9 @@ public class ActivityRepository implements AutoCloseable {
         return new ActivityRepository();
     }
 
+    /**
+     * Get list of activities with categories
+     */
     public List<ActivityDao> getActivitiesWithCategories() {
         List<ActivityDao> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_ACTIVITIES_WITH_CATEGORIES)) {
@@ -61,6 +63,9 @@ public class ActivityRepository implements AutoCloseable {
         return activities;
     }
 
+    /**
+     * Get list of activities
+     */
     public List<Activity> getAllActivities() {
         List<Activity> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_ACTIVITIES)) {
@@ -79,21 +84,9 @@ public class ActivityRepository implements AutoCloseable {
         return activities;
     }
 
-    public int categoryGetId(String category) {
-        int categoryId = 0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.CATEGORY_GET_ID)) {
-            statement.setString(1, category);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                categoryId = resultSet.getInt("category_id");
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-        return categoryId;
-    }
-
+    /**
+     * Update activity by admin
+     */
     public void updateActivity(int activityId, String activity, String category) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CHANGE)) {
             statement.setString(1, activity);
@@ -106,6 +99,9 @@ public class ActivityRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Delete activity by admin
+     */
     public void deleteActivity(int activityId) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_DELETE)) {
             statement.setInt(1, activityId);
@@ -116,7 +112,10 @@ public class ActivityRepository implements AutoCloseable {
         }
     }
 
-    public void createActivity( String activity, String category) {
+    /**
+     * Add activity by admin
+     */
+    public void createActivity(String activity, String category) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CREATE)) {
             statement.setString(1, activity);
             statement.setString(2, category);
@@ -127,13 +126,9 @@ public class ActivityRepository implements AutoCloseable {
         }
     }
 
-    @Override
-    public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-    }
-
+    /**
+     * Get activity category list
+     */
     public List<String> getAllCategories() {
         List<String> categories = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CATEGORY_GET_ALL)) {
@@ -147,4 +142,12 @@ public class ActivityRepository implements AutoCloseable {
         }
         return categories;
     }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+    }
+
 }

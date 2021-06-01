@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import static ua.training.project.constant.Path.PROFILE_PAGE;
 
+/**
+ * Command for user to see personal profile
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class UserProfileGetCommand implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

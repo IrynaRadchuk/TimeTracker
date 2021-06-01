@@ -11,6 +11,12 @@ import java.util.stream.Collectors;
 import static ua.training.project.constant.Path.MANAGE_USERS_PAGE;
 import static ua.training.project.constant.SessionCall.*;
 
+/**
+ * Command for admin to see users list
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminManageUsersGetCommand extends PRG implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
 

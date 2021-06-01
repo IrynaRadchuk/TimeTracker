@@ -18,9 +18,18 @@ import java.util.Map;
 
 import static ua.training.project.constant.Path.*;
 
+/**
+ * Filter class to check user role
+ *
+ * @author Iryna Radchuk
+ */
 public class AuthorizationFilter implements Filter {
     Map<Role, List<String>> acceptablePages = new HashMap<>();
 
+    /**
+     * Set permission paths to users with different roles
+     * @param  filterConfig Filter configuration object used by a servlet container
+     */
     @Override
     public void init(FilterConfig filterConfig) {
         List<String> guestPages = Arrays.asList("/", LOGIN, REGISTRATION);
@@ -34,14 +43,18 @@ public class AuthorizationFilter implements Filter {
         acceptablePages.put(Role.ADMIN, adminPages);
     }
 
+    /**
+     * Check user permission to visit path
+     * @param request  Http request to server
+     * @param response Http response from server
+     * @param  chain Chain of a filtered request for a resource
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
         ServletUtil servletUtil = new ServletUtil();
-
         Role role = servletUtil.getSessionRole(req);
         System.out.println(" FILTER HERE" + role + req.getRequestURI());
         String reqUri = req.getRequestURI().replace("/tracker", StringUtils.EMPTY);

@@ -9,6 +9,12 @@ import static ua.training.project.constant.Path.MANAGE_USERS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_DELETE_USER;
 
+/**
+ * Command for admin to delete users
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminDeleteUsersPostCommand implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

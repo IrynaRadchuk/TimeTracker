@@ -9,6 +9,12 @@ import static ua.training.project.constant.Path.MANAGE_ACTIVITIES;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_ADD_ACTIVITY;
 
+/**
+ * Command for admin to add new activities
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminAddActivitiesPostCommand implements Command {
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

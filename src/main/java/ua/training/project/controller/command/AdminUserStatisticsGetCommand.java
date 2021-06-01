@@ -8,6 +8,12 @@ import java.util.List;
 
 import static ua.training.project.constant.Path.USER_STAT_PAGE;
 
+/**
+ * Command for admin to see user activity statistics by date
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminUserStatisticsGetCommand implements Command {
     private UserActivityRepository repository = UserActivityRepository.getInstance();
 

@@ -1,7 +1,14 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
+
 import java.time.LocalDate;
 
+/**
+ * DAO class to get user statistics from database
+ *
+ * @author Iryna Radchuk
+ */
 public class UserStatisticsDao {
     private LocalDate date;
     private String email;

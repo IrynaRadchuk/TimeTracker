@@ -1,7 +1,13 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
 import ua.training.project.model.entity.ActivityStatus;
 
+/**
+ * DAO class to manage users in database
+ *
+ * @author Iryna Radchuk
+ */
 public class UserActivityDao {
     private String activityName;
     private ActivityStatus activityStatus;

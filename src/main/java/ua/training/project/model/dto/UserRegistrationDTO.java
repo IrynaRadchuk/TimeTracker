@@ -1,5 +1,10 @@
 package ua.training.project.model.dto;
 
+/**
+ * DTO class to manage user registration information
+ *
+ * @author Iryna Radchuk
+ */
 public class UserRegistrationDTO {
     private String email;
     private String password;

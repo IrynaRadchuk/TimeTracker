@@ -9,6 +9,12 @@ import static ua.training.project.constant.Path.MANAGE_ACTIVITIES;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_DELETE_ACTIVITY;
 
+/**
+ * Command for admin to delete activities
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminDeleteActivitiesPostCommand implements Command {
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

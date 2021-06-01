@@ -1,9 +1,15 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
 import ua.training.project.model.entity.Activity;
 
 import java.time.LocalDate;
 
+/**
+ * DAO class to manage activities with dates in database
+ *
+ * @author Iryna Radchuk
+ */
 public class DateActivityDao {
     private int id;
     private String activity;

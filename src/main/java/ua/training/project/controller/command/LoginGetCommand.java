@@ -5,7 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import static ua.training.project.constant.Path.LOGIN_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_LOGIN;
 
-
+/**
+ * Command for guest to see log in form
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class LoginGetCommand extends PRG implements Command {
 
     @Override

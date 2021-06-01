@@ -12,6 +12,12 @@ import static ua.training.project.constant.Path.MANAGE_REQUESTS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_DENY_REQUEST;
 
+/**
+ * Command for admin to deny pending activities
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminDenyRequestsPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(AdminDenyRequestsPostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();

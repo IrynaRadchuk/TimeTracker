@@ -1,5 +1,6 @@
 package ua.training.project;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.dto.UserRegistrationDTO;
 import ua.training.project.model.entity.Activity;
@@ -29,11 +30,10 @@ public class TestClass {
 
 
     public static void main(String[] args) {
-        try {
-            InputStream is = new FileInputStream("resources/db.properties");
-            System.out.println(is);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        System.out.println(userRepository.getUserFromDB(64));
+        String qwerty123 = DigestUtils.md5Hex("Qwerty123");
+        System.out.println(qwerty123);
+        System.out.println(DigestUtils.md5Hex("Qwerty123"));
+        System.out.println(DigestUtils.md5Hex("Asdfgh12345"));
     }
 }

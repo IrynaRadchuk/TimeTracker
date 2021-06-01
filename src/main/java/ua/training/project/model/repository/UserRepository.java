@@ -1,5 +1,6 @@
 package ua.training.project.model.repository;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
@@ -8,38 +9,28 @@ import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class UserRepository implements AutoCloseable {
+/**
+ * Class to handle statements to user database
+ *
+ * @author Iryna Radchuk
+ * @see ConnectionHandler
+ * @see AutoCloseable
+ */
+public class UserRepository extends ConnectionHandler implements AutoCloseable {
     private static final Logger log = LogManager.getLogger(UserRepository.class);
     private static Connection connection = null;
 
     private UserRepository() {
     }
 
-    public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        //InputStream file = new FileInputStream(ResourceBundle.getBundle("resources").getString("db.url"));
-        InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
-        Properties prop = new Properties();
-        prop.load(file);
-        String property = prop.getProperty(connectionUrl);
-        return DriverManager.getConnection(property);
-    }
-
     public static UserRepository getInstance() {
         try {
-            connection = UserRepository.getConnection("db.url");
+            connection = getConnection("db.url");
         } catch (SQLException | IOException throwable) {
             log.error(throwable.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
@@ -47,6 +38,9 @@ public class UserRepository implements AutoCloseable {
         return new UserRepository();
     }
 
+    /**
+     * Check if email is used
+     */
     public boolean checkUserEmailInDB(String email) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND_BY_EMAIL)) {
             statement.setString(1, email);
@@ -61,10 +55,13 @@ public class UserRepository implements AutoCloseable {
         return false;
     }
 
+    /**
+     * Register new user
+     */
     public void insertUser(User user) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CREATE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
+            statement.setString(2, DigestUtils.md5Hex(user.getPassword()));
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
             statement.setInt(5, user.getRoleId());
@@ -82,6 +79,9 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Get list of users
+     */
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_USERS)) {
@@ -103,6 +103,9 @@ public class UserRepository implements AutoCloseable {
         return users;
     }
 
+    /**
+     * Delete user
+     */
     public void deleteUser(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DELETE)) {
             statement.setInt(1, id);
@@ -113,6 +116,9 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Get user by id
+     */
     public User getUserFromDB(int id) {
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND)) {
@@ -133,6 +139,9 @@ public class UserRepository implements AutoCloseable {
         return user;
     }
 
+    /**
+     * Get user by email
+     */
     public User getUserFromDBByEmail(String email) {
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_FIND_BY_EMAIL)) {
@@ -153,24 +162,13 @@ public class UserRepository implements AutoCloseable {
         return user;
     }
 
-    public int countUsers() {
-        int result = 0;
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_COUNT)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                result = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
-        }
-        return result;
-    }
-
+    /**
+     * Update user information by user
+     */
     public void updateUser(User user, int id) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_UPDATE)) {
             statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
+            statement.setString(2, DigestUtils.md5Hex(user.getPassword()));
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
             statement.setInt(5, id);
@@ -181,13 +179,9 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
-    @Override
-    public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-    }
-
+    /**
+     * Update user information by admin
+     */
     public void changeUser(String email, String firstName, String lastName, String role, int id) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_UPDATE_BY_ADMIN)) {
             statement.setString(1, email);
@@ -202,6 +196,9 @@ public class UserRepository implements AutoCloseable {
         }
     }
 
+    /**
+     * Create user by admin
+     */
     public void addUser(String email, String firstName, String lastName, String role) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_CREATE_BY_ADMIN)) {
             statement.setString(1, email);
@@ -212,6 +209,13 @@ public class UserRepository implements AutoCloseable {
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
         }
     }
 }

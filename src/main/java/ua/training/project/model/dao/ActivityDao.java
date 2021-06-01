@@ -1,5 +1,12 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
+
+/**
+ * DAO class to manage activities in database
+ *
+ * @author Iryna Radchuk
+ */
 public class ActivityDao {
     private int id;
     private String name;

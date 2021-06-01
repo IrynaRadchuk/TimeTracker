@@ -1,5 +1,7 @@
 package ua.training.project.model.entity;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String email;
@@ -82,6 +84,24 @@ public class User {
 
     public User(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, firstName, lastName, role);
     }
 
     @Override

@@ -12,10 +12,20 @@ import java.util.List;
 
 import static ua.training.project.constant.CredentialValidationRegex.*;
 
+/**
+ * Class to validate input on user registration and user information update
+ *
+ * @author Iryna Radchuk
+ */
 public class InputValidation {
     private static final Logger log = LogManager.getLogger(InputValidation.class);
     UserRepository userRepository = UserRepository.getInstance();
 
+    /**
+     * Check registration data entered by user
+     *
+     * @param userDTO Handle user registration data
+     */
     public List<String> inputValidation(UserRegistrationDTO userDTO) {
         List<String> errorMessages = new ArrayList<>();
         if (userDTO.getEmail().isEmpty()) {
@@ -50,7 +60,7 @@ public class InputValidation {
             errorMessages.add(ExceptionMessage.LAST_NAME_MATCH.getMessage());
             log.error(ExceptionMessage.LAST_NAME_MATCH);
         }
-        if (StringUtils.isNoneEmpty(userDTO.getEmail()) && userRepository.checkUserEmailInDB(userDTO.getEmail())){
+        if (StringUtils.isNoneEmpty(userDTO.getEmail()) && userRepository.checkUserEmailInDB(userDTO.getEmail())) {
             errorMessages.add(ExceptionMessage.EMAIL_USED.getMessage());
             log.error(ExceptionMessage.EMAIL_USED);
         }

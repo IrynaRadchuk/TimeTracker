@@ -8,7 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static ua.training.project.constant.Path.ACTIVITY_STAT_PAGE;
-
+/**
+ * Command for admin to see user statistics page
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminActivityStatisticsGetCommand implements Command {
     private UserActivityRepository repository = UserActivityRepository.getInstance();
     @Override

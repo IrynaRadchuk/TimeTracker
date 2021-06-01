@@ -1,5 +1,12 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
+
+/**
+ * DAO class to get activity statistics from database
+ *
+ * @author Iryna Radchuk
+ */
 public class ActivityStatisticsDao {
     private String activity;
     private String category;

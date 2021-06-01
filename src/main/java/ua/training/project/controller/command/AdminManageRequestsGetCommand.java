@@ -10,6 +10,12 @@ import java.util.List;
 import static ua.training.project.constant.Path.MANAGE_REQUESTS_PAGE;
 import static ua.training.project.constant.SessionCall.*;
 
+/**
+ * Command for admin to see new activity requests from users
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminManageRequestsGetCommand extends PRG implements Command{
     private UserActivityRepository userActivityRepository= UserActivityRepository.getInstance();
     @Override

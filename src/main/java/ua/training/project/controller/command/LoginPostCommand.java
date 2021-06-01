@@ -1,5 +1,6 @@
 package ua.training.project.controller.command;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,6 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_LOGIN;
 
+/**
+ * Command for guest to log in
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class LoginPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(LoginPostCommand.class);
     private UserRepository userRepository = UserRepository.getInstance();
@@ -39,7 +46,7 @@ public class LoginPostCommand implements Command {
             log.error(ExceptionMessage.USER_NOT_EXIST.getMessage());
             return REDIRECT + LOGIN;
         }
-        if (!user.getPassword().equals(password)) {
+        if (!user.getPassword().equals(DigestUtils.md5Hex(password))) {
             servletUtil.setErrorToSession(request, ExceptionMessage.WRONG_PASSWORD.getMessage());
             servletUtil.setPRGToSession(request, PRG_LOGIN);
             log.error(ExceptionMessage.WRONG_PASSWORD.getMessage());

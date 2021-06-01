@@ -1,5 +1,12 @@
 package ua.training.project.model.dao;
 
+import ua.training.project.controller.command.Command;
+
+/**
+ * DAO class to manage pending activities in database
+ *
+ * @author Iryna Radchuk
+ */
 public class PendingActivity {
     private int userId;
     private String email;

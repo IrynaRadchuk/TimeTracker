@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import static ua.training.project.constant.Path.UPDATE_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_PROFILE;
 
+/**
+ * Command for user to see personal profile update page
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class UserProfileChangeGetCommand extends PRG implements Command {
     private UserRepository userRepository = UserRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();

@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_PROFILE;
 
+/**
+ * Command for user to change personal profile
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class UserProfileChangePostCommand implements Command {
     private static final Logger log = LogManager.getLogger(UserProfileChangePostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();

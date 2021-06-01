@@ -12,6 +12,12 @@ import static ua.training.project.constant.Path.MANAGE_REQUESTS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_APPROVE_REQUEST;
 
+/**
+ * Command for admin to approve pending requests
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class AdminApproveRequestsPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(AdminDenyRequestsPostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();
