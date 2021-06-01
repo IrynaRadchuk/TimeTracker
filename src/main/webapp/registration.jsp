@@ -13,13 +13,21 @@
       <form method="post" action="registration">
          <div class="container">
             <label for="email"><b>Email</b></label>
+            <br>
             <input type="text" placeholder="Enter Email" name="email">
+            <br>
             <label for="password"><b>Password</b></label>
+            <br>
             <input type="password" placeholder="Enter Password" name="password">
+            <br>
             <label for="firstName"><b>First Name</b></label>
+            <br>
             <input type="text" placeholder="Enter First Name" name="firstName">
+            <br>
             <label for="lastName"><b>Last Name</b></label>
+            <br>
             <input type="text" placeholder="Enter Last Name" name="lastName">
+            <br>
             <input class="button" type="submit" value="Sign Up">
       </form>
       </div>

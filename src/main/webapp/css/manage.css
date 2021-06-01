@@ -18,3 +18,11 @@ input[type=text], input[type=password] {
   padding: 10px 18px;
   background-color:#B5FBDD;
 }
+#myInput {
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 40%;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}

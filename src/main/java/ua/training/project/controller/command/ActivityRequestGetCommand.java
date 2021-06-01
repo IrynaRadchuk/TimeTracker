@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 import static ua.training.project.constant.Path.ACTIVITY_REQUEST_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_REQUEST_ACTIVITY;
 
+/**
+ * Command for user to see page with list of activities approved and pending
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class ActivityRequestGetCommand extends PRG implements Command {
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
     private UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();

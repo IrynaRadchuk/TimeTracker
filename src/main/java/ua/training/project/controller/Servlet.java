@@ -50,11 +50,11 @@ public class Servlet extends HttpServlet {
         postCommands.put("deleteActivities", new AdminDeleteActivitiesPostCommand());
         postCommands.put("addActivities", new AdminAddActivitiesPostCommand());
         postCommands.put("manageUsers", new AdminManageUsersPostCommand());
-        postCommands.put("manageRequests", new AdminManageRequestsPostCommand());
+        postCommands.put("approveRequest", new AdminApproveRequestsPostCommand());
+        postCommands.put("denyRequest", new AdminDenyRequestsPostCommand());
         postCommands.put("deleteUsers", new AdminDeleteUsersPostCommand());
         postCommands.put("addUsers", new AdminAddUsersPostCommand());
-        postCommands.put("activityStat", new AdminActivityStatisticsPostCommand());
-        postCommands.put("userStat", new AdminUserStatisticsPostCommand());
+        postCommands.put("show", new ActivityTimeShowPostCommand());
     }
 
     @Override

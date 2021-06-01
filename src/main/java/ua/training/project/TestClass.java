@@ -11,6 +11,9 @@ import ua.training.project.model.repository.UserRepository;
 import ua.training.project.model.services.UserUpdateService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +29,11 @@ public class TestClass {
 
 
     public static void main(String[] args) {
-        activityRepository.updateActivity(3, "LESW", "organization");
+        try {
+            InputStream is = new FileInputStream("resources/db.properties");
+            System.out.println(is);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,7 +7,7 @@ import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.exception.TimeTrackerException;
-import ua.training.project.model.dao.UserActivityDao;
+import ua.training.project.model.dao.*;
 import ua.training.project.model.entity.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +28,11 @@ public class UserActivityRepository implements AutoCloseable {
     }
 
     public static Connection getConnection(String connectionUrl) throws SQLException, IOException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
         Properties prop = new Properties();
         prop.load(file);
@@ -69,7 +74,7 @@ public class UserActivityRepository implements AutoCloseable {
                 return ActivityStatus.ABSENT;
             }
             String status = resultSet.getString("status");
-            System.out.println("STATUS"+ActivityStatus.valueOf(status));
+            System.out.println("STATUS" + ActivityStatus.valueOf(status));
             return ActivityStatus.valueOf(status);
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -116,31 +121,46 @@ public class UserActivityRepository implements AutoCloseable {
                         ActivityStatus.valueOf(resultSet.getString("user_allowed_activity.status")));
                 activities.add(userActivity);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
 
-    public List<UserActivity> getAllUserActivitiesFrom(String email) {
-        List<UserActivity> activities = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_USER_ACTIVITIES)) {
-            statement.setString(1, email);
+    public List<DateActivityDao> getAllUserActivitiesByDate(int id, LocalDate date) {
+        List<DateActivityDao> activities = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_USER_ACTIVITIES_BY_DATE)) {
+            statement.setInt(1, id);
+            statement.setString(2, String.valueOf(date));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                UserActivity userActivity = new UserActivity();
-                userActivity.setUser(new User(resultSet.getInt("user.user_id"),
-                        resultSet.getString("user.user_email"),
-                        resultSet.getString("user.user_password"),
-                        resultSet.getString("user.user_first_name"),
-                        resultSet.getString("user.user_last_name"),
-                        Role.getRoleById(resultSet.getInt("user.role_id"))));
-                userActivity.setActivity(new Activity(resultSet.getInt("activity.activity_id"),
-                        resultSet.getString("activity.activity_name"),
-                        resultSet.getInt("activity.category_id")));
-                userActivity.setDate(LocalDate.parse(resultSet.getString("user_activity.activity_date")));
+                DateActivityDao userActivity = new DateActivityDao();
+                userActivity.setId(id);
+                userActivity.setDate(date);
+                userActivity.setActivity(resultSet.getString("activity.activity_name"));
                 userActivity.setDuration(resultSet.getInt("user_activity.activity_duration"));
                 activities.add(userActivity);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+        return activities;
+    }
+
+    public List<PendingActivity> getAllPendingActivities() {
+        List<PendingActivity> activities = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.GET_ALL_PENDING_ACTIVITIES)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                PendingActivity activity = new PendingActivity();
+                activity.setUserId(resultSet.getInt("user_id"));
+                activity.setEmail(resultSet.getString("user_email"));
+                activity.setFirstName(resultSet.getString("user_first_name"));
+                activity.setLastName(resultSet.getString("user_last_name"));
+                activity.setActivityName(resultSet.getString("activity_name"));
+                activities.add(activity);
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -179,7 +199,7 @@ public class UserActivityRepository implements AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_APPROVE)) {
             statement.setInt(1, id);
             statement.setInt(2, activityId);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
@@ -199,7 +219,7 @@ public class UserActivityRepository implements AutoCloseable {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DENY_ACTIVITY)) {
             statement.setInt(1, id);
             statement.setInt(2, activityId);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
@@ -223,6 +243,45 @@ public class UserActivityRepository implements AutoCloseable {
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return time;
+    }
+
+    public List<ActivityStatisticsDao> getActivityStatistics(){
+        List<ActivityStatisticsDao> activityStatistics = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_STATISTICS)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ActivityStatisticsDao activity = new ActivityStatisticsDao();
+                activity.setActivity(resultSet.getString("activity_name"));
+                activity.setCategory(resultSet.getString("category_name"));
+                activity.setUsers(resultSet.getInt("user_quantity"));
+                activityStatistics.add(activity);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+        return activityStatistics;
+    }
+
+    public List<UserStatisticsDao> getUserStatistics(){
+        List<UserStatisticsDao> userStatistics = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                UserStatisticsDao user = new UserStatisticsDao();
+                user.setDate(LocalDate.parse(resultSet.getString("activity_date")));
+                user.setEmail(resultSet.getString("user_email"));
+                user.setFirstName(resultSet.getString("user_first_name"));
+                user.setLastName(resultSet.getString("user_last_name"));
+                user.setActivity(resultSet.getString("activity_name"));
+                user.setDuration(resultSet.getInt("activity_duration"));
+                userStatistics.add(user);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+        return userStatistics;
     }
 
     @Override

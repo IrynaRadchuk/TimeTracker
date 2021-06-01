@@ -25,11 +25,12 @@ public class AuthorizationFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         List<String> guestPages = Arrays.asList("/", LOGIN, REGISTRATION);
         acceptablePages.put(Role.GUEST, guestPages);
-        List<String> userPages = Arrays.asList(USER, PROFILE, UPDATE, ACTIVITY_REQUEST, LOGOUT);
+        List<String> userPages = Arrays.asList(USER, PROFILE, UPDATE, ACTIVITY_REQUEST, LOGOUT, SHOW);
         acceptablePages.put(Role.USER, userPages);
         List<String> adminPages = Arrays.asList(MANAGE_USERS, LOGOUT,
                 DELETE_ACTIVITIES, ADD_ACTIVITIES, MANAGE_ACTIVITIES,
-                ADD_USERS, DELETE_USERS, MANAGE_REQUESTS, USER_STAT, ACTIVITY_STAT);
+                ADD_USERS, DELETE_USERS, MANAGE_REQUESTS,  APPROVE_REQUEST,
+                DENY_REQUEST, USER_STAT, ACTIVITY_STAT);
         acceptablePages.put(Role.ADMIN, adminPages);
     }
 

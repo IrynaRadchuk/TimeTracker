@@ -15,6 +15,9 @@ public interface SessionCall {
     String PRG_ADD_ACTIVITY = "addActivity";
     String PRG_DELETE_ACTIVITY = "deleteActivity";
     String PRG_UPDATE_ACTIVITY = "updateActivity";
-    String PRG_ACTIVITY_TIME = "updateActivity";
+    String PRG_ACTIVITY_TIME = "activityTime";
+    String PRG_ACTIVITY_TIME_SHOW = "activityTimeShow";
+    String PRG_APPROVE_REQUEST = "approveRequest";
+    String PRG_DENY_REQUEST = "denyRequest";
 
 }

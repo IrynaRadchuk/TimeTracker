@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.model.repository.ActivityRepository;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,12 @@ import java.sql.SQLException;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_REQUEST_ACTIVITY;
 
+/**
+ * Command for user to approve new activities
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class ActivityRequestPostCommand implements Command {
     private static final Logger log = LogManager.getLogger(ActivityRequestPostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();

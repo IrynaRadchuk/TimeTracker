@@ -9,17 +9,25 @@
    <form method="post" action="update">
       <div class="container">
          <label for="user_email"><b>Email</b></label>
+         <br>
          <c:set var="user_email" value='${requestScope["user_email"]}' />
          <input type="text" out value="${user_email}" name="user_email">
+         <br>
          <label for="user_password"><b>Password</b></label>
+         <br>
          <c:set var="user_password" value='${requestScope["user_password"]}' />
          <input type="password" out value="${user_password}" name="user_password">
+         <br>
          <label for="user_first_name"><b>First Name</b></label>
+         <br>
          <c:set var="user_first_name" value='${requestScope["user_first_name"]}' />
          <input type="text" out value="${user_first_name}" name="user_first_name">
+         <br>
          <label for="user_last_name"><b>Last Name</b></label>
+         <br>
          <c:set var="user_last_name" value='${requestScope["user_last_name"]}' />
          <input type="text" out value="${user_last_name}" name="user_last_name">
+         <br>
          <input class="button" type="submit" value="Accept">
    </form>
    </div>
