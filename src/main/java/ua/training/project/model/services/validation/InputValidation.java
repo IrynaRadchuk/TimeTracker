@@ -19,15 +19,14 @@ import static ua.training.project.constant.CredentialValidationRegex.*;
  */
 public class InputValidation {
     private static final Logger log = LogManager.getLogger(InputValidation.class);
-    UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Check registration data entered by user
      *
      * @param userDTO Handle user registration data
      */
-    public List<String> inputValidation(UserRegistrationDTO userDTO) {
-        List<String> errorMessages = new ArrayList<>();
+    public List<String> updateValidation(UserRegistrationDTO userDTO) {
+       List<String> errorMessages = new ArrayList<>();
         if (userDTO.getEmail().isEmpty()) {
             errorMessages.add(ExceptionMessage.EMPTY_EMAIL.getMessage());
             log.error(ExceptionMessage.EMPTY_EMAIL);
@@ -60,6 +59,12 @@ public class InputValidation {
             errorMessages.add(ExceptionMessage.LAST_NAME_MATCH.getMessage());
             log.error(ExceptionMessage.LAST_NAME_MATCH);
         }
+        return errorMessages;
+    }
+
+    public List<String> fullValidation(UserRegistrationDTO userDTO){
+        UserRepository userRepository = UserRepository.getInstance();
+        List<String> errorMessages = updateValidation(userDTO);
         if (StringUtils.isNoneEmpty(userDTO.getEmail()) && userRepository.checkUserEmailInDB(userDTO.getEmail())) {
             errorMessages.add(ExceptionMessage.EMAIL_USED.getMessage());
             log.error(ExceptionMessage.EMAIL_USED);

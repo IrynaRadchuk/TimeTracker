@@ -12,6 +12,7 @@ import ua.training.project.model.entity.User;
 import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_LOGIN;
@@ -39,7 +40,7 @@ public class LoginPostCommand implements Command {
             return REDIRECT + LOGIN;
         }
         User user = userRepository.getUserFromDBByEmail(email);
-        if (user.getEmail() == null) {
+        if (Objects.isNull(user.getEmail())) {
             servletUtil.setErrorToSession(request, ExceptionMessage.USER_NOT_EXIST.getMessage());
             servletUtil.setPRGToSession(request, PRG_LOGIN);
             log.error(ExceptionMessage.USER_NOT_EXIST.getMessage());

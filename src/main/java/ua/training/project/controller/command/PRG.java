@@ -20,7 +20,7 @@ public class PRG {
      * Check if redirected from post request
      *
      * @param request Http request
-     * @param url     Post request url
+     * @param url     Request url
      * @return True if redirected from post request
      */
     protected boolean checkPRG(HttpServletRequest request, String url) {

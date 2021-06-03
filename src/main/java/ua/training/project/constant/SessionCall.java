@@ -19,5 +19,4 @@ public interface SessionCall {
     String PRG_ACTIVITY_TIME_SHOW = "activityTimeShow";
     String PRG_APPROVE_REQUEST = "approveRequest";
     String PRG_DENY_REQUEST = "denyRequest";
-
 }

@@ -32,9 +32,9 @@ public class RegistrationPostCommand implements Command {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
-        if (!validation.inputValidation(userDTO).isEmpty()) {
-            servletUtil.setErrorMessagesToSession(request, validation.inputValidation(userDTO));
-            log.error(validation.inputValidation(userDTO));
+        if (!validation.fullValidation(userDTO).isEmpty()) {
+            servletUtil.setErrorMessagesToSession(request, validation.fullValidation(userDTO));
+            log.error(validation.fullValidation(userDTO));
             servletUtil.setPRGToSession(request, PRG_REGISTRATION);
             return REDIRECT + REGISTRATION;
         }

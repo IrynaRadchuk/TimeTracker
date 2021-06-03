@@ -16,7 +16,7 @@ import static ua.training.project.constant.SessionCall.*;
  * @see Command
  */
 public class AdminManageActivitiesGetCommand extends PRG implements Command {
-    ActivityRepository activityRepository = ActivityRepository.getInstance();
+    private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {

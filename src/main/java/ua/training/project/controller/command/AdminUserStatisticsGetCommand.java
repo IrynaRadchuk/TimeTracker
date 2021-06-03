@@ -20,11 +20,8 @@ public class AdminUserStatisticsGetCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-//        List<UserStatisticsDao> statistics = repository.getUserStatistics();
-//        request.setAttribute("user_statistics", statistics);
         int currentPage = Integer.parseInt(Optional.ofNullable(request.getParameter("currentPage"))
                 .orElse("1"));
-
         List<UserStatisticsDao> statisticsPag = repository.getUserStatistics(currentPage);
         request.setAttribute("user_statistics", statisticsPag);
         int rows = repository.getNumberOfRows();

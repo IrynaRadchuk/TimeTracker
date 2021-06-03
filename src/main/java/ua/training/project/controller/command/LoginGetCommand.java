@@ -2,6 +2,8 @@ package ua.training.project.controller.command;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Objects;
+
 import static ua.training.project.constant.Path.LOGIN_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_LOGIN;
 
@@ -22,8 +24,11 @@ public class LoginGetCommand extends PRG implements Command {
         return LOGIN_PAGE;
     }
 
+    /**
+     * Clean user session if it is opened elsewhere
+     */
     public void cleanUpSession(HttpServletRequest request) {
-        if (servletUtil.getSessionID(request) != null) {
+        if (Objects.nonNull(servletUtil.getSessionID(request))) {
             servletUtil.deleteUserFromContextAndSession(request);
         }
     }

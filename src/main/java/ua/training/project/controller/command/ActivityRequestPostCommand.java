@@ -4,7 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
-import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +33,8 @@ public class ActivityRequestPostCommand implements Command {
             log.info(LoggerInfo.ACTIVITY_REQUESTED.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());
-            return REDIRECT + ERRORS;
-        } catch (TimeTrackerException e) {
+            return ERROR_PAGE;
+        } catch (PermissionDeniedException e) {
             log.error(e.getMessage());
             servletUtil.setErrorToSession(request, e.getMessage());
             servletUtil.setPRGToSession(request, PRG_REQUEST_ACTIVITY);

@@ -9,7 +9,6 @@ public interface Path {
     String ACTIVITY_TIME_CALENDAR_PAGE = "/activityTimeCalendar.jsp";
     String ACTIVITY_TIME_CALENDAR = "/activityTimeCalendar";
     String ERROR_PAGE = "/error.jsp";
-    String ERRORS = "/error";
     String REGISTRATION_PAGE = "/registration.jsp";
     String REGISTRATION = "/registration";
     String PROFILE_PAGE = "/profile.jsp";
@@ -36,4 +35,5 @@ public interface Path {
     String ACTIVITY_STAT = "/activityStat";
     String SHOW = "/showActivities";
     String SHOW_PAGE = "/showActivities.jsp";
+    String TRACKER = "/tracker";
 }

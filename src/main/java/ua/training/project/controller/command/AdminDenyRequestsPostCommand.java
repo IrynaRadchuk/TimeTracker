@@ -2,14 +2,15 @@ package ua.training.project.controller.command;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
+import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
-import static ua.training.project.constant.Path.MANAGE_REQUESTS;
-import static ua.training.project.constant.Path.REDIRECT;
+import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_DENY_REQUEST;
 
 /**
@@ -31,10 +32,14 @@ public class AdminDenyRequestsPostCommand implements Command {
             userActivityRepository.denyActivity(id, activity);
         } catch (SQLException e) {
             log.error(e.getMessage());
+            return ERROR_PAGE;
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
             servletUtil.setErrorToSession(request, e.getMessage());
             servletUtil.setPRGToSession(request, PRG_DENY_REQUEST);
         }
         servletUtil.setPRGToSession(request, PRG_DENY_REQUEST);
+        log.info(LoggerInfo.REQUEST_DENY);
         return REDIRECT + MANAGE_REQUESTS;
     }
 }

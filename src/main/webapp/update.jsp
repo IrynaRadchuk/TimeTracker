@@ -28,7 +28,7 @@
          </label>
          <br>
          <c:set var="user_password" value='${requestScope["user_password"]}' />
-         <input type="password" out value="${user_password}" name="user_password">
+         <input type="password" name="user_password">
          <br>
          <label for="user_first_name">
             <b>

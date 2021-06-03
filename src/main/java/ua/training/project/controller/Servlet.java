@@ -1,6 +1,9 @@
 package ua.training.project.controller;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import ua.training.project.controller.command.*;
+import ua.training.project.exception.TimeTrackerException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,8 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ua.training.project.constant.Path.HOMEPAGE;
-import static ua.training.project.constant.Path.REDIRECT;
+import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.*;
 
 /**
@@ -25,6 +27,7 @@ import static ua.training.project.constant.SessionCall.*;
 public class Servlet extends HttpServlet {
     private Map<String, Command> getCommands = new HashMap<>();
     private Map<String, Command> postCommands = new HashMap<>();
+    private static final Logger log = LogManager.getLogger(Servlet.class);
 
     /**
      * Set post and get commands to be executed
@@ -105,10 +108,22 @@ public class Servlet extends HttpServlet {
         String requestURI = request.getRequestURI();
         String path = requestURI.replaceAll(".*/tracker/", "");
         Command command = commands.getOrDefault(path, (r) -> HOMEPAGE);
-        String page = command.execute(request);
+        String page;
+        try {
+            page = command.execute(request);
+        }catch (TimeTrackerException e) {
+            log.error(e.getUrl() + " message " + e.getMessage());
+            request.setAttribute(ERROR, e.getMessage());
+            page = e.getUrl();
+        }catch (Exception e){
+            log.error(e.getMessage());
+            page = ERROR_PAGE;
+        }
         if (page.contains(REDIRECT)) {
-            response.sendRedirect(page.replace(REDIRECT, "/tracker"));
+            System.err.println(page);
+            response.sendRedirect(page.replace(REDIRECT, TRACKER));
         } else {
+            System.err.println(page);
             request.getRequestDispatcher(page).forward(request, response);
         }
     }

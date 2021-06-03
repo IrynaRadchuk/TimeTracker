@@ -4,15 +4,16 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
+import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
-import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ua.training.project.constant.Path.ERROR_PAGE;
 
 /**
  * Class to handle statements to user database
@@ -30,10 +31,10 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
 
     public static UserRepository getInstance() {
         try {
-            connection = getConnection("db.url");
-        } catch (SQLException | IOException throwable) {
-            log.error(throwable.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            connection = getConnection();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return new UserRepository();
     }
@@ -50,7 +51,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return false;
     }
@@ -69,13 +70,11 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user.setId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -98,7 +97,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return users;
     }
@@ -112,7 +111,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -134,7 +133,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return user;
     }
@@ -157,7 +156,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return user;
     }
@@ -175,7 +174,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -192,7 +191,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -208,7 +207,7 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 

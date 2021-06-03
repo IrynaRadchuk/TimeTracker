@@ -1,5 +1,8 @@
 package ua.training.project.controller.command;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.UserRepository;
 
@@ -16,6 +19,7 @@ import static ua.training.project.constant.SessionCall.PRG_DELETE_USER;
  * @see Command
  */
 public class AdminDeleteUsersPostCommand implements Command {
+    private static final Logger log = LogManager.getLogger(AdminDeleteUsersPostCommand.class);
     private UserRepository userRepository = UserRepository.getInstance();
     private ServletUtil servletUtil = new ServletUtil();
 
@@ -24,6 +28,7 @@ public class AdminDeleteUsersPostCommand implements Command {
         int id = Integer.parseInt(request.getParameter("user_id"));
         userRepository.deleteUser(id);
         servletUtil.setPRGToSession(request, PRG_DELETE_USER);
+        log.info(LoggerInfo.USER_DELETE);
         return REDIRECT + MANAGE_USERS;
     }
 }

@@ -5,17 +5,17 @@ import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
 import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
-import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.dao.ActivityDao;
 import ua.training.project.model.entity.Activity;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ua.training.project.constant.Path.ERROR_PAGE;
 
 /**
  * Class to handle statements to activity database
@@ -33,10 +33,10 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
 
     public static ActivityRepository getInstance() {
         try {
-            connection = getConnection("db.url");
-        } catch (SQLException | IOException throwable) {
-            log.error(throwable.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            connection = getConnection();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return new ActivityRepository();
     }
@@ -58,7 +58,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
@@ -79,7 +79,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
@@ -95,7 +95,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -108,7 +108,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -122,7 +122,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -138,7 +138,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return categories;
     }

@@ -6,16 +6,16 @@ import ua.training.project.constant.DBStatement;
 import ua.training.project.exception.DBException;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.exception.PermissionDeniedException;
-import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.dao.*;
 import ua.training.project.model.entity.ActivityStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ua.training.project.constant.Path.ERROR_PAGE;
+import static ua.training.project.constant.SessionCall.ERROR;
 
 /**
  * Class to handle statements to user activity database
@@ -33,10 +33,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
 
     public static UserActivityRepository getInstance() {
         try {
-            connection = getConnection("db.url");
-        } catch (SQLException | IOException throwable) {
-            log.error(throwable.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            connection = getConnection();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return new UserActivityRepository();
     }
@@ -54,7 +54,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return id;
     }
@@ -73,7 +73,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             return ActivityStatus.valueOf(resultSet.getString("status"));
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -88,7 +88,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return false;
     }
@@ -96,19 +96,16 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Add new activity with date and time by user
      */
-    public void addActivityForUser(int userId, String activity, LocalDate date, int duration, HttpServletRequest request) throws SQLException {
+    public void addActivityForUser(int userId, String activity, LocalDate date, int duration) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(userId, activity) != ActivityStatus.APPROVED) {
-            request.setAttribute("error", ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
-            throw new TimeTrackerException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
+            throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
         if (timeValidation(date) + duration > 8) {
-            request.setAttribute("error", ExceptionMessage.OVERTIME);
-            throw new TimeTrackerException(ExceptionMessage.OVERTIME);
+            throw new PermissionDeniedException(ExceptionMessage.OVERTIME);
         }
         if (checkActivityInDB(userId, activity, date)) {
-            request.setAttribute("error", ExceptionMessage.ACTIVITY_ALREADY_STORED);
-            throw new TimeTrackerException(ExceptionMessage.ACTIVITY_ALREADY_STORED);
+            throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_STORED);
         }
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ACTIVITY_CREATE)) {
@@ -119,9 +116,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            log.error(e.getMessage());
             connection.rollback();
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            log.error(e.getMessage());
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
         }
@@ -144,7 +141,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR, ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
@@ -167,7 +164,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
@@ -179,7 +176,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
     }
 
@@ -201,7 +198,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return activities;
     }
@@ -209,11 +206,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Request activity by user
      */
-    public void requestActivity(int userId, String activity) throws SQLException {
+    public void requestActivity(int userId, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(userId, activity) != ActivityStatus.ABSENT) {
             connection.setAutoCommit(true);
-            throw new TimeTrackerException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
+            throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_CREATE)) {
@@ -224,7 +221,8 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         } catch (SQLException e) {
             connection.rollback();
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            System.err.println(" repo + " + ERROR_PAGE);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
         }
@@ -233,9 +231,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Approve user activity by admin
      */
-    public void approveActivity(int id, String activity) throws SQLException {
+    public void approveActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(id, activity) == ActivityStatus.APPROVED) {
+            connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
         int activityId = getActivityID(activity);
@@ -247,7 +246,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         } catch (SQLException e) {
             connection.rollback();
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
         }
@@ -256,9 +255,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Deny user activity by admin
      */
-    public void denyActivity(int id, String activity) throws SQLException {
+    public void denyActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
         if (checkUserActivityStatus(id, activity) == ActivityStatus.ABSENT) {
+            connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
         int activityId = getActivityID(activity);
@@ -270,7 +270,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         } catch (SQLException e) {
             connection.rollback();
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
         }
@@ -289,7 +289,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return time;
     }
@@ -310,7 +310,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return activityStatistics;
     }
@@ -318,27 +318,6 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Get full user statistics
      */
-    public List<UserStatisticsDao> getUserStatistics() {
-        List<UserStatisticsDao> userStatistics = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                UserStatisticsDao user = new UserStatisticsDao();
-                user.setDate(LocalDate.parse(resultSet.getString("activity_date")));
-                user.setEmail(resultSet.getString("user_email"));
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setActivity(resultSet.getString("activity_name"));
-                user.setDuration(resultSet.getInt("activity_duration"));
-                userStatistics.add(user);
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
-        }
-        return userStatistics;
-    }
-
     public List<UserStatisticsDao> getUserStatistics(int currentPage) {
         List<UserStatisticsDao> userStatistics = new ArrayList<>();
         int recordsPerPage = 10;
@@ -359,7 +338,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return userStatistics;
     }
@@ -373,7 +352,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
-            throw new DBException(ExceptionMessage.DB_CONNECTION);
+            throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         }
         return numOfRows;
     }

@@ -1,4 +1,5 @@
 <!doctype html>
+<%@include file="templateError.jsp" %>
 <html>
 <head>
 <link rel="stylesheet" href="/css/background.css">

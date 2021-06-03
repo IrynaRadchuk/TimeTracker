@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import ua.training.project.constant.CredentialValidationRegex;
 import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
-import ua.training.project.exception.TimeTrackerException;
+import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static ua.training.project.constant.Path.*;
-import static ua.training.project.constant.SessionCall.ERROR;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME;
 
 /**
@@ -29,7 +28,7 @@ import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME;
 public class ActivityTimePostCommand implements Command {
     private static final Logger log = LogManager.getLogger(ActivityTimePostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();
-    UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();
+    private UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -47,14 +46,14 @@ public class ActivityTimePostCommand implements Command {
         LocalDate localDate = LocalDate.parse(dateFormat, formatter);
         Integer id = servletUtil.getSessionID(request);
         try {
-            userActivityRepository.addActivityForUser(id, activityName, localDate, duration, request);
+            userActivityRepository.addActivityForUser(id, activityName, localDate, duration);
             log.info(LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());
             return ERROR_PAGE;
-        } catch (TimeTrackerException e) {
+        } catch (PermissionDeniedException e) {
             log.error(e.getMessage());
-            request.setAttribute(ERROR, e.getMessage());
+            servletUtil.setErrorToSession(request, e.getExceptionMessage().getMessage());
             servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME);
             return REDIRECT + ACTIVITY_TIME_CALENDAR;
         }

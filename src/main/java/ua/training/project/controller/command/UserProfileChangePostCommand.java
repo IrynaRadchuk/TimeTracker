@@ -32,9 +32,9 @@ public class UserProfileChangePostCommand implements Command {
         String firstName = request.getParameter("user_first_name");
         String lastName = request.getParameter("user_last_name");
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
-        if (!validation.inputValidation(userDTO).isEmpty()) {
-            servletUtil.setErrorMessagesToSession(request, validation.inputValidation(userDTO));
-            log.error(validation.inputValidation(userDTO));
+        if (!validation.updateValidation(userDTO).isEmpty()) {
+            servletUtil.setErrorMessagesToSession(request, validation.updateValidation(userDTO));
+            log.error(validation.updateValidation(userDTO));
             servletUtil.setPRGToSession(request, PRG_UPDATE_PROFILE);
             return REDIRECT + UPDATE;
         }

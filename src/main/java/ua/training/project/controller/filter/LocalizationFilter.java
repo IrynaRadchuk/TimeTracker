@@ -1,8 +1,5 @@
 package ua.training.project.controller.filter;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -14,8 +11,6 @@ import java.io.IOException;
  * @see Filter
  */
 public class LocalizationFilter implements Filter {
-    private static Logger log = LogManager.getLogger(LocalizationFilter.class);
-
     /**
      * Set language parameter to session
      */

@@ -12,7 +12,7 @@ import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME;
 import static ua.training.project.model.entity.ActivityStatus.APPROVED;
 
 /**
- * Command for user to see activity schedule page
+ * Command for user to see activity calendar page
  *
  * @author Iryna Radchuk
  * @see Command

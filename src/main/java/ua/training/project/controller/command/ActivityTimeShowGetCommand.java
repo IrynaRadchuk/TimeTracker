@@ -10,7 +10,7 @@ import static ua.training.project.constant.Path.SHOW_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME_SHOW;
 
 /**
- * Command for user to see all activities by date
+ * Command for user to see activities schedule
  *
  * @author Iryna Radchuk
  * @see Command

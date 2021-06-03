@@ -1,5 +1,8 @@
 package ua.training.project.controller.command;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.ActivityRepository;
 
@@ -16,6 +19,7 @@ import static ua.training.project.constant.SessionCall.PRG_UPDATE_ACTIVITY;
  * @see Command
  */
 public class AdminManageActivitiesPostCommand implements Command {
+    private static final Logger log = LogManager.getLogger(AdminManageActivitiesPostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
@@ -26,6 +30,7 @@ public class AdminManageActivitiesPostCommand implements Command {
         String category = request.getParameter("category_list");
         activityRepository.updateActivity(activityId, activityName, category);
         servletUtil.setPRGToSession(request, PRG_UPDATE_ACTIVITY);
+        log.info(LoggerInfo.ACTIVITY_UPDATED);
         return REDIRECT + MANAGE_ACTIVITIES;
     }
 }

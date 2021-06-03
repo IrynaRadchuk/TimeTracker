@@ -1,5 +1,8 @@
 package ua.training.project.controller.command;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.UserActivityRepository;
 
@@ -17,6 +20,7 @@ import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME_SHOW;
  * @see Command
  */
 public class ActivityTimeShowPostCommand implements Command {
+    private static final Logger log = LogManager.getLogger(ActivityTimeShowPostCommand.class);
     private ServletUtil servletUtil = new ServletUtil();
     private UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();
 
@@ -26,6 +30,7 @@ public class ActivityTimeShowPostCommand implements Command {
         servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME_SHOW);
         Integer id = servletUtil.getSessionID(request);
         userActivityRepository.deleteActivityTime(id, date);
+        log.info(LoggerInfo.ACTIVITY_DELETED);
         return REDIRECT + SHOW;
     }
 }

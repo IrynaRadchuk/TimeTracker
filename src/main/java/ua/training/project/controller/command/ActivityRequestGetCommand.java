@@ -27,7 +27,8 @@ public class ActivityRequestGetCommand extends PRG implements Command {
         if (checkPRG(request, PRG_REQUEST_ACTIVITY)) {
             executePRG(request);
         }
-        List<UserActivityDao> userActivities = userActivityRepository.getAllUserActivities(servletUtil.getSessionID(request));
+        List<UserActivityDao> userActivities = userActivityRepository
+                .getAllUserActivities(servletUtil.getSessionID(request));
         request.setAttribute("user_activities", userActivities);
         List<Activity> allActivities = activityRepository.getAllActivities();
         List<String> userActivitiesNames = userActivities.stream()
