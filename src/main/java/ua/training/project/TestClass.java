@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class TestClass {
     private static UserRepository userRepository = UserRepository.getInstance();
@@ -18,6 +19,8 @@ public class TestClass {
 
 
     public static void main(String[] args) throws IOException {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
+        System.out.println(resourceBundle.getString("db.url"));
         InputStream file = new FileInputStream("src/main/resources/db.properties");
         Properties prop = new Properties();
         prop.load(file);

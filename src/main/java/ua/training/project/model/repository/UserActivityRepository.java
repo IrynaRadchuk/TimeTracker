@@ -339,8 +339,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         return userStatistics;
     }
 
-    public List<UserStatisticsDao> getUserStatistics(int currentPage, int recordsPerPage) {
+    public List<UserStatisticsDao> getUserStatistics(int currentPage) {
         List<UserStatisticsDao> userStatistics = new ArrayList<>();
+        int recordsPerPage = 10;
         int start = currentPage * recordsPerPage - recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS_LIMIT)) {
             statement.setInt(1, start);

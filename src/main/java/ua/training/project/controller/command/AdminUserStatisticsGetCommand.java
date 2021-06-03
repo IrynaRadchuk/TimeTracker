@@ -5,6 +5,7 @@ import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.training.project.constant.Path.USER_STAT_PAGE;
 
@@ -19,21 +20,21 @@ public class AdminUserStatisticsGetCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        List<UserStatisticsDao> statistics = repository.getUserStatistics();
-        request.setAttribute("user_statistics", statistics);
-//        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
-//        int recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
-//
-//        List<UserStatisticsDao> statisticsPag = repository.getUserStatistics(currentPage,recordsPerPage);
-//        request.setAttribute("statisticsPag", statisticsPag);
-//        int rows = repository.getNumberOfRows();
-//        int nOfPages = rows / recordsPerPage;
-//        if (nOfPages % recordsPerPage > 0) {
-//            nOfPages++;
-//        }
-//        request.setAttribute("noOfPages", nOfPages);
-//        request.setAttribute("currentPage", currentPage);
-//        request.setAttribute("recordsPerPage", recordsPerPage);
+//        List<UserStatisticsDao> statistics = repository.getUserStatistics();
+//        request.setAttribute("user_statistics", statistics);
+        int currentPage = Integer.parseInt(Optional.ofNullable(request.getParameter("currentPage"))
+                .orElse("1"));
+
+        List<UserStatisticsDao> statisticsPag = repository.getUserStatistics(currentPage);
+        request.setAttribute("user_statistics", statisticsPag);
+        int rows = repository.getNumberOfRows();
+        int nOfPages = rows / 10;
+        if (nOfPages % 10 > 0) {
+            nOfPages++;
+        }
+        request.setAttribute("noOfPages", nOfPages);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", 10);
         return USER_STAT_PAGE;
     }
 }

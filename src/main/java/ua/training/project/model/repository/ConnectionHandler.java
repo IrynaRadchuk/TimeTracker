@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * Class to connect to database
@@ -26,11 +27,8 @@ public class ConnectionHandler {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        InputStream file = new FileInputStream("C:\\Users\\ira\\IdeaProjects\\TimeTracker\\src\\main\\resources\\db.properties");
-        Properties prop = new Properties();
-        prop.load(file);
-        String property = prop.getProperty(connectionUrl);
-        ;
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
+        String property = resourceBundle.getString("db.url");
         return DriverManager.getConnection(property);
     }
 }
