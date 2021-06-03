@@ -10,13 +10,10 @@
     <filter-name>Authorization</filter-name>
     <filter-class>ua.training.project.controller.filter.AuthorizationFilter</filter-class>
   </filter>
-
   <filter>
     <filter-name>LocalizationFilter</filter-name>
     <filter-class>ua.training.project.controller.filter.LocalizationFilter</filter-class>
   </filter>
-
-
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>ua.training.project.controller.filter.EncodingFilter</filter-class>
@@ -26,17 +23,14 @@
     </init-param>
   </filter>
 
-
   <filter-mapping>
     <filter-name>Authorization</filter-name>
     <url-pattern>/tracker/*</url-pattern>
   </filter-mapping>
-
   <filter-mapping>
     <filter-name>LocalizationFilter</filter-name>
     <url-pattern>/tracker/*</url-pattern>
   </filter-mapping>
-
   <filter-mapping>
     <filter-name>EncodingFilter</filter-name>
     <url-pattern>/tracker/*</url-pattern>

@@ -5,25 +5,45 @@
    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-   <h2><b><fmt:message key="update_page.header"/></b></h2>
+   <h2>
+      <b>
+         <fmt:message key="update_page.header"/>
+      </b>
+   </h2>
    <form method="post" action="update">
       <div class="container">
-         <label for="user_email"><b><fmt:message key="login_page.email"/></b></label>
+         <label for="user_email">
+            <b>
+               <fmt:message key="login_page.email"/>
+            </b>
+         </label>
          <br>
          <c:set var="user_email" value='${requestScope["user_email"]}' />
          <input type="text" out value="${user_email}" name="user_email">
          <br>
-         <label for="user_password"><b><fmt:message key="login_page.password"/></b></label>
+         <label for="user_password">
+            <b>
+               <fmt:message key="login_page.password"/>
+            </b>
+         </label>
          <br>
          <c:set var="user_password" value='${requestScope["user_password"]}' />
          <input type="password" out value="${user_password}" name="user_password">
          <br>
-         <label for="user_first_name"><b><fmt:message key="registration_page.first.name"/></b></label>
+         <label for="user_first_name">
+            <b>
+               <fmt:message key="registration_page.first.name"/>
+            </b>
+         </label>
          <br>
          <c:set var="user_first_name" value='${requestScope["user_first_name"]}' />
          <input type="text" out value="${user_first_name}" name="user_first_name">
          <br>
-         <label for="user_last_name"><b><fmt:message key="registration_page.last.name"/></b></label>
+         <label for="user_last_name">
+            <b>
+               <fmt:message key="registration_page.last.name"/>
+            </b>
+         </label>
          <br>
          <c:set var="user_last_name" value='${requestScope["user_last_name"]}' />
          <input type="text" out value="${user_last_name}" name="user_last_name">
@@ -35,3 +55,5 @@
       <input class="cancelbtn" type="submit" value='<fmt:message key="button.cancel"/>'>
    </form>
    </div>
+</body>
+</html>

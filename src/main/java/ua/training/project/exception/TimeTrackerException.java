@@ -7,7 +7,6 @@ public class TimeTrackerException extends RuntimeException {
         this.message = message;
     }
 
-
     public String getMessage() {
         return message.getMessage();
     }

@@ -15,13 +15,13 @@ public interface DBStatement {
     String ACTIVITY_FIND = "select*from activity where activity_name = ?;";
     String GET_ALL_ACTIVITIES = "select*from activity";
     String GET_ALL_ACTIVITIES_WITH_CATEGORIES = "select activity.activity_id, activity.activity_name, activity.category_id, activity_category.category_name from activity left join activity_category on activity.category_id = activity_category.category_id;";
-    String CATEGORY_GET_ALL = "select*from activity_category ";
+    String CATEGORY_GET_ALL = "select*from activity_category";
     String CHECK_ACTIVITY_PRESENCE = "select activity_duration from user_activity where activity_id = (select activity_id from activity where activity_name = ?) && activity_date=? && user_id=?;";
     String USER_ACTIVITY_CREATE = "insert into user_activity (user_id, activity_id, activity_date, activity_duration) values (?,?,?,?);";
     String DELETE_ACTIVITY_TIME = "delete from user_activity where user_id = ? && activity_date = ?";
-    String SHOW_USER_ACTIVITIES_BY_DATE = "SELECT user_activity.activity_date, activity.activity_name, user_activity.activity_duration FROM user_activity LEFT JOIN activity ON activity.activity_id=user_activity.activity_id LEFT JOIN user on user_activity.user_id = user.user_id WHERE user.user_id = ?;";
-    String SHOW_All_USER_ACTIVITIES = "SELECT activity.activity_name, user_allowed_activity.status from activity left join user_allowed_activity on activity.activity_id = user_allowed_activity.activity_id where user_allowed_activity.user_id = ?;";
-    String USER_ALLOWED_ACTIVITY_FIND = "SELECT user.user_email, user_allowed_activity.status, user_allowed_activity.activity_id, activity.activity_name FROM user_allowed_activity LEFT JOIN user ON user.user_id = user_allowed_activity.user_id LEFT JOIN activity ON activity.activity_id = user_allowed_activity.activity_id  WHERE user.user_id = ? AND activity.activity_name = ?;";
+    String SHOW_USER_ACTIVITIES_BY_DATE = "select user_activity.activity_date, activity.activity_name, user_activity.activity_duration FROM user_activity left join activity ON activity.activity_id=user_activity.activity_id left join user on user_activity.user_id = user.user_id where user.user_id = ?;";
+    String SHOW_All_USER_ACTIVITIES = "select activity.activity_name, user_allowed_activity.status from activity left join user_allowed_activity on activity.activity_id = user_allowed_activity.activity_id where user_allowed_activity.user_id = ?;";
+    String USER_ALLOWED_ACTIVITY_FIND = "select user.user_email, user_allowed_activity.status, user_allowed_activity.activity_id, activity.activity_name from user_allowed_activity left join user ON user.user_id = user_allowed_activity.user_id left join activity ON activity.activity_id = user_allowed_activity.activity_id where user.user_id = ? AND activity.activity_name = ?;";
     String USER_ALLOWED_ACTIVITY_CREATE = "insert into user_allowed_activity (user_id, activity_id, status) values (?,?,'PENDING');";
     String USER_ALLOWED_ACTIVITY_APPROVE = "update user_allowed_activity set status = 'APPROVED' where user_id=? and activity_id=?;";
     String USER_DENY_ACTIVITY = "delete from user_allowed_activity where user_id=? and activity_id=?;";

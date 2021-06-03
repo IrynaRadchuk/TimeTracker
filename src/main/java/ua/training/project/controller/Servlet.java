@@ -30,7 +30,7 @@ public class Servlet extends HttpServlet {
      * Set post and get commands to be executed
      *
      * @param config A servlet configuration object used by a servlet container
-     * to pass information to a servlet during initialization.
+     *               to pass information to a servlet during initialization.
      */
     public void init(ServletConfig config) {
         config.getServletContext().setAttribute(USER_ID, new HashMap<Integer, HttpSession>());
@@ -39,7 +39,7 @@ public class Servlet extends HttpServlet {
 
         getCommands.put("login", new LoginGetCommand());
         getCommands.put("registration", new RegistrationGetCommand());
-        getCommands.put("user", new ActivityTimeGetCommand());
+        getCommands.put("activityTimeCalendar", new ActivityTimeGetCommand());
         getCommands.put("profile", new UserProfileGetCommand());
         getCommands.put("update", new UserProfileChangeGetCommand());
         getCommands.put("activities", new ActivityRequestGetCommand());
@@ -54,7 +54,7 @@ public class Servlet extends HttpServlet {
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("logout", new LogoutCommand());
         postCommands.put("registration", new RegistrationPostCommand());
-        postCommands.put("user", new ActivityTimePostCommand());
+        postCommands.put("activityTimeCalendar", new ActivityTimePostCommand());
         postCommands.put("update", new UserProfileChangePostCommand());
         postCommands.put("activities", new ActivityRequestPostCommand());
         postCommands.put("manageActivities", new AdminManageActivitiesPostCommand());

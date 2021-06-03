@@ -6,14 +6,28 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b><fmt:message key="admin_page.users.header"/></b></h2>
+   <h2>
+      <b>
+         <fmt:message key="admin_page.users.header"/>
+      </b>
+   </h2>
    <table>
       <tr>
-         <th><fmt:message key="admin_page.users.header0"/></th>
-         <th><fmt:message key="admin_page.users.header1"/></th>
-         <th><fmt:message key="admin_page.users.header2"/></th>
-         <th><fmt:message key="admin_page.users.header3"/></th>
-         <th><fmt:message key="admin_page.users.header4"/></th>
+         <th>
+            <fmt:message key="admin_page.users.header0"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.users.header1"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.users.header2"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.users.header3"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.users.header4"/>
+         </th>
          <th></th>
       </tr>
       <c:forEach items="${all_users}" var="user">

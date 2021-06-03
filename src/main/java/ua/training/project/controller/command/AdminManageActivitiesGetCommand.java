@@ -20,7 +20,9 @@ public class AdminManageActivitiesGetCommand extends PRG implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        if (checkPRG(request, PRG_ADD_ACTIVITY)||checkPRG(request, PRG_DELETE_ACTIVITY)||checkPRG(request, PRG_UPDATE_ACTIVITY)) {
+        if (checkPRG(request, PRG_ADD_ACTIVITY)
+                || checkPRG(request, PRG_DELETE_ACTIVITY)
+                || checkPRG(request, PRG_UPDATE_ACTIVITY)) {
             executePRG(request);
         }
         List<ActivityDao> activities = activityRepository.getActivitiesWithCategories();

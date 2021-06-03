@@ -30,6 +30,7 @@ public class ConnectionHandler {
         Properties prop = new Properties();
         prop.load(file);
         String property = prop.getProperty(connectionUrl);
+        ;
         return DriverManager.getConnection(property);
     }
 }

@@ -22,7 +22,9 @@ public class AdminManageUsersGetCommand extends PRG implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        if (checkPRG(request, PRG_ADD_USER) || checkPRG(request, PRG_DELETE_USER) || checkPRG(request, PRG_UPDATE_USER)) {
+        if (checkPRG(request, PRG_ADD_USER)
+                || checkPRG(request, PRG_DELETE_USER)
+                || checkPRG(request, PRG_UPDATE_USER)) {
             executePRG(request);
         }
         List<User> users = userRepository.getAllUsers();

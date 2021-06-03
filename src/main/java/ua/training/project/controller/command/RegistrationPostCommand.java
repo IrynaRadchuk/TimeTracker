@@ -4,7 +4,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
-import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.model.dto.UserRegistrationDTO;
 import ua.training.project.model.services.UserService;
 import ua.training.project.model.services.validation.InputValidation;

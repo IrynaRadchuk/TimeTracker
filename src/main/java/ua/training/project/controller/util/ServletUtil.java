@@ -1,7 +1,6 @@
 package ua.training.project.controller.util;
 
 import org.apache.commons.lang3.StringUtils;
-import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.model.entity.Role;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +24,12 @@ public class ServletUtil {
         HttpSession session = req.getSession();
         session.setAttribute(PRG, url);
     }
+
     public void setErrorToSession(HttpServletRequest req, String errorMessage) {
         HttpSession session = req.getSession();
         session.setAttribute(ERROR, errorMessage);
     }
+
     public void setErrorMessagesToSession(HttpServletRequest req, List<String> errorMessages) {
         HttpSession session = req.getSession();
         session.setAttribute(ERROR, String.join("; ", errorMessages));
@@ -42,12 +43,13 @@ public class ServletUtil {
         return (Role) req.getSession().getAttribute(USER_ROLE);
     }
 
-    public String getErrorMessage (HttpServletRequest request) {
+    public String getErrorMessage(HttpServletRequest request) {
         String error = (String) request.getSession().getAttribute(ERROR);
         request.getSession().setAttribute(ERROR, StringUtils.EMPTY);
         return error;
     }
-    public String getPrgUrl (HttpServletRequest request) {
+
+    public String getPrgUrl(HttpServletRequest request) {
         String prg = (String) request.getSession().getAttribute(PRG);
         request.getSession().setAttribute(PRG, StringUtils.EMPTY);
         return prg;

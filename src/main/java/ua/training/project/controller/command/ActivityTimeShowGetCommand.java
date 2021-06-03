@@ -9,6 +9,12 @@ import java.util.List;
 import static ua.training.project.constant.Path.SHOW_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME_SHOW;
 
+/**
+ * Command for user to see all activities by date
+ *
+ * @author Iryna Radchuk
+ * @see Command
+ */
 public class ActivityTimeShowGetCommand extends PRG implements Command {
     private UserActivityRepository userActivityRepository = UserActivityRepository.getInstance();
 

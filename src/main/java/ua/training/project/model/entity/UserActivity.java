@@ -8,16 +8,6 @@ public class UserActivity {
     private LocalDate date;
     private int duration;
 
-    public UserActivity() {
-    }
-
-    public UserActivity(User user, Activity activity, LocalDate date, int duration) {
-        this.user = user;
-        this.activity = activity;
-        this.date = date;
-        this.duration = duration;
-    }
-
     public User getUser() {
         return user;
     }

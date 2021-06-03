@@ -6,13 +6,25 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b><fmt:message key="admin_page.activities.header"/></b></h2>
+   <h2>
+      <b>
+         <fmt:message key="admin_page.activities.header"/>
+      </b>
+   </h2>
    <table>
       <tr>
-         <th><fmt:message key="admin_page.activities.header0"/></th>
-         <th><fmt:message key="admin_page.activities.header1"/></th>
-         <th><fmt:message key="admin_page.activities.header2"/></th>
-         <th><fmt:message key="admin_page.activities.header3"/></th>
+         <th>
+            <fmt:message key="admin_page.activities.header0"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.activities.header1"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.activities.header2"/>
+         </th>
+         <th>
+            <fmt:message key="admin_page.activities.header3"/>
+         </th>
          <th></th>
       </tr>
       <c:forEach items="${activities_list}" var="active">

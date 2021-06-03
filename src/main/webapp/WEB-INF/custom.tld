@@ -1,0 +1,13 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>tt</short-name>
+    <uri>time-tracker-tags</uri>
+    <description>Custom tag library</description>
+
+    <tag>
+        <name>DateTag</name>
+        <tag-class>ua.training.project.controller.util.DateTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+</taglib>

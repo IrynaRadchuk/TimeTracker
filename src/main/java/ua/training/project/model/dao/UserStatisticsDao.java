@@ -1,7 +1,5 @@
 package ua.training.project.model.dao;
 
-import ua.training.project.controller.command.Command;
-
 import java.time.LocalDate;
 
 /**

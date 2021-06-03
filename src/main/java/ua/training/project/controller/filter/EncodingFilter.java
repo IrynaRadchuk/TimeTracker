@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * Set characters encoding filtration
+ *
  * @author Iryna Radchuk
  * @see Filter
  */

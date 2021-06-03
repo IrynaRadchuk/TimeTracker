@@ -16,7 +16,7 @@ public class UserUpdateService {
      * Update user data
      *
      * @param userDTO User DTO data
-     * @param id User personal identification
+     * @param id      User personal identification
      * @return New user object
      */
     public User userUpdate(UserRegistrationDTO userDTO, int id) {

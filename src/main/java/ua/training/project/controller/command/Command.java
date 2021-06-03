@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Main controller Command interface
+ *
  * @author Iryna Radchuk
  */
 public interface Command {

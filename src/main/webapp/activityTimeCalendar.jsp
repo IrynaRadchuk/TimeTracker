@@ -12,8 +12,6 @@
    <br/>
    <div class="container">
       <div class="row justify-content-center">
-         <div class="col-md-6 text-center mb-5">
-         </div>
       </div>
       <div class="row">
          <div class="col-md-12">
@@ -58,38 +56,46 @@
                            </tbody>
                         </table>
                      </div>
-                     <button class="button" id="add-button"><fmt:message key="user_page.activity.add"/></button>
+                     <button class="button" id="add-button">
+                        <fmt:message key="user_page.activity.add"/>
+                     </button>
                   </div>
                </div>
                <div class="events-container">
                </div>
                <div class="dialog" id="dialog">
-                  <h2 class="dialog-header"> <fmt:message key="user_page.activity.add"/> </h2>
-                  <form class="form" id="form" method="post" action="${pageContext.request.contextPath}/tracker/user">
+                  <h2 class="dialog-header">
+                     <fmt:message key="user_page.activity.add"/>
+                  </h2>
+                  <form class="form" id="form" method="post" action="${pageContext.request.contextPath}/tracker/activityTimeCalendar">
                      <div class="form-container" align="center">
-                        <label class="form-label" id="valueFromMyButton" for="name"><fmt:message key="user_page.activity.name"/></label>
+                        <label class="form-label" id="valueFromMyButton" for="name">
+                           <fmt:message key="user_page.activity.name"/>
+                        </label>
                         <br>
-                              <select name="user_activities" id="user_activities">
-                                 <c:forEach items="${user_activities}" var="name">
-                                    <option value="${name}">
-                                       ${name}
-                                       </c:forEach>
+                        <select name="user_activities" id="user_activities">
+                           <c:forEach items="${user_activities}" var="name">
+                              <option value="${name}">
+                                 ${name}
+                           </c:forEach>
                         </select>
                         <br>
-                                       <br>
+                        <br>
                         <input class="input" type="hidden" id="name" name="name" maxlength="36">
-                        <label class="form-label" id="valueFromMyButton" for="count"><fmt:message key="user_page.activity.duration"/></label>
+                        <label class="form-label" id="valueFromMyButton" for="count">
+                           <fmt:message key="user_page.activity.duration"/>
+                        </label>
                         <input class="input" type="number" id="count" name="count" min="0" max="8" maxlength="1">
                         <input type="button" value='<fmt:message key="button.cancel"/>' class="button" id="cancel-button">
                         <input type="submit" value='<fmt:message key="button.ok"/>' class="button button-white" id="ok-button">
-                     <input class="input" type="hidden" id="date" name="date">
-                     <input class="input" type="hidden" id="day" name="day">
+                        <input class="input" type="hidden" id="date" name="date">
+                        <input class="input" type="hidden" id="day" name="day">
+                     </div>
+                  </form>
                </div>
-               </form>
             </div>
          </div>
       </div>
-   </div>
    </div>
    </section>
    <script src="/js/jquery.min.js"></script>

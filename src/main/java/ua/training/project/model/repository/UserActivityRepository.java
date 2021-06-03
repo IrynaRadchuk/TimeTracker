@@ -76,11 +76,12 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
     }
+
     public boolean checkActivityInDB(int userId, String activity, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CHECK_ACTIVITY_PRESENCE)) {
             statement.setString(1, activity);
             statement.setString(2, String.valueOf(date));
-            statement.setInt(3,userId);
+            statement.setInt(3, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return true;
@@ -91,6 +92,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         }
         return false;
     }
+
     /**
      * Add new activity with date and time by user
      */
@@ -169,16 +171,18 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         }
         return activities;
     }
+
     public void deleteActivityTime(int id, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.DELETE_ACTIVITY_TIME)) {
             statement.setInt(1, id);
             statement.setString(2, String.valueOf(date));
-           statement.executeUpdate();
+            statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
     }
+
     /**
      * Get a list of pending activities for admin to approve
      */
@@ -339,8 +343,8 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         List<UserStatisticsDao> userStatistics = new ArrayList<>();
         int start = currentPage * recordsPerPage - recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS_LIMIT)) {
-            statement.setInt(1,start);
-            statement.setInt(2,start+recordsPerPage);
+            statement.setInt(1, start);
+            statement.setInt(2, start + recordsPerPage);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 UserStatisticsDao user = new UserStatisticsDao();
@@ -364,7 +368,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ROWS_NUMBER)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                numOfRows= resultSet.getInt("count(user_activity.activity_date)");
+                numOfRows = resultSet.getInt("count(user_activity.activity_date)");
             }
         } catch (SQLException e) {
             log.error(e.getMessage());

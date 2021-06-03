@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import ua.training.project.constant.CredentialValidationRegex;
 import ua.training.project.constant.LoggerInfo;
 import ua.training.project.controller.util.ServletUtil;
-import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.exception.TimeTrackerException;
 import ua.training.project.model.repository.UserActivityRepository;
 
@@ -18,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static ua.training.project.constant.Path.*;
+import static ua.training.project.constant.SessionCall.ERROR;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME;
 
 /**
@@ -48,18 +48,17 @@ public class ActivityTimePostCommand implements Command {
         Integer id = servletUtil.getSessionID(request);
         try {
             userActivityRepository.addActivityForUser(id, activityName, localDate, duration, request);
-            request.setAttribute("success", LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
             log.info(LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());
             return ERROR_PAGE;
         } catch (TimeTrackerException e) {
             log.error(e.getMessage());
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute(ERROR, e.getMessage());
             servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME);
-            return REDIRECT + USER;
+            return REDIRECT + ACTIVITY_TIME_CALENDAR;
         }
         servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME);
-        return REDIRECT + USER;
+        return REDIRECT + ACTIVITY_TIME_CALENDAR;
     }
 }

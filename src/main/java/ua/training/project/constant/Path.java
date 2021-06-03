@@ -6,10 +6,10 @@ public interface Path {
     String LOGIN = "/login";
     String LOGOUT = "/logout";
     String HOMEPAGE = "/index.jsp";
-    String USER_PAGE = "/user.jsp";
-    String USER = "/user";
+    String ACTIVITY_TIME_CALENDAR_PAGE = "/activityTimeCalendar.jsp";
+    String ACTIVITY_TIME_CALENDAR = "/activityTimeCalendar";
     String ERROR_PAGE = "/error.jsp";
-    String ERROR = "/error";
+    String ERRORS = "/error";
     String REGISTRATION_PAGE = "/registration.jsp";
     String REGISTRATION = "/registration";
     String PROFILE_PAGE = "/profile.jsp";

@@ -58,7 +58,7 @@ public class LoginPostCommand implements Command {
             return REDIRECT + MANAGE_USERS;
         }
         if (user.getRole() == Role.USER) {
-            return REDIRECT + USER;
+            return REDIRECT + ACTIVITY_TIME_CALENDAR;
         }
         servletUtil.setErrorToSession(request, ExceptionMessage.WRONG_ROLE.getMessage());
         servletUtil.setPRGToSession(request, PRG_LOGIN);

@@ -5,6 +5,8 @@ import ua.training.project.controller.util.ServletUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.SessionCall.ERROR;
+
 /**
  * Parent class to realize PRG
  *
@@ -13,10 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PRG {
     protected ServletUtil servletUtil = new ServletUtil();
+
     /**
      * Check if redirected from post request
+     *
      * @param request Http request
-     * @param url Post request url
+     * @param url     Post request url
      * @return True if redirected from post request
      */
     protected boolean checkPRG(HttpServletRequest request, String url) {
@@ -26,12 +30,13 @@ public class PRG {
 
     /**
      * Set attribute error messages from post request
+     *
      * @param request Http request
      */
     protected void executePRG(HttpServletRequest request) {
         String errorMessage = servletUtil.getErrorMessage(request);
         if (StringUtils.isNoneEmpty(errorMessage)) {
-            request.setAttribute("error", errorMessage);
+            request.setAttribute(ERROR, errorMessage);
         }
     }
 }
