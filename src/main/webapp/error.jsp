@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Sorry an exception occured!</h1>
+<h1><fmt:message key="error.occur"/></h1>
 
 </body>
 </html>

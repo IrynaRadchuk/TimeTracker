@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static ua.training.project.constant.SessionCall.*;
 
@@ -68,6 +69,11 @@ public class ServletUtil {
             logged.remove(id);
             session.getServletContext().setAttribute(USER_ID, logged);
         }
+    }
+
+    public static Locale getLocaleFromSession(HttpServletRequest request) {
+        String lang = (String) request.getSession().getAttribute("lang");
+        return lang != null ? Locale.forLanguageTag(lang) : Locale.getDefault();
     }
 
     private void addToContext(HttpServletRequest request, Integer id) {

@@ -6643,7 +6643,7 @@ button.bg-dark:focus {
 
 .mt-5,
 .my-5 {
-  }
+  margin-top: 0rem !important; }
 
 .mr-5,
 .mx-5 {
@@ -8189,6 +8189,58 @@ h1, h2, h3, h4, h5,
   margin: 20px auto;
   background: #7e0cf5; }
 
+/*  Events display */
+.events-container {
+  height: 100%;
+  width: 50%;
+  float: right;
+  margin: 0px auto;
+  display: inline-block;
+  padding: 0px;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  padding: 0; }
+  @media (max-width: 767.98px) {
+    .events-container {
+      width: 100%;
+      height: auto; } }
+
+.events-container:after {
+  clear: both; }
+
+.event-card {
+  padding: 20px 0;
+  max-width: 100%;
+  display: block;
+  background: #fff;
+  border: none !important;
+  margin: 20px;
+  margin-left: 12px; }
+  @media (max-width: 991.98px) {
+    .event-card {
+      margin: 10px; } }
+  @media (max-width: 767.98px) {
+    .event-card {
+      margin: 0;
+      background: #e6e6e6; } }
+
+.event-count, .event-name, .event-cancelled {
+  display: inline;
+  padding: 0 10px;
+  font-size: 1rem; }
+
+.event-count {
+  color: #7e0cf5;
+  text-align: right; }
+
+.event-name {
+  padding-right: 0;
+  text-align: left; }
+
+.event-cancelled {
+  color: #cd4dcc;
+  text-align: right; }
+
 /*  Calendar wrapper */
 .calendar-container {
   position: relative;
@@ -8272,30 +8324,6 @@ h1, h2, h3, h4, h5,
   color: white;
   border: none;
   background: #7e0cf5; }
-  .button.button-white {
-    background: #fff;
-    color: #000; }
-  .button:focus {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    outline: none; }
-.newbutton {
-  cursor: pointer;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
-  font-size: 1rem;
-  border-radius: 25px;
-  padding: 0.65rem 1.9rem;
-  -webkit-transition: .2s ease all;
-  -o-transition: .2s ease all;
-  transition: .2s ease all;
-  color: white;
-  border: none;
-    background: black;
-    margin-top: 50;
-    margin-left: 95;; }
   .button.button-white {
     background: #fff;
     color: #000; }
@@ -8427,7 +8455,7 @@ h1, h2, h3, h4, h5,
   font-size: 28px; }
 
 .form-container {
-  margin-top: 10%; }
+  margin-top: 25%; }
 
 .form-label {
   text-transform: uppercase;
@@ -8440,10 +8468,9 @@ h1, h2, h3, h4, h5,
   background: none;
   border-bottom: 1px rgba(255, 255, 255, 0.2) solid;
   display: block;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  width: 100px;
-  height: 30px;
+  margin-bottom: 50px;
+  width: 300px;
+  height: 20px;
   text-align: center;
   -webkit-transition: border-color 250ms;
   -o-transition: border-color 250ms;

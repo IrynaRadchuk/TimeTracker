@@ -34,6 +34,7 @@ public class AdminApproveRequestsPostCommand implements Command {
             servletUtil.setErrorToSession(request, e.getMessage());
             servletUtil.setPRGToSession(request, PRG_APPROVE_REQUEST);
         }
+        servletUtil.setPRGToSession(request, PRG_APPROVE_REQUEST);
         return REDIRECT + MANAGE_REQUESTS;
     }
 }

@@ -6,15 +6,15 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b>Activity Statistics</b></h2>
+   <h2><b><fmt:message key="statistics_page.user.header"/></b></h2>
 <table id="myTable" class="tablesorter">
       <tr>
-         <th onclick="sortTable(0)">Date <></th>
-         <th onclick="sortTable(1)">User Email <></th>
-         <th onclick="sortTable(2)">User First Name <></th>
-         <th onclick="sortTable(3)">User Last Name <></th>
-         <th onclick="sortTable(4)">Activity <></th>
-         <th onclick="sortTable(5)">Duration <></th>
+         <th onclick="sortTable(0)"><fmt:message key="statistics_page.user.table.head0"/></th>
+         <th onclick="sortTable(1)"><fmt:message key="statistics_page.user.table.head1"/></th>
+         <th onclick="sortTable(2)"><fmt:message key="statistics_page.user.table.head2"/></th>
+         <th onclick="sortTable(3)"><fmt:message key="statistics_page.user.table.head3"/></th>
+         <th onclick="sortTable(4)"><fmt:message key="statistics_page.user.table.head4"/></th>
+         <th onclick="sortTable(5)"><fmt:message key="statistics_page.user.table.head5"/></th>
       </tr>
       <c:forEach items="${user_statistics}" var="user_stat">
          <form method="get">

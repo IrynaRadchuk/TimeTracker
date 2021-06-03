@@ -192,7 +192,7 @@ function show_events(events, month, day) {
     // If there are no events for this date, notify the user
     if(events.length===0) {
         var event_card = $("<div class='event-card'></div>");
-        var event_name = $("<div class='event-name'>No activities on "+month+" "+day+".</div>");
+        var event_name = $("<div class='event-name'>"+month+" "+day+".</div>");
         $(event_card).css({ "border-left": "10px solid #FF1744" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);
@@ -232,105 +232,23 @@ function check_events(day, month, year) {
 // Given data for events in JSON format
 var event_data = {
     "events": [
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 10
-    },
-    {
-        "occasion": " Test Event",
-        "invited_count": 120,
-        "year": 2020,
-        "month": 5,
-        "day": 11
-    }
+
     ]
 };
 
-const months = [ 
-    "January", 
-    "February", 
-    "March", 
-    "April", 
-    "May", 
-    "June", 
-    "July", 
-    "August", 
-    "September", 
-    "October", 
-    "November", 
-    "December" 
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
 ];
 
 })(jQuery);

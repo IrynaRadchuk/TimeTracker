@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<%@include file="templateGeneral.jsp" %>
+<%@include file="templateGuest.jsp" %>
 <html>
    <head>
       <link rel="stylesheet" href="/css/index.css">
+      <link rel="stylesheet" href="/css/background.css">
    </head>
    <body>
-      <h1><b>Welcome to the Time Tracker Application!</b></h1>
+      <h1><b><fmt:message key="home_page.welcome.header"/></b></h1>
       <ul class="checked-list">
-         <li><span class="letter">Request new activities</span></li>
-         <li><span class="letter">Set activities duration</span></li>
-         <li><span class="letter">Manage time calendar</span></li>
-         <li><span class="letter">See current and past activities</span></li>
-         <li><span class="letter">Request new activities</span></li>
-         <li><span class="letter">Count billable hours</span></li>
-         <li><span class="letter">Track productivity</span></li>
-         <li><span class="letter">Manage your working time</span></li>
+         <li><span class="letter"><fmt:message key="home_page.description1"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description2"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description3"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description4"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description5"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description6"/></span></li>
+         <li><span class="letter"><fmt:message key="home_page.description7"/></span></li>
       </ul>
    </body>
 </html>

@@ -1,12 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
-<c:set var="language" value="${not empty param.language
-   ? param.language : not empty language
-   ? language : 'en'}" scope="session"/>
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="resources" />
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="resources"/>
+
 <head>
    <link rel="stylesheet" href="/css/error.css">
    <link rel="stylesheet" href="/css/success.css">
@@ -18,20 +17,23 @@
 </head>
 <body>
    <nav class="w3-bar w3-black">
-      <a href="index" class="w3-button w3-bar-item"><b>Home</b></a>
-      <a href="logout" class="w3-button w3-bar-item"><b>Sign Out</b></a>
-      <a href="user" class="w3-button w3-bar-item"><b>Calendar</b></a>
-      <a href="profile" class="w3-button w3-bar-item"><b>Profile</b></a>
-      <a href="activities" class="w3-button w3-bar-item"><b>Activities</b></a>
+      <a href="index" class="w3-button w3-bar-item"><b><fmt:message key="navbar.home"/></b></a>
+      <a href="logout" class="w3-button w3-bar-item"><b><fmt:message key="navbar.logout"/></b></a>
+      <a href="user" class="w3-button w3-bar-item"><b><fmt:message key="navbar.calendar"/></b></a>
+      <a href="showActivities" class="w3-button w3-bar-item"><b><fmt:message key="navbar.showAct"/></b></a>
+      <a href="profile" class="w3-button w3-bar-item"><fmt:message key="navbar.profile"/></a>
+      <a href="activities" class="w3-button w3-bar-item"><fmt:message key="navbar.activities"/></a>
    </nav>
    <form>
       <div class="mt-5">
-         <input name="language" type="image" value="en"
-         ${language=='en' ? 'selected' : '' } src="/img/flag_en.png"
-         style="height: 24px; width: 32px; margin: 8px 0 0 0;">
-         <input name="language" type="image" value="ua"
-         ${language=='ua' ? 'selected' : '' } src="/img/flag_ua.png"
-         style="height: 24px; width: 32px; margin: 8px 0 0 0;">
+              <a href="?lang=en">
+                  <fmt:message key="lang.en"/>
+              </a>
+              |
+                      <a href="?lang=uk">
+                          <fmt:message key="lang.uk"/>
+                      </a>
+
       </div>
    </form>
    <c:if test="${not empty requestScope['error']}">

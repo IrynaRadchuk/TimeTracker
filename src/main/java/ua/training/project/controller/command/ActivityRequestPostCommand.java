@@ -41,6 +41,7 @@ public class ActivityRequestPostCommand implements Command {
             servletUtil.setPRGToSession(request, PRG_REQUEST_ACTIVITY);
             return REDIRECT + ACTIVITY_REQUEST;
         }
+        servletUtil.setPRGToSession(request, PRG_REQUEST_ACTIVITY);
         return REDIRECT + ACTIVITY_REQUEST;
     }
 }

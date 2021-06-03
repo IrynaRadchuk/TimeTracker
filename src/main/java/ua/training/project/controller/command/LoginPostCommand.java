@@ -39,7 +39,6 @@ public class LoginPostCommand implements Command {
             return REDIRECT + LOGIN;
         }
         User user = userRepository.getUserFromDBByEmail(email);
-        log.debug("userId = " + user.getId());
         if (user.getEmail() == null) {
             servletUtil.setErrorToSession(request, ExceptionMessage.USER_NOT_EXIST.getMessage());
             servletUtil.setPRGToSession(request, PRG_LOGIN);
@@ -55,7 +54,6 @@ public class LoginPostCommand implements Command {
         servletUtil.setUserToSession(request, user.getRole(), user.getId());
         servletUtil.setPRGToSession(request, PRG_LOGIN);
         log.info(LoggerInfo.LOGIN_SUCCESS.getMessage());
-        log.debug("sessionRole= " + user.getRole());
         if (user.getRole() == Role.ADMIN) {
             return REDIRECT + MANAGE_USERS;
         }
@@ -63,7 +61,7 @@ public class LoginPostCommand implements Command {
             return REDIRECT + USER;
         }
         servletUtil.setErrorToSession(request, ExceptionMessage.WRONG_ROLE.getMessage());
-        servletUtil.setPRGToSession(request, "login");
+        servletUtil.setPRGToSession(request, PRG_LOGIN);
         log.error(ExceptionMessage.WRONG_ROLE.getMessage());
         return REDIRECT + LOGIN;
     }

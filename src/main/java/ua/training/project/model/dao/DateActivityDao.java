@@ -47,4 +47,14 @@ public class DateActivityDao {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "DateActivityDao{" +
+                "id=" + id +
+                ", activity='" + activity + '\'' +
+                ", date=" + date +
+                ", duration=" + duration +
+                '}';
+    }
 }

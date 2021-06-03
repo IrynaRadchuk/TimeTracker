@@ -6,14 +6,14 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b>User Statistics</b></h2>
+   <h2><b><fmt:message key="admin_page.users.header"/></b></h2>
    <table>
       <tr>
-         <th>User Id</th>
-         <th>Email</th>
-         <th>First Name</th>
-         <th>Last Name</th>
-         <th>Role</th>
+         <th><fmt:message key="admin_page.users.header0"/></th>
+         <th><fmt:message key="admin_page.users.header1"/></th>
+         <th><fmt:message key="admin_page.users.header2"/></th>
+         <th><fmt:message key="admin_page.users.header3"/></th>
+         <th><fmt:message key="admin_page.users.header4"/></th>
          <th></th>
       </tr>
       <c:forEach items="${all_users}" var="user">
@@ -47,8 +47,8 @@
                </select>
                </td>
                <td>
-                  <input class="button" type="submit" formaction="manageUsers" value="Change">
-                  <input class="cancelbtn" type="submit" formaction="deleteUsers" value="Delete">
+                  <input class="button" type="submit" formaction="manageUsers" value='<fmt:message key="button.change"/>'>
+                  <input class="cancelbtn" type="submit" formaction="deleteUsers" value='<fmt:message key="button.delete"/>'>
                </td>
             </tr>
          </form>
@@ -82,7 +82,7 @@
             </select>
             </td>
             <td>
-               <input class="button" type="submit" formaction="addUsers" value="Add">
+               <input class="button" type="submit" formaction="addUsers" value='<fmt:message key="button.addition"/>'>
             </td>
       </form>
       </tr>

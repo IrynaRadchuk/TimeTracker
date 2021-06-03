@@ -6,13 +6,13 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b>Activity Statistics</b></h2>
+   <h2><b><fmt:message key="admin_page.activities.header"/></b></h2>
    <table>
       <tr>
-         <th>Activity Id</th>
-         <th>Activity</th>
-         <th>Category ID</th>
-         <th>Category</th>
+         <th><fmt:message key="admin_page.activities.header0"/></th>
+         <th><fmt:message key="admin_page.activities.header1"/></th>
+         <th><fmt:message key="admin_page.activities.header2"/></th>
+         <th><fmt:message key="admin_page.activities.header3"/></th>
          <th></th>
       </tr>
       <c:forEach items="${activities_list}" var="active">
@@ -42,8 +42,8 @@
                </select>
                </td>
                <td>
-                  <input class="button" type="submit" formaction="manageActivities" value="Change">
-                  <input class="cancelbtn" type="submit" formaction="deleteActivities" value="Delete">
+                  <input class="button" type="submit" formaction="manageActivities" value='<fmt:message key="button.change"/>'>
+                  <input class="cancelbtn" type="submit" formaction="deleteActivities" value='<fmt:message key="button.delete"/>'>
                </td>
             </tr>
          </form>
@@ -73,7 +73,7 @@
             </select>
             </td>
             <td>
-               <input class="button" type="submit" formaction="addActivities" value="Add">
+               <input class="button" type="submit" formaction="addActivities" value='<fmt:message key="button.addition"/>'>
             </td>
       </form>
       </tr>

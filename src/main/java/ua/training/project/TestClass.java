@@ -30,10 +30,6 @@ public class TestClass {
 
 
     public static void main(String[] args) {
-        System.out.println(userRepository.getUserFromDB(64));
-        String qwerty123 = DigestUtils.md5Hex("Qwerty123");
-        System.out.println(qwerty123);
-        System.out.println(DigestUtils.md5Hex("Qwerty123"));
-        System.out.println(DigestUtils.md5Hex("Asdfgh12345"));
+        System.out.println(userActivityRepository.getAllUserActivitiesByDate(64));
     }
 }

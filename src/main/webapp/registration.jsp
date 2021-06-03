@@ -5,33 +5,33 @@
       <link rel="stylesheet" href="/css/background.css">
       <link rel="stylesheet" href="/css/login.css">
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <title>Login Page</title>
    </head>
    <body>
-      <h4>Please sign up to continue using Time Tracker</h4>
-      <h4>Already registered ? <a href ="login">Sign In</a></h4>
+   <h2><fmt:message key="registration_page.header"/></h2>
+      <h4><fmt:message key="registration_page.subheader1"/></h4>
+      <h4><fmt:message key="registration_page.subheader2"/><a href ="login"><fmt:message key="navbar.signin"/></a></h4>
       <form method="post" action="registration">
          <div class="container">
-            <label for="email"><b>Email</b></label>
+            <label for="email"><b><fmt:message key="login_page.email"/></b></label>
             <br>
-            <input type="text" placeholder="Enter Email" name="email">
+            <input type="text" placeholder='<fmt:message key="login_page.email.enter"/>' name="email">
             <br>
-            <label for="password"><b>Password</b></label>
+            <label for="password"><b><fmt:message key="login_page.password"/></b></label>
             <br>
-            <input type="password" placeholder="Enter Password" name="password">
+            <input type="password" placeholder='<fmt:message key="login_page.password.enter"/>' name="password">
             <br>
-            <label for="firstName"><b>First Name</b></label>
+            <label for="firstName"><b><fmt:message key="registration_page.first.name"/></b></label>
             <br>
-            <input type="text" placeholder="Enter First Name" name="firstName">
+            <input type="text" placeholder='<fmt:message key="registration_page.first.name.enter"/>' name="firstName">
             <br>
-            <label for="lastName"><b>Last Name</b></label>
+            <label for="lastName"><b><fmt:message key="registration_page.last.name"/></b></label>
             <br>
-            <input type="text" placeholder="Enter Last Name" name="lastName">
+            <input type="text" placeholder='<fmt:message key="registration_page.last.name.enter"/>' name="lastName">
             <br>
-            <input class="button" type="submit" value="Sign Up">
+            <input class="button" type="submit" value='<fmt:message key="navbar.signup"/>'>
       </form>
       </div>
       <form action="index">
-      <input class="cancelbtn" type="submit" value="Cancel">
+      <input class="cancelbtn" type="submit" value='<fmt:message key="button.cancel"/>'>
    </body>
 </html>

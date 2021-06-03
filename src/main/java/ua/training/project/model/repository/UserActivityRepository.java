@@ -70,15 +70,27 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             if (!resultSet.next()) {
                 return ActivityStatus.ABSENT;
             }
-            String status = resultSet.getString("status");
-            System.out.println("STATUS" + ActivityStatus.valueOf(status));
-            return ActivityStatus.valueOf(status);
+            return ActivityStatus.valueOf(resultSet.getString("status"));
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
     }
-
+    public boolean checkActivityInDB(int userId, String activity, LocalDate date) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.CHECK_ACTIVITY_PRESENCE)) {
+            statement.setString(1, activity);
+            statement.setString(2, String.valueOf(date));
+            statement.setInt(3,userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new TimeTrackerException(ExceptionMessage.DB_CONNECTION);
+        }
+        return false;
+    }
     /**
      * Add new activity with date and time by user
      */
@@ -91,6 +103,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         if (timeValidation(date) + duration > 8) {
             request.setAttribute("error", ExceptionMessage.OVERTIME);
             throw new TimeTrackerException(ExceptionMessage.OVERTIME);
+        }
+        if (checkActivityInDB(userId, activity, date)) {
+            request.setAttribute("error", ExceptionMessage.ACTIVITY_ALREADY_STORED);
+            throw new TimeTrackerException(ExceptionMessage.ACTIVITY_ALREADY_STORED);
         }
         int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ACTIVITY_CREATE)) {
@@ -134,16 +150,15 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Get all activities by date for a user
      */
-    public List<DateActivityDao> getAllUserActivitiesByDate(int id, LocalDate date) {
+    public List<DateActivityDao> getAllUserActivitiesByDate(int id) {
         List<DateActivityDao> activities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.SHOW_USER_ACTIVITIES_BY_DATE)) {
             statement.setInt(1, id);
-            statement.setString(2, String.valueOf(date));
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 DateActivityDao userActivity = new DateActivityDao();
                 userActivity.setId(id);
-                userActivity.setDate(date);
+                userActivity.setDate(LocalDate.parse(resultSet.getString("user_activity.activity_date")));
                 userActivity.setActivity(resultSet.getString("activity.activity_name"));
                 userActivity.setDuration(resultSet.getInt("user_activity.activity_duration"));
                 activities.add(userActivity);
@@ -154,7 +169,16 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         }
         return activities;
     }
-
+    public void deleteActivityTime(int id, LocalDate date) {
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.DELETE_ACTIVITY_TIME)) {
+            statement.setInt(1, id);
+            statement.setString(2, String.valueOf(date));
+           statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+    }
     /**
      * Get a list of pending activities for admin to approve
      */
@@ -309,6 +333,44 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             throw new DBException(ExceptionMessage.DB_CONNECTION);
         }
         return userStatistics;
+    }
+
+    public List<UserStatisticsDao> getUserStatistics(int currentPage, int recordsPerPage) {
+        List<UserStatisticsDao> userStatistics = new ArrayList<>();
+        int start = currentPage * recordsPerPage - recordsPerPage;
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS_LIMIT)) {
+            statement.setInt(1,start);
+            statement.setInt(2,start+recordsPerPage);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                UserStatisticsDao user = new UserStatisticsDao();
+                user.setDate(LocalDate.parse(resultSet.getString("activity_date")));
+                user.setEmail(resultSet.getString("user_email"));
+                user.setFirstName(resultSet.getString("user_first_name"));
+                user.setLastName(resultSet.getString("user_last_name"));
+                user.setActivity(resultSet.getString("activity_name"));
+                user.setDuration(resultSet.getInt("activity_duration"));
+                userStatistics.add(user);
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+        return userStatistics;
+    }
+
+    public Integer getNumberOfRows() {
+        Integer numOfRows = 0;
+        try (PreparedStatement statement = connection.prepareStatement(DBStatement.ROWS_NUMBER)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                numOfRows= resultSet.getInt("count(user_activity.activity_date)");
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            throw new DBException(ExceptionMessage.DB_CONNECTION);
+        }
+        return numOfRows;
     }
 
     @Override

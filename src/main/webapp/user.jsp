@@ -1,7 +1,6 @@
 <%@include file="templateLogged.jsp" %>
 <!doctype html>
 <head>
-   <title>Activities Tracker</title>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
@@ -14,7 +13,6 @@
    <div class="container">
       <div class="row justify-content-center">
          <div class="col-md-6 text-center mb-5">
-            <h2 class="heading-section">Activities Tracker</h2>
          </div>
       </div>
       <div class="row">
@@ -60,22 +58,30 @@
                            </tbody>
                         </table>
                      </div>
-                     <button class="button" id="add-button">Add Activity</button>
+                     <button class="button" id="add-button"><fmt:message key="user_page.activity.add"/></button>
                   </div>
                </div>
                <div class="events-container">
                </div>
                <div class="dialog" id="dialog">
-                  <h2 class="dialog-header"> Add Activity </h2>
+                  <h2 class="dialog-header"> <fmt:message key="user_page.activity.add"/> </h2>
                   <form class="form" id="form" method="post" action="${pageContext.request.contextPath}/tracker/user">
                      <div class="form-container" align="center">
-                        <label class="form-label" id="valueFromMyButton" for="name">Activity Name</label>
-                        <input class="input" type="text" id="name" name="name" maxlength="36">
-                        <label class="form-label" id="valueFromMyButton" for="count">Time Duration (hours)</label>
+                        <label class="form-label" id="valueFromMyButton" for="name"><fmt:message key="user_page.activity.name"/></label>
+                        <br>
+                              <select name="user_activities" id="user_activities">
+                                 <c:forEach items="${user_activities}" var="name">
+                                    <option value="${name}">
+                                       ${name}
+                                       </c:forEach>
+                        </select>
+                        <br>
+                                       <br>
+                        <input class="input" type="hidden" id="name" name="name" maxlength="36">
+                        <label class="form-label" id="valueFromMyButton" for="count"><fmt:message key="user_page.activity.duration"/></label>
                         <input class="input" type="number" id="count" name="count" min="0" max="8" maxlength="1">
-                        <input type="button" value="Cancel" class="button" id="cancel-button">
-                        <input type="submit" value="OK" class="button button-white" id="ok-button">
-                     </div>
+                        <input type="button" value='<fmt:message key="button.cancel"/>' class="button" id="cancel-button">
+                        <input type="submit" value='<fmt:message key="button.ok"/>' class="button button-white" id="ok-button">
                      <input class="input" type="hidden" id="date" name="date">
                      <input class="input" type="hidden" id="day" name="day">
                </div>

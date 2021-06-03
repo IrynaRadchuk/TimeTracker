@@ -6,14 +6,14 @@
    <link rel="stylesheet" href="/css/table.css">
 </head>
 <body>
-   <h2><b>Pending Activities</b></h2>
+   <h2><b><fmt:message key="admin_page.requests.header"/></b></h2>
    <table>
       <tr>
-         <th>User Id</th>
-         <th>User Email</th>
-         <th>User First Name</th>
-         <th>User Last Name</th>
-         <th>Activity</th>
+         <th><fmt:message key="admin_page.users.header0"/></th>
+         <th><fmt:message key="admin_page.users.header1"/></th>
+         <th><fmt:message key="admin_page.users.header2"/></th>
+         <th><fmt:message key="admin_page.users.header3"/></th>
+         <th><fmt:message key="admin_page.activities.header1"/></th>
          <th></th>
       </tr>
       <c:forEach items="${pending_activities}" var="pending">
@@ -45,8 +45,8 @@
                   <input type="text" option value="${pending.activityName}"out value=${pending.activityName} name="pending_activity_name" readonly>
                  </td>
                <td>
-                  <input class="button" type="submit" formaction="approveRequest" value="Approve">
-                  <input class="cancelbtn" type="submit" formaction="denyRequest" value="Deny">
+                  <input class="button" type="submit" formaction="approveRequest" value='<fmt:message key="button.approve"/>'>
+                  <input class="cancelbtn" type="submit" formaction="denyRequest" value='<fmt:message key="button.deny"/>'>
                </td>
             </tr>
          </form>

@@ -5,17 +5,13 @@ public interface Path {
     String LOGIN_PAGE = "/login.jsp";
     String LOGIN = "/login";
     String LOGOUT = "/logout";
-    String LOGIN_PRG = "/loginPrg";
     String HOMEPAGE = "/index.jsp";
-    String ADMIN_PAGE = "/admin.jsp";
-    String ADMIN = "/admin";
     String USER_PAGE = "/user.jsp";
     String USER = "/user";
     String ERROR_PAGE = "/error.jsp";
     String ERROR = "/error";
     String REGISTRATION_PAGE = "/registration.jsp";
     String REGISTRATION = "/registration";
-    String REGISTRATION_PRG = "/registrationPrg";
     String PROFILE_PAGE = "/profile.jsp";
     String PROFILE = "/profile";
     String UPDATE_PAGE = "/update.jsp";
@@ -38,5 +34,6 @@ public interface Path {
     String USER_STAT = "/userStat";
     String ACTIVITY_STAT_PAGE = "/activityStat.jsp";
     String ACTIVITY_STAT = "/activityStat";
-    String SHOW = "/show";
+    String SHOW = "/showActivities";
+    String SHOW_PAGE = "/showActivities.jsp";
 }

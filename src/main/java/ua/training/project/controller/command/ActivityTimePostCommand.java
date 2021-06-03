@@ -33,7 +33,7 @@ public class ActivityTimePostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String activityName = request.getParameter("name");
+        String activityName = request.getParameter("user_activities");
         int duration = Integer.parseInt(request.getParameter("count"));
         String date = request.getParameter("date");
         String day = request.getParameter("day");
@@ -59,6 +59,7 @@ public class ActivityTimePostCommand implements Command {
             servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME);
             return REDIRECT + USER;
         }
+        servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME);
         return REDIRECT + USER;
     }
 }

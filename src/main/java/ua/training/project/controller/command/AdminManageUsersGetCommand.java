@@ -27,7 +27,7 @@ public class AdminManageUsersGetCommand extends PRG implements Command {
         }
         List<User> users = userRepository.getAllUsers();
         request.setAttribute("all_users", users);
-        List<Role> roles = users.stream().map(x -> x.getRole()).collect(Collectors.toList());
+        List<Role> roles = users.stream().map(x -> x.getRole()).distinct().collect(Collectors.toList());
         request.setAttribute("all_roles", roles);
         return MANAGE_USERS_PAGE;
     }

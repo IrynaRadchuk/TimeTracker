@@ -49,6 +49,7 @@ public class Servlet extends HttpServlet {
         getCommands.put("manageRequests", new AdminManageRequestsGetCommand());
         getCommands.put("activityStat", new AdminActivityStatisticsGetCommand());
         getCommands.put("userStat", new AdminUserStatisticsGetCommand());
+        getCommands.put("showActivities", new ActivityTimeShowGetCommand());
 
         postCommands.put("login", new LoginPostCommand());
         postCommands.put("logout", new LogoutCommand());
@@ -64,7 +65,7 @@ public class Servlet extends HttpServlet {
         postCommands.put("denyRequest", new AdminDenyRequestsPostCommand());
         postCommands.put("deleteUsers", new AdminDeleteUsersPostCommand());
         postCommands.put("addUsers", new AdminAddUsersPostCommand());
-        postCommands.put("show", new ActivityTimeShowPostCommand());
+        postCommands.put("showActivities", new ActivityTimeShowPostCommand());
     }
 
     /**

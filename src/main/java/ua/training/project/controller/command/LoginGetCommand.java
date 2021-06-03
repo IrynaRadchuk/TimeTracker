@@ -15,9 +15,7 @@ public class LoginGetCommand extends PRG implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        System.err.println("login HERE");
         if (checkPRG(request, PRG_LOGIN)) {
-            System.err.println("login PRG HERE");
             executePRG(request);
         }
         cleanUpSession(request);

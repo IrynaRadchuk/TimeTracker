@@ -9,7 +9,3 @@ td, th {
   text-align: left;
   padding: 2px;
 }
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
