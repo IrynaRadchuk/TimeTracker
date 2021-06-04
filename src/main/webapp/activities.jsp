@@ -1,5 +1,5 @@
 <%@include file="templateLogged.jsp" %>
-<!doctype html>
+<html>
 <head>
    <link rel="stylesheet" href="/css/background.css">
    <link rel="stylesheet" href="/css/profile.css">

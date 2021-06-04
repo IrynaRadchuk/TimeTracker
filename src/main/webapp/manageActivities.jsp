@@ -1,5 +1,5 @@
 <%@include file="templateAdmin.jsp" %>
-<!doctype html>
+<html>
 <head>
    <link rel="stylesheet" href="/css/background.css">
    <link rel="stylesheet" href="/css/manage.css">
@@ -90,4 +90,5 @@
       </form>
       </tr>
    </table>
+   </body>
 </html>

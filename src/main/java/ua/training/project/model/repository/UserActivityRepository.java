@@ -13,6 +13,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static ua.training.project.constant.Path.ERROR_PAGE;
 import static ua.training.project.constant.SessionCall.ERROR;
@@ -77,6 +78,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         }
     }
 
+    /**
+     * Check activity presence on certain date
+     */
     public boolean checkActivityInDB(int userId, String activity, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CHECK_ACTIVITY_PRESENCE)) {
             statement.setString(1, activity);
@@ -101,7 +105,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         if (checkUserActivityStatus(userId, activity) != ActivityStatus.APPROVED) {
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
-        if (timeValidation(date) + duration > 8) {
+        if (timeValidation(userId, date) + duration > 8) {
             throw new PermissionDeniedException(ExceptionMessage.OVERTIME);
         }
         if (checkActivityInDB(userId, activity, date)) {
@@ -169,6 +173,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         return activities;
     }
 
+    /**
+     * Delete activity on certain date by user
+     */
     public void deleteActivityTime(int id, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.DELETE_ACTIVITY_TIME)) {
             statement.setInt(1, id);
@@ -278,10 +285,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Check total activities time for certain date
      */
-    public int timeValidation(LocalDate date) {
+    public int timeValidation(int id, LocalDate date) {
         int time = 0;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_BY_DATE_DURATION)) {
             statement.setString(1, String.valueOf(date));
+            statement.setInt(2, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 time = resultSet.getInt("sum(activity_duration)");
@@ -323,7 +331,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         int start = currentPage * recordsPerPage - recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_STATISTICS_LIMIT)) {
             statement.setInt(1, start);
-            statement.setInt(2, start + recordsPerPage);
+            statement.setInt(2, recordsPerPage);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 UserStatisticsDao user = new UserStatisticsDao();
@@ -342,6 +350,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         return userStatistics;
     }
 
+    /**
+     * Get number of rows in database table for pagination
+     */
     public Integer getNumberOfRows() {
         Integer numOfRows = 0;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ROWS_NUMBER)) {
@@ -358,7 +369,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
 
     @Override
     public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
+        if (Objects.nonNull(connection) && !connection.isClosed()) {
             connection.close();
         }
     }

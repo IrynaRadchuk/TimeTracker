@@ -1,5 +1,7 @@
 package ua.training.project.model.dao;
 
+import java.util.Objects;
+
 /**
  * DAO class to manage pending activities in database
  *
@@ -50,5 +52,33 @@ public class PendingActivity {
 
     public void setActivityName(String activityName) {
         this.activityName = activityName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PendingActivity)) return false;
+        PendingActivity activity = (PendingActivity) o;
+        return userId == activity.userId &&
+                Objects.equals(email, activity.email) &&
+                Objects.equals(firstName, activity.firstName) &&
+                Objects.equals(lastName, activity.lastName) &&
+                Objects.equals(activityName, activity.activityName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, email, firstName, lastName, activityName);
+    }
+
+    @Override
+    public String toString() {
+        return "PendingActivity{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", activityName='" + activityName + '\'' +
+                '}';
     }
 }

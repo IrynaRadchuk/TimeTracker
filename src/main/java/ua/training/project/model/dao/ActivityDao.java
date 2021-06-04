@@ -1,5 +1,7 @@
 package ua.training.project.model.dao;
 
+import java.util.Objects;
+
 /**
  * DAO class to manage activities in database
  *
@@ -41,5 +43,31 @@ public class ActivityDao {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActivityDao)) return false;
+        ActivityDao that = (ActivityDao) o;
+        return id == that.id &&
+                categoryId == that.categoryId &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(category, that.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, categoryId, category);
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityDao{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

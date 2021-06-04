@@ -1,9 +1,10 @@
 package ua.training.project.model.dao;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
- * DAO class to get user statistics from database
+ * DAO class to manage user statistics in database
  *
  * @author Iryna Radchuk
  */
@@ -61,5 +62,35 @@ public class UserStatisticsDao {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserStatisticsDao)) return false;
+        UserStatisticsDao that = (UserStatisticsDao) o;
+        return duration == that.duration &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(activity, that.activity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, email, firstName, lastName, activity, duration);
+    }
+
+    @Override
+    public String toString() {
+        return "UserStatisticsDao{" +
+                "date=" + date +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", activity='" + activity + '\'' +
+                ", duration=" + duration +
+                '}';
     }
 }

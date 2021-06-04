@@ -1,11 +1,8 @@
-<!DOCTYPE html>
 <%@include file="templateGuest.jsp" %>
 <html>
    <head>
       <link rel="stylesheet" href="/css/background.css">
       <link rel="stylesheet" href="/css/login.css">
-   </head>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    </head>
    <body>
       <h2>

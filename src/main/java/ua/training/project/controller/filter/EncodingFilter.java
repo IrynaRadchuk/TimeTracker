@@ -2,6 +2,7 @@ package ua.training.project.controller.filter;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Set characters encoding filtration
@@ -20,7 +21,7 @@ public class EncodingFilter implements Filter {
             throws IOException, ServletException {
 
         String requestEncoding = servletRequest.getCharacterEncoding();
-        if (requestEncoding == null) {
+        if (Objects.isNull(requestEncoding)) {
             servletRequest.setCharacterEncoding(encoding);
         }
         servletResponse.setContentType("text/html; charset=UTF-8");
@@ -29,7 +30,7 @@ public class EncodingFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         encoding = filterConfig.getInitParameter("encoding");
     }
 

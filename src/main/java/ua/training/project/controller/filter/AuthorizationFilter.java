@@ -2,8 +2,6 @@ package ua.training.project.controller.filter;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.exception.ExceptionMessage;
 import ua.training.project.model.entity.Role;

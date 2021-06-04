@@ -3,6 +3,7 @@ package ua.training.project.controller.filter;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Filter to change language parameter
@@ -11,13 +12,14 @@ import java.io.IOException;
  * @see Filter
  */
 public class LocalizationFilter implements Filter {
+
     /**
      * Set language parameter to session
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        if (request.getParameter("lang") != null) {
+        if (Objects.nonNull(request.getParameter("lang"))) {
             request.getSession().setAttribute("lang", request.getParameter("lang"));
         }
         filterChain.doFilter(servletRequest, servletResponse);

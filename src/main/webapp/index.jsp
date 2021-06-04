@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%@include file="templateGuest.jsp" %>
 <html>
    <head>

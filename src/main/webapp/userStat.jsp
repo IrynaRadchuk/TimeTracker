@@ -1,5 +1,5 @@
 <%@include file="templateAdmin.jsp" %>
-<!doctype html>
+<html>
 <head>
    <link rel="stylesheet" href="/css/background.css">
    <link rel="stylesheet" href="/css/manage.css">
@@ -12,24 +12,24 @@
          <fmt:message key="statistics_page.user.header"/>
       </b>
    </h2>
-   <table id="myTable" class="tablesorter">
+   <table>
       <tr>
-         <th onclick="sortTable(0)">
+         <th>
             <fmt:message key="statistics_page.user.table.head0"/>
          </th>
-         <th onclick="sortTable(1)">
+         <th>
             <fmt:message key="statistics_page.user.table.head1"/>
          </th>
-         <th onclick="sortTable(2)">
+         <th>
             <fmt:message key="statistics_page.user.table.head2"/>
          </th>
-         <th onclick="sortTable(3)">
+         <th>
             <fmt:message key="statistics_page.user.table.head3"/>
          </th>
-         <th onclick="sortTable(4)">
+         <th>
             <fmt:message key="statistics_page.user.table.head4"/>
          </th>
-         <th onclick="sortTable(5)">
+         <th>
             <fmt:message key="statistics_page.user.table.head5"/>
          </th>
       </tr>

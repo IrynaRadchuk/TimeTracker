@@ -1,6 +1,7 @@
 package ua.training.project.model.dao;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * DAO class to manage activities with dates in database
@@ -43,6 +44,22 @@ public class DateActivityDao {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DateActivityDao)) return false;
+        DateActivityDao that = (DateActivityDao) o;
+        return id == that.id &&
+                duration == that.duration &&
+                Objects.equals(activity, that.activity) &&
+                Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, activity, date, duration);
     }
 
     @Override

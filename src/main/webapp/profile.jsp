@@ -1,5 +1,5 @@
 <%@include file="templateLogged.jsp" %>
-<!doctype html>
+<html>
 <head>
    <link rel="stylesheet" href="/css/background.css">
    <link rel="stylesheet" href="/css/profile.css">
@@ -64,4 +64,5 @@
          <input class="button" type="submit" value='<fmt:message key="profile_page.update"/>'>
       </form>
    </div>
+   </body>
 </html>

@@ -12,6 +12,7 @@ import ua.training.project.model.entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static ua.training.project.constant.Path.ERROR_PAGE;
 
@@ -213,9 +214,8 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
+        if (Objects.nonNull(connection) && !connection.isClosed()) {
             connection.close();
         }
     }
 }
-

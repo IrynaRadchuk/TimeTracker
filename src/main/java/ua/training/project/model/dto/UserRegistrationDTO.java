@@ -67,4 +67,14 @@ public class UserRegistrationDTO {
     public int hashCode() {
         return Objects.hash(email, password, firstName, lastName);
     }
+
+    @Override
+    public String toString() {
+        return "UserRegistrationDTO{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package ua.training.project.model.entity;
 
+import java.util.Objects;
+
 public class Activity {
     private int id;
     private String name;
@@ -41,6 +43,21 @@ public class Activity {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Activity)) return false;
+        Activity activity = (Activity) o;
+        return id == activity.id &&
+                categoryId == activity.categoryId &&
+                Objects.equals(name, activity.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, categoryId);
     }
 
     @Override

@@ -21,12 +21,12 @@ public class InputValidation {
     private static final Logger log = LogManager.getLogger(InputValidation.class);
 
     /**
-     * Check registration data entered by user
+     * Check update data entered by user
      *
      * @param userDTO Handle user registration data
      */
     public List<String> updateValidation(UserRegistrationDTO userDTO) {
-       List<String> errorMessages = new ArrayList<>();
+        List<String> errorMessages = new ArrayList<>();
         if (userDTO.getEmail().isEmpty()) {
             errorMessages.add(ExceptionMessage.EMPTY_EMAIL.getMessage());
             log.error(ExceptionMessage.EMPTY_EMAIL);
@@ -62,7 +62,12 @@ public class InputValidation {
         return errorMessages;
     }
 
-    public List<String> fullValidation(UserRegistrationDTO userDTO){
+    /**
+     * Check registration data entered by user
+     *
+     * @param userDTO Handle user registration data
+     */
+    public List<String> fullValidation(UserRegistrationDTO userDTO) {
         UserRepository userRepository = UserRepository.getInstance();
         List<String> errorMessages = updateValidation(userDTO);
         if (StringUtils.isNoneEmpty(userDTO.getEmail()) && userRepository.checkUserEmailInDB(userDTO.getEmail())) {

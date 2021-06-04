@@ -1,4 +1,3 @@
-<!doctype html>
 <%@include file="templateError.jsp" %>
 <html>
 <head>

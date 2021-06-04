@@ -111,11 +111,11 @@ public class Servlet extends HttpServlet {
         String page;
         try {
             page = command.execute(request);
-        }catch (TimeTrackerException e) {
+        } catch (TimeTrackerException e) {
             log.error(e.getUrl() + " message " + e.getMessage());
             request.setAttribute(ERROR, e.getMessage());
             page = e.getUrl();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             page = ERROR_PAGE;
         }

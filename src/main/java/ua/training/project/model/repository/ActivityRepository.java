@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static ua.training.project.constant.Path.ERROR_PAGE;
 
@@ -145,9 +146,8 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
 
     @Override
     public void close() throws Exception {
-        if (connection != null && !connection.isClosed()) {
+        if (Objects.nonNull(connection) && !connection.isClosed()) {
             connection.close();
         }
     }
-
 }

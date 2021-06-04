@@ -1,6 +1,5 @@
 package ua.training.project.model.repository;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,15 +14,15 @@ public class ConnectionHandler {
 
     /**
      * Get connection to database
-     *
      */
-    public static Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            String driver = resourceBundle.getString("db.driver");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
         String property = resourceBundle.getString("db.url");
         return DriverManager.getConnection(property);
     }
