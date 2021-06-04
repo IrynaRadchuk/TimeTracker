@@ -39,7 +39,7 @@ public class AdminDenyRequestsPostCommand implements Command {
             servletUtil.setPRGToSession(request, PRG_DENY_REQUEST);
         }
         servletUtil.setPRGToSession(request, PRG_DENY_REQUEST);
-        log.info(LoggerInfo.REQUEST_DENY);
+        log.info(LoggerInfo.REQUEST_DENY.getMessage());
         return REDIRECT + MANAGE_REQUESTS;
     }
 }

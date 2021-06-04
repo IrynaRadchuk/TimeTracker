@@ -29,7 +29,7 @@ public class AdminAddActivitiesPostCommand implements Command {
         String category = request.getParameter("category_list");
         activityRepository.createActivity(activity, category);
         servletUtil.setPRGToSession(request, PRG_ADD_ACTIVITY);
-        log.info(LoggerInfo.ACTIVITY_ADD);
+        log.info(LoggerInfo.ACTIVITY_ADD.getMessage());
         return REDIRECT + MANAGE_ACTIVITIES;
     }
 }

@@ -31,7 +31,7 @@ public class AdminAddUsersPostCommand implements Command {
         String role = request.getParameter("all_roles");
         userRepository.addUser(email, firstName, lastName, role);
         servletUtil.setPRGToSession(request, PRG_ADD_USER);
-        log.info(LoggerInfo.USER_ADD);
+        log.info(LoggerInfo.USER_ADD.getMessage());
         return REDIRECT + MANAGE_USERS;
     }
 }

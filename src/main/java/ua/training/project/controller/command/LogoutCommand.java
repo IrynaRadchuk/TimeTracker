@@ -21,7 +21,7 @@ public class LogoutCommand implements Command {
     public String execute(HttpServletRequest request) {
         ServletUtil servletUtil = new ServletUtil();
         servletUtil.deleteUserFromContextAndSession(request);
-        log.info(LoggerInfo.LOGOUT);
+        log.info(LoggerInfo.LOGOUT.getMessage());
         return Path.HOMEPAGE;
     }
 }

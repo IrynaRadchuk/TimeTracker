@@ -28,7 +28,7 @@ public class AdminDeleteActivitiesPostCommand implements Command {
         int activityId = Integer.parseInt(request.getParameter("active_id"));
         activityRepository.deleteActivity(activityId);
         servletUtil.setPRGToSession(request, PRG_DELETE_ACTIVITY);
-        log.info(LoggerInfo.ACTIVITY_DELETE);
+        log.info(LoggerInfo.ACTIVITY_DELETE.getMessage());
         return REDIRECT + MANAGE_ACTIVITIES;
     }
 }

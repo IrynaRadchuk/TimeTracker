@@ -30,7 +30,7 @@ public class ActivityTimeShowPostCommand implements Command {
         servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME_SHOW);
         Integer id = servletUtil.getSessionID(request);
         userActivityRepository.deleteActivityTime(id, date);
-        log.info(LoggerInfo.ACTIVITY_DELETED);
+        log.info(LoggerInfo.ACTIVITY_DELETED.getMessage());
         return REDIRECT + SHOW;
     }
 }

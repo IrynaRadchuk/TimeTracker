@@ -32,7 +32,7 @@ public class AdminManageUsersPostCommand implements Command {
         String role = request.getParameter("all_roles");
         userRepository.changeUser(email, firstName, lastName, role, id);
         servletUtil.setPRGToSession(request, PRG_UPDATE_USER);
-        log.info(LoggerInfo.USER_UPDATED);
+        log.info(LoggerInfo.USER_UPDATED.getMessage());
         return REDIRECT + MANAGE_USERS;
     }
 }

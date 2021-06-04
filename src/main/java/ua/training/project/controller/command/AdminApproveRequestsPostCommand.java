@@ -39,7 +39,7 @@ public class AdminApproveRequestsPostCommand implements Command {
             servletUtil.setPRGToSession(request, PRG_APPROVE_REQUEST);
         }
         servletUtil.setPRGToSession(request, PRG_APPROVE_REQUEST);
-        log.info(LoggerInfo.ACTIVITY_APPROVED);
+        log.info(LoggerInfo.ACTIVITY_APPROVED.getMessage());
         return REDIRECT + MANAGE_REQUESTS;
     }
 }

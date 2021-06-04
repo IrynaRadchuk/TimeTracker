@@ -30,7 +30,7 @@ public class AdminManageActivitiesPostCommand implements Command {
         String category = request.getParameter("category_list");
         activityRepository.updateActivity(activityId, activityName, category);
         servletUtil.setPRGToSession(request, PRG_UPDATE_ACTIVITY);
-        log.info(LoggerInfo.ACTIVITY_UPDATED);
+        log.info(LoggerInfo.ACTIVITY_UPDATED.getMessage());
         return REDIRECT + MANAGE_ACTIVITIES;
     }
 }

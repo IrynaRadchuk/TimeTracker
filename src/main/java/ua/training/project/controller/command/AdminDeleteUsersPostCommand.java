@@ -28,7 +28,7 @@ public class AdminDeleteUsersPostCommand implements Command {
         int id = Integer.parseInt(request.getParameter("user_id"));
         userRepository.deleteUser(id);
         servletUtil.setPRGToSession(request, PRG_DELETE_USER);
-        log.info(LoggerInfo.USER_DELETE);
+        log.info(LoggerInfo.USER_DELETE.getMessage());
         return REDIRECT + MANAGE_USERS;
     }
 }
