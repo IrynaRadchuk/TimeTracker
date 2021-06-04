@@ -10,26 +10,6 @@ public class User {
     private String lastName;
     private Role role;
 
-    public User() {
-    }
-
-    public User(String email, String password, String firstName, String lastName, Role role) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
-
-    public User(int id, String email, String password, String firstName, String lastName, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
-
     public int getId() {
         return id;
     }
@@ -80,10 +60,6 @@ public class User {
 
     public int getRoleId() {
         return role.getRoleId();
-    }
-
-    public User(Role role) {
-        this.role = role;
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.ERROR_PAGE;
 
 /**
@@ -88,12 +89,12 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
-                user.setId(resultSet.getInt("user_id"));
-                user.setEmail(resultSet.getString("user_email"));
-                user.setPassword(resultSet.getString("user_password"));
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
+                user.setId(resultSet.getInt(USERS_ID));
+                user.setEmail(resultSet.getString(USERS_EMAIL));
+                user.setPassword(resultSet.getString(USERS_PASSWORD));
+                user.setFirstName(resultSet.getString(USERS_FIRST_NAME));
+                user.setLastName(resultSet.getString(USERS_LAST_NAME));
+                user.setRole(Role.getRoleById(resultSet.getInt(ROLE_ID)));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -125,12 +126,12 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                user.setId(resultSet.getInt("user_id"));
-                user.setEmail(resultSet.getString("user_email"));
-                user.setPassword(resultSet.getString("user_password"));
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
+                user.setId(resultSet.getInt(USERS_ID));
+                user.setEmail(resultSet.getString(USERS_EMAIL));
+                user.setPassword(resultSet.getString(USERS_PASSWORD));
+                user.setFirstName(resultSet.getString(USERS_FIRST_NAME));
+                user.setLastName(resultSet.getString(USERS_LAST_NAME));
+                user.setRole(Role.getRoleById(resultSet.getInt(ROLE_ID)));
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -148,12 +149,12 @@ public class UserRepository extends ConnectionHandler implements AutoCloseable {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                user.setId(resultSet.getInt("user_id"));
-                user.setEmail(resultSet.getString("user_email"));
-                user.setPassword(resultSet.getString("user_password"));
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setRole(Role.getRoleById(resultSet.getInt("role_id")));
+                user.setId(resultSet.getInt(USERS_ID));
+                user.setEmail(resultSet.getString(USERS_EMAIL));
+                user.setPassword(resultSet.getString(USERS_PASSWORD));
+                user.setFirstName(resultSet.getString(USERS_FIRST_NAME));
+                user.setLastName(resultSet.getString(USERS_LAST_NAME));
+                user.setRole(Role.getRoleById(resultSet.getInt(ROLE_ID)));
             }
         } catch (SQLException e) {
             log.error(e.getMessage());

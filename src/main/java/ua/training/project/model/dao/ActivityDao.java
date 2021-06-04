@@ -12,6 +12,15 @@ public class ActivityDao {
     private String name;
     private int categoryId;
     private String category;
+    private String nameUa;
+
+    public String getNameUa() {
+        return nameUa;
+    }
+
+    public void setNameUa(String nameUa) {
+        this.nameUa = nameUa;
+    }
 
     public int getId() {
         return id;

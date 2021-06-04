@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.ERROR_PAGE;
 
 /**
@@ -51,10 +52,11 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ActivityDao activity = new ActivityDao();
-                activity.setId(resultSet.getInt("activity.activity_id"));
-                activity.setName(resultSet.getString("activity.activity_name"));
-                activity.setCategoryId(resultSet.getInt("activity.category_id"));
-                activity.setCategory(resultSet.getString("activity_category.category_name"));
+                activity.setId(resultSet.getInt(ACTIVITY_ACTIVITY_ID));
+                activity.setName(resultSet.getString(ACTIVITY_ACTIVITY_NAME));
+                activity.setCategoryId(resultSet.getInt(ACTIVITY_CATEGORY_ID));
+                activity.setCategory(resultSet.getString(ACTIVITY_CATEGORY_NAME));
+                activity.setNameUa(resultSet.getString(ACTIVITY_ACTIVITY_UA));
                 activities.add(activity);
             }
         } catch (SQLException e) {
@@ -73,9 +75,10 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Activity activity = new Activity();
-                activity.setId(resultSet.getInt("activity_id"));
-                activity.setName(resultSet.getString("activity_name"));
-                activity.setCategoryId(resultSet.getInt("category_id"));
+                activity.setId(resultSet.getInt(ACTIVITY_ID));
+                activity.setName(resultSet.getString(ACTIVITY_NAME));
+                activity.setCategoryId(resultSet.getInt(CATEGORY_ID));
+                activity.setNameUa(resultSet.getString(ACTIVITY_UA));
                 activities.add(activity);
             }
         } catch (SQLException e) {
@@ -88,11 +91,12 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
     /**
      * Update activity by admin
      */
-    public void updateActivity(int activityId, String activity, String category) {
+    public void updateActivity(int activityId, String activity, String category, String nameUa) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CHANGE)) {
             statement.setString(1, activity);
-            statement.setString(2, category);
-            statement.setInt(3, activityId);
+            statement.setString(2, nameUa);
+            statement.setString(3, category);
+            statement.setInt(4, activityId);
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -116,10 +120,11 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
     /**
      * Add activity by admin
      */
-    public void createActivity(String activity, String category) {
+    public void createActivity(String activity, String category, String activityUa) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_CREATE)) {
             statement.setString(1, activity);
             statement.setString(2, category);
+            statement.setString(3,activityUa);
             statement.executeUpdate();
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -135,7 +140,7 @@ public class ActivityRepository extends ConnectionHandler implements AutoCloseab
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CATEGORY_GET_ALL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                categories.add(resultSet.getString("category_name"));
+                categories.add(resultSet.getString(CATEGORY_NAME));
             }
         } catch (SQLException e) {
             log.error(e.getMessage());

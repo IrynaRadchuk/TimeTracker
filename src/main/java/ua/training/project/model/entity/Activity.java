@@ -6,19 +6,14 @@ public class Activity {
     private int id;
     private String name;
     private int categoryId;
+    private String nameUa;
 
-    public Activity(String name, int categoryId) {
-        this.name = name;
-        this.categoryId = categoryId;
+    public String getNameUa() {
+        return nameUa;
     }
 
-    public Activity(int id, String name, int categoryId) {
-        this.id = id;
-        this.name = name;
-        this.categoryId = categoryId;
-    }
-
-    public Activity() {
+    public void setNameUa(String nameUa) {
+        this.nameUa = nameUa;
     }
 
     public int getId() {

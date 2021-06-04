@@ -73,19 +73,31 @@
                            <fmt:message key="user_page.activity.name"/>
                         </label>
                         <br>
+                         <c:set var="localeCode" value="${sessionScope.lang}" />
+                         <c:if test="${localeCode == 'uk'}">
+                        <select name="user_activities_ua" id="user_activities_ua">
+                           <c:forEach items="${user_activities_ua}" var="name">
+                              <option value="${name}">
+                                 ${name}
+                           </c:forEach>
+                        </select>
+                        </c:if>
+                         <c:set var="localeCode" value="${sessionScope.lang}" />
+                         <c:if test="${localeCode != 'uk'}">
                         <select name="user_activities" id="user_activities">
                            <c:forEach items="${user_activities}" var="name">
                               <option value="${name}">
                                  ${name}
                            </c:forEach>
                         </select>
+                        </c:if>
                         <br>
                         <br>
                         <input class="input" type="hidden" id="name" name="name" maxlength="36">
                         <label class="form-label" id="valueFromMyButton" for="count">
                            <fmt:message key="user_page.activity.duration"/>
                         </label>
-                        <input class="input" type="number" id="count" name="count" min="0" max="8" maxlength="1">
+                        <input class="input" type="number" id="count" name="count" min="1" max="8" maxlength="1">
                         <input type="button" value='<fmt:message key="button.cancel"/>' class="button" id="cancel-button">
                         <input type="submit" value='<fmt:message key="button.ok"/>' class="button button-white" id="ok-button">
                         <input class="input" type="hidden" id="date" name="date">

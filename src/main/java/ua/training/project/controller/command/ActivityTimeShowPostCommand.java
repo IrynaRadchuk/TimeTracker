@@ -9,6 +9,7 @@ import ua.training.project.model.repository.UserActivityRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
+import static ua.training.project.constant.Attributes.USER_ACTIVITY_DATE;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.Path.SHOW;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME_SHOW;
@@ -26,7 +27,7 @@ public class ActivityTimeShowPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        LocalDate date = LocalDate.parse(request.getParameter("userActivity.date"));
+        LocalDate date = LocalDate.parse(request.getParameter(USER_ACTIVITY_DATE));
         servletUtil.setPRGToSession(request, PRG_ACTIVITY_TIME_SHOW);
         Integer id = servletUtil.getSessionID(request);
         userActivityRepository.deleteActivityTime(id, date);

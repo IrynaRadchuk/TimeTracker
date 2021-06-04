@@ -8,6 +8,9 @@ import ua.training.project.model.repository.ActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.nio.charset.StandardCharsets;
+
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.MANAGE_ACTIVITIES;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_ACTIVITY;
@@ -25,10 +28,13 @@ public class AdminManageActivitiesPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int activityId = Integer.parseInt(request.getParameter("active_id"));
-        String activityName = request.getParameter("active_name");
-        String category = request.getParameter("category_list");
-        activityRepository.updateActivity(activityId, activityName, category);
+        int activityId = Integer.parseInt(request.getParameter(ACTIVE_ID));
+        String activityName = request.getParameter(ACTIVE_NAME);
+        String activityNameUa = request.getParameter(ACTIVE_NAME_UA);
+        byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
+        activityNameUa = new String(bytes, StandardCharsets.UTF_8);
+        String category = request.getParameter(CATEGORY_LIST);
+        activityRepository.updateActivity(activityId, activityName, category, activityNameUa);
         servletUtil.setPRGToSession(request, PRG_UPDATE_ACTIVITY);
         log.info(LoggerInfo.ACTIVITY_UPDATED.getMessage());
         return REDIRECT + MANAGE_ACTIVITIES;

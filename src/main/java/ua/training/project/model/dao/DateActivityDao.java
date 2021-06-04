@@ -13,6 +13,15 @@ public class DateActivityDao {
     private String activity;
     private LocalDate date;
     private int duration;
+    private String nameUa;
+
+    public String getNameUa() {
+        return nameUa;
+    }
+
+    public void setNameUa(String nameUa) {
+        this.nameUa = nameUa;
+    }
 
     public int getId() {
         return id;

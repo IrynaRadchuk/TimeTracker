@@ -8,6 +8,7 @@ import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.MANAGE_USERS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_ADD_USER;
@@ -25,10 +26,10 @@ public class AdminAddUsersPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String email = request.getParameter("add_user_email");
-        String firstName = request.getParameter("add_user_first_name");
-        String lastName = request.getParameter("add_user_last_name");
-        String role = request.getParameter("all_roles");
+        String email = request.getParameter(ADD_USER_EMAIL);
+        String firstName = request.getParameter(ADD_USER_FIRST_NAME);
+        String lastName = request.getParameter(ADD_USER_LAST_NAME);
+        String role = request.getParameter(ALL_ROLES);
         userRepository.addUser(email, firstName, lastName, role);
         servletUtil.setPRGToSession(request, PRG_ADD_USER);
         log.info(LoggerInfo.USER_ADD.getMessage());

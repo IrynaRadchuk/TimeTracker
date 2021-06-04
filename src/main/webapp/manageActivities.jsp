@@ -20,6 +20,9 @@
             <fmt:message key="admin_page.activities.header1"/>
          </th>
          <th>
+            <fmt:message key="admin_page.activities.header4"/>
+         </th>
+         <th>
             <fmt:message key="admin_page.activities.header2"/>
          </th>
          <th>
@@ -38,6 +41,10 @@
                <td>
                <c:set var="active_name" value='${active.name}' />
                <input type="text" option value="${active.name}"out value=${active.name} name="active_name">
+               </td>
+               <td>
+               <c:set var="active_nameUa" value='${active.nameUa}' />
+               <input type="text" option value="${active.nameUa}"out value=${active.nameUa} name="active_nameUa">
                </td>
                <td>
                <option value="${active}" name="active_categoryId" > ${active.id}
@@ -70,6 +77,10 @@
             <td>
             <c:set var="add_activity_name" value='${add_activity_name}' />
             <input type="text" option value="${add_activity_name}"name="add_activity_name">
+            </td>
+            <td>
+            <c:set var="add_activity_ua" value='${add_activity_ua}' />
+            <input type="text" option value="${add_activity_ua}"name="add_activity_ua">
             </td>
             <td>
             <option value="${active}" name="active_categoryId" > ${active.id}

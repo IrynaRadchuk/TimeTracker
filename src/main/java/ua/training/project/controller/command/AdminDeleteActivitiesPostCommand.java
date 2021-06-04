@@ -8,6 +8,7 @@ import ua.training.project.model.repository.ActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.Attributes.ACTIVE_ID;
 import static ua.training.project.constant.Path.MANAGE_ACTIVITIES;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_DELETE_ACTIVITY;
@@ -25,7 +26,7 @@ public class AdminDeleteActivitiesPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int activityId = Integer.parseInt(request.getParameter("active_id"));
+        int activityId = Integer.parseInt(request.getParameter(ACTIVE_ID));
         activityRepository.deleteActivity(activityId);
         servletUtil.setPRGToSession(request, PRG_DELETE_ACTIVITY);
         log.info(LoggerInfo.ACTIVITY_DELETE.getMessage());

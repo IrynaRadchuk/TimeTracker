@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.ERROR_PAGE;
 import static ua.training.project.constant.SessionCall.ERROR;
 
@@ -45,13 +46,14 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Get activity id by activity name
      */
-    public int getActivityID(String activity) {
+    public int getActivityID(String activity, String activityUa) {
         int id = 0;
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ACTIVITY_FIND)) {
             statement.setString(1, activity);
+            statement.setString(2, activityUa);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                id = resultSet.getInt("activity_id");
+                id = resultSet.getInt(ACTIVITY_ID);
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -63,15 +65,16 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Get user activity status
      */
-    public ActivityStatus checkUserActivityStatus(int userId, String activity) {
+    public ActivityStatus checkUserActivityStatus(int userId, String activity, String activityUa) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_FIND)) {
             statement.setInt(1, userId);
             statement.setString(2, activity);
+            statement.setString(3, activityUa);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 return ActivityStatus.ABSENT;
             }
-            return ActivityStatus.valueOf(resultSet.getString("status"));
+            return ActivityStatus.valueOf(resultSet.getString(STATUS));
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
@@ -81,9 +84,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Check activity presence on certain date
      */
-    public boolean checkActivityInDB(int userId, String activity, LocalDate date) {
+    public boolean checkActivityInDB(int userId,int activityId, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CHECK_ACTIVITY_PRESENCE)) {
-            statement.setString(1, activity);
+            statement.setInt(1, activityId);
             statement.setString(2, String.valueOf(date));
             statement.setInt(3, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -100,18 +103,18 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Add new activity with date and time by user
      */
-    public void addActivityForUser(int userId, String activity, LocalDate date, int duration) throws SQLException, PermissionDeniedException {
+    public void addActivityForUser(int userId, String activity, String activityUA, LocalDate date, int duration) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(userId, activity) != ActivityStatus.APPROVED) {
+        int activityId = getActivityID(activity, activityUA);
+        if (checkUserActivityStatus(userId, activity, activityUA) != ActivityStatus.APPROVED) {
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
         if (timeValidation(userId, date) + duration > 8) {
             throw new PermissionDeniedException(ExceptionMessage.OVERTIME);
         }
-        if (checkActivityInDB(userId, activity, date)) {
+        if (checkActivityInDB(userId, activityId, date)) {
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_STORED);
         }
-        int activityId = getActivityID(activity);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ACTIVITY_CREATE)) {
             statement.setInt(1, userId);
             statement.setInt(2, activityId);
@@ -138,9 +141,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 UserActivityDao userActivity = new UserActivityDao();
-                userActivity.setActivityName(resultSet.getString("activity.activity_name"));
+                userActivity.setActivityName(resultSet.getString(ACTIVITY_ACTIVITY_NAME));
                 userActivity.setActivityStatus(
-                        ActivityStatus.valueOf(resultSet.getString("user_allowed_activity.status")));
+                        ActivityStatus.valueOf(resultSet.getString(ACTIVITY_STATUS)));
+                userActivity.setActivityUa(resultSet.getString(ACTIVITY_ACTIVITY_UA));
                 activities.add(userActivity);
             }
         } catch (SQLException e) {
@@ -161,9 +165,10 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             while (resultSet.next()) {
                 DateActivityDao userActivity = new DateActivityDao();
                 userActivity.setId(id);
-                userActivity.setDate(LocalDate.parse(resultSet.getString("user_activity.activity_date")));
-                userActivity.setActivity(resultSet.getString("activity.activity_name"));
-                userActivity.setDuration(resultSet.getInt("user_activity.activity_duration"));
+                userActivity.setDate(LocalDate.parse(resultSet.getString(USER_ACTIVITY_ACTIVITY_DATE)));
+                userActivity.setActivity(resultSet.getString(ACTIVITY_ACTIVITY_NAME));
+                userActivity.setDuration(resultSet.getInt(USER_ACTIVITY_ACTIVITY_DURATION));
+                userActivity.setNameUa(resultSet.getString(ACTIVITY_ACTIVITY_UA));
                 activities.add(userActivity);
             }
         } catch (SQLException e) {
@@ -196,11 +201,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 PendingActivity activity = new PendingActivity();
-                activity.setUserId(resultSet.getInt("user_id"));
-                activity.setEmail(resultSet.getString("user_email"));
-                activity.setFirstName(resultSet.getString("user_first_name"));
-                activity.setLastName(resultSet.getString("user_last_name"));
-                activity.setActivityName(resultSet.getString("activity_name"));
+                activity.setUserId(resultSet.getInt(USERS_ID));
+                activity.setEmail(resultSet.getString(USERS_EMAIL));
+                activity.setFirstName(resultSet.getString(USERS_FIRST_NAME));
+                activity.setLastName(resultSet.getString(USERS_LAST_NAME));
+                activity.setActivityName(resultSet.getString(ACTIVITY_NAME));
                 activities.add(activity);
             }
         } catch (SQLException e) {
@@ -213,13 +218,13 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Request activity by user
      */
-    public void requestActivity(int userId, String activity) throws SQLException, PermissionDeniedException {
+    public void requestActivity(int userId, String activity, String activityUA) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(userId, activity) != ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(userId, activity,activityUA) != ActivityStatus.ABSENT) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
-        int activityId = getActivityID(activity);
+        int activityId = getActivityID(activity, activityUA);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_CREATE)) {
             statement.setInt(1, userId);
             statement.setInt(2, activityId);
@@ -239,11 +244,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
      */
     public void approveActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity) == ActivityStatus.APPROVED) {
+        if (checkUserActivityStatus(id, activity,EMPTY) == ActivityStatus.APPROVED) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
-        int activityId = getActivityID(activity);
+        int activityId = getActivityID(activity, EMPTY);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_ALLOWED_ACTIVITY_APPROVE)) {
             statement.setInt(1, id);
             statement.setInt(2, activityId);
@@ -263,11 +268,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
      */
     public void denyActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity) == ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(id, activity,EMPTY) == ActivityStatus.ABSENT) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
-        int activityId = getActivityID(activity);
+        int activityId = getActivityID(activity,EMPTY);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DENY_ACTIVITY)) {
             statement.setInt(1, id);
             statement.setInt(2, activityId);
@@ -292,7 +297,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             statement.setInt(2, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                time = resultSet.getInt("sum(activity_duration)");
+                time = resultSet.getInt(SUM_ACTIVITY_DURATION);
             }
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -310,9 +315,9 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ActivityStatisticsDao activity = new ActivityStatisticsDao();
-                activity.setActivity(resultSet.getString("activity_name"));
-                activity.setCategory(resultSet.getString("category_name"));
-                activity.setUsers(resultSet.getInt("user_quantity"));
+                activity.setActivity(resultSet.getString(ACTIVITY_NAME));
+                activity.setCategory(resultSet.getString(CATEGORY_NAME));
+                activity.setUsers(resultSet.getInt(USER_QUANTITY));
                 activityStatistics.add(activity);
             }
         } catch (SQLException e) {
@@ -335,12 +340,12 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 UserStatisticsDao user = new UserStatisticsDao();
-                user.setDate(LocalDate.parse(resultSet.getString("activity_date")));
-                user.setEmail(resultSet.getString("user_email"));
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setActivity(resultSet.getString("activity_name"));
-                user.setDuration(resultSet.getInt("activity_duration"));
+                user.setDate(LocalDate.parse(resultSet.getString(ACTIVITY_DATE)));
+                user.setEmail(resultSet.getString(USERS_EMAIL));
+                user.setFirstName(resultSet.getString(USERS_FIRST_NAME));
+                user.setLastName(resultSet.getString(USERS_LAST_NAME));
+                user.setActivity(resultSet.getString(ACTIVITY_NAME));
+                user.setDuration(resultSet.getInt(ACTIVITY_DURATION));
                 userStatistics.add(user);
             }
         } catch (SQLException e) {
@@ -358,7 +363,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.ROWS_NUMBER)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                numOfRows = resultSet.getInt("count(user_activity.activity_date)");
+                numOfRows = resultSet.getInt(COUNT_DATES);
             }
         } catch (SQLException e) {
             log.error(e.getMessage());

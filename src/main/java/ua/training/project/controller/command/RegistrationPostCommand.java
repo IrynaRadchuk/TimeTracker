@@ -10,6 +10,7 @@ import ua.training.project.model.services.validation.InputValidation;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_REGISTRATION;
 
@@ -27,10 +28,10 @@ public class RegistrationPostCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         request.getContextPath();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
+        String firstName = request.getParameter(FIRST_NAME);
+        String lastName = request.getParameter(LAST_NAME);
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
         if (!validation.fullValidation(userDTO).isEmpty()) {
             servletUtil.setErrorMessagesToSession(request, validation.fullValidation(userDTO));

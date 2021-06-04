@@ -12,8 +12,14 @@ import java.util.Objects;
 public class UserActivityDao {
     private String activityName;
     private ActivityStatus activityStatus;
+    private String activityUa;
 
-    public UserActivityDao() {
+    public String getActivityUa() {
+        return activityUa;
+    }
+
+    public void setActivityUa(String activityUa) {
+        this.activityUa = activityUa;
     }
 
     public String getActivityName() {

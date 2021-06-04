@@ -6,6 +6,7 @@ import ua.training.project.model.repository.UserActivityRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static ua.training.project.constant.Attributes.PENDING;
 import static ua.training.project.constant.Path.MANAGE_REQUESTS_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_APPROVE_REQUEST;
 import static ua.training.project.constant.SessionCall.PRG_DENY_REQUEST;
@@ -25,7 +26,7 @@ public class AdminManageRequestsGetCommand extends PRG implements Command {
             executePRG(request);
         }
         List<PendingActivity> activities = userActivityRepository.getAllPendingActivities();
-        request.setAttribute("pending_activities", activities);
+        request.setAttribute(PENDING, activities);
         return MANAGE_REQUESTS_PAGE;
     }
 }

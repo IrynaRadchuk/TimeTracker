@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.USER_STAT_PAGE;
 
 /**
@@ -20,18 +21,18 @@ public class AdminUserStatisticsGetCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int currentPage = Integer.parseInt(Optional.ofNullable(request.getParameter("currentPage"))
+        int currentPage = Integer.parseInt(Optional.ofNullable(request.getParameter(CURRENT_PAGE))
                 .orElse("1"));
         List<UserStatisticsDao> statisticsPag = repository.getUserStatistics(currentPage);
-        request.setAttribute("user_statistics", statisticsPag);
+        request.setAttribute(USERS_STATS, statisticsPag);
         int rows = repository.getNumberOfRows();
-        int nOfPages = rows / 10;
-        if (nOfPages % 10 > 0) {
+        int nOfPages = rows / TEN;
+        if (nOfPages % TEN > 0) {
             nOfPages++;
         }
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("recordsPerPage", 10);
+        request.setAttribute(PAGES_NO, nOfPages);
+        request.setAttribute(CURRENT_PAGE, currentPage);
+        request.setAttribute(RECORDS, TEN);
         return USER_STAT_PAGE;
     }
 }

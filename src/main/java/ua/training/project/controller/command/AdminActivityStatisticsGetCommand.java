@@ -6,6 +6,7 @@ import ua.training.project.model.repository.UserActivityRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static ua.training.project.constant.Attributes.ACTIVITY_STATS;
 import static ua.training.project.constant.Path.ACTIVITY_STAT_PAGE;
 
 /**
@@ -20,7 +21,7 @@ public class AdminActivityStatisticsGetCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         List<ActivityStatisticsDao> statistics = repository.getActivityStatistics();
-        request.setAttribute("activity_statistics", statistics);
+        request.setAttribute(ACTIVITY_STATS, statistics);
         return ACTIVITY_STAT_PAGE;
     }
 }

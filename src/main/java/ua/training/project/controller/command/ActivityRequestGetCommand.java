@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.ACTIVITY_REQUEST_PAGE;
 import static ua.training.project.constant.SessionCall.PRG_REQUEST_ACTIVITY;
 
@@ -29,13 +30,19 @@ public class ActivityRequestGetCommand extends PRG implements Command {
         }
         List<UserActivityDao> userActivities = userActivityRepository
                 .getAllUserActivities(servletUtil.getSessionID(request));
-        request.setAttribute("user_activities", userActivities);
+        request.setAttribute(USER_ACTIVITIES, userActivities);
         List<Activity> allActivities = activityRepository.getAllActivities();
         List<String> userActivitiesNames = userActivities.stream()
                 .map(x -> x.getActivityName()).collect(Collectors.toList());
         List<String> activitiesToRequest = allActivities.stream()
                 .map(x -> x.getName()).filter(x -> !userActivitiesNames.contains(x)).collect(Collectors.toList());
-        request.setAttribute("all_activities", activitiesToRequest);
+        request.setAttribute(ALL_ACTIVITIES, activitiesToRequest);
+        List<String> userActivitiesNamesUa = userActivities.stream()
+                .map(x -> x.getActivityUa()).collect(Collectors.toList());
+        List<String> activitiesToRequestUa = allActivities.stream()
+                .map(x -> x.getNameUa()).filter(x -> !userActivitiesNamesUa.contains(x)).collect(Collectors.toList());
+        request.setAttribute(ALL_ACTIVITIES, activitiesToRequest);
+        request.setAttribute(ALL_ACTIVITIES_UA, activitiesToRequestUa);
         return ACTIVITY_REQUEST_PAGE;
     }
 }

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ua.training.project.constant.Attributes.ALL_ROLES;
+import static ua.training.project.constant.Attributes.ALL_USERS;
 import static ua.training.project.constant.Path.MANAGE_USERS_PAGE;
 import static ua.training.project.constant.SessionCall.*;
 
@@ -28,9 +30,9 @@ public class AdminManageUsersGetCommand extends PRG implements Command {
             executePRG(request);
         }
         List<User> users = userRepository.getAllUsers();
-        request.setAttribute("all_users", users);
+        request.setAttribute(ALL_USERS, users);
         List<Role> roles = users.stream().map(x -> x.getRole()).distinct().collect(Collectors.toList());
-        request.setAttribute("all_roles", roles);
+        request.setAttribute(ALL_ROLES, roles);
         return MANAGE_USERS_PAGE;
     }
 }

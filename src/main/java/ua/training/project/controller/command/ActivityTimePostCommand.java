@@ -9,6 +9,7 @@ import ua.training.project.exception.PermissionDeniedException;
 import ua.training.project.model.repository.UserActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static ua.training.project.constant.Attributes.*;
+import static ua.training.project.constant.CredentialValidationRegex.DATE_PATTERN;
+import static ua.training.project.constant.CredentialValidationRegex.KEY;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_ACTIVITY_TIME;
 
@@ -32,21 +36,24 @@ public class ActivityTimePostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String activityName = request.getParameter("user_activities");
-        int duration = Integer.parseInt(request.getParameter("count"));
-        String date = request.getParameter("date");
-        String day = request.getParameter("day");
+        String activityName = request.getParameter(USER_ACTIVITIES);
+        String activityNameUa = request.getParameter(USER_ACTIVITIES_UA);
+        int duration = Integer.parseInt(request.getParameter(COUNT));
+        String date = request.getParameter(DATE);
+        String day = request.getParameter(DAY);
+        byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
+        activityNameUa = new String(bytes, StandardCharsets.UTF_8);
         String dateFormat = "";
         Pattern pattern = Pattern.compile(CredentialValidationRegex.DATE_REGEX);
         Matcher matcher = pattern.matcher(date);
         while (matcher.find()) {
-            dateFormat = matcher.group("key").replace("01", day);
+            dateFormat = matcher.group(KEY).replace(FIRST_DAY, day);
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy", Locale.US);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.US);
         LocalDate localDate = LocalDate.parse(dateFormat, formatter);
         Integer id = servletUtil.getSessionID(request);
         try {
-            userActivityRepository.addActivityForUser(id, activityName, localDate, duration);
+            userActivityRepository.addActivityForUser(id, activityName, activityNameUa, localDate, duration);
             log.info(LoggerInfo.ACTIVITY_TIME_ADD.getMessage());
         } catch (SQLException e) {
             log.error(e.getMessage());

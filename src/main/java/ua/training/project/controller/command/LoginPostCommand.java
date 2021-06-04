@@ -14,6 +14,8 @@ import ua.training.project.model.repository.UserRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+import static ua.training.project.constant.Attributes.EMAIL;
+import static ua.training.project.constant.Attributes.PASSWORD;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_LOGIN;
 
@@ -30,8 +32,8 @@ public class LoginPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
 
         if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password)) {
             servletUtil.setErrorToSession(request, ExceptionMessage.NOT_BLANK_CREDENTIALS.getMessage());

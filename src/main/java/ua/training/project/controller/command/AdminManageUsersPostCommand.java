@@ -8,6 +8,7 @@ import ua.training.project.model.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.MANAGE_USERS;
 import static ua.training.project.constant.Path.REDIRECT;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_USER;
@@ -25,11 +26,11 @@ public class AdminManageUsersPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("user_id"));
-        String email = request.getParameter("user_email");
-        String firstName = request.getParameter("user_first_name");
-        String lastName = request.getParameter("user_last_name");
-        String role = request.getParameter("all_roles");
+        int id = Integer.parseInt(request.getParameter(USERS_ID));
+        String email = request.getParameter(USERS_EMAIL);
+        String firstName = request.getParameter(USERS_FIRST_NAME);
+        String lastName = request.getParameter(USERS_LAST_NAME);
+        String role = request.getParameter(ALL_ROLES);
         userRepository.changeUser(email, firstName, lastName, role, id);
         servletUtil.setPRGToSession(request, PRG_UPDATE_USER);
         log.info(LoggerInfo.USER_UPDATED.getMessage());

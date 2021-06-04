@@ -10,6 +10,8 @@ import ua.training.project.model.repository.UserActivityRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
+import static ua.training.project.constant.Attributes.PENDING_ID;
+import static ua.training.project.constant.Attributes.PENDING_NAME;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_DENY_REQUEST;
 
@@ -26,8 +28,8 @@ public class AdminDenyRequestsPostCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("pending_id"));
-        String activity = request.getParameter("pending_activity_name");
+        int id = Integer.parseInt(request.getParameter(PENDING_ID));
+        String activity = request.getParameter(PENDING_NAME);
         try {
             userActivityRepository.denyActivity(id, activity);
         } catch (SQLException e) {

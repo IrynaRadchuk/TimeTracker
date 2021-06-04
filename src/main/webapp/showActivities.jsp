@@ -29,12 +29,18 @@
          <form method="post" action = "showActivities">
             <tr>
                <td>
-                  <option value="${userActivity}" name="userActivity.date" >
                      ${userActivity.date}
-                     <input type="text" option value="${userActivity.date}"name="userActivity.date" readonly>
+                     <input type="hidden" option value="${userActivity.date}"name="userActivity.date" readonly>
                </td>
                <td>
+                   <c:set var="localeCode" value="${sessionScope.lang}" />
+                             <c:if test="${localeCode == 'uk'}">
+               ${userActivity.nameUa}
+                                </c:if>
+                   <c:set var="localeCode" value="${sessionScope.lang}" />
+                             <c:if test="${localeCode != 'uk'}">
                ${userActivity.activity}
+                                </c:if>
                </td>
                <td>
                ${userActivity.duration}

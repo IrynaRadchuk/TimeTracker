@@ -10,6 +10,7 @@ import ua.training.project.model.services.validation.InputValidation;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static ua.training.project.constant.Attributes.*;
 import static ua.training.project.constant.Path.*;
 import static ua.training.project.constant.SessionCall.PRG_UPDATE_PROFILE;
 
@@ -27,10 +28,10 @@ public class UserProfileChangePostCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         Integer id = servletUtil.getSessionID(request);
-        String email = request.getParameter("user_email");
-        String password = request.getParameter("user_password");
-        String firstName = request.getParameter("user_first_name");
-        String lastName = request.getParameter("user_last_name");
+        String email = request.getParameter(USERS_EMAIL);
+        String password = request.getParameter(USERS_PASSWORD);
+        String firstName = request.getParameter(USERS_FIRST_NAME);
+        String lastName = request.getParameter(USERS_LAST_NAME);
         UserRegistrationDTO userDTO = new UserRegistrationDTO(email, password, firstName, lastName);
         if (!validation.updateValidation(userDTO).isEmpty()) {
             servletUtil.setErrorMessagesToSession(request, validation.updateValidation(userDTO));

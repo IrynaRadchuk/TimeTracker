@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 
+import static ua.training.project.constant.SessionCall.LANGUAGE;
+
 /**
  * Filter to change language parameter
  *
@@ -19,8 +21,8 @@ public class LocalizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        if (Objects.nonNull(request.getParameter("lang"))) {
-            request.getSession().setAttribute("lang", request.getParameter("lang"));
+        if (Objects.nonNull(request.getParameter(LANGUAGE))) {
+            request.getSession().setAttribute(LANGUAGE, request.getParameter(LANGUAGE));
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
