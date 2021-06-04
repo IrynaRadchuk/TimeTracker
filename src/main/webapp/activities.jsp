@@ -34,7 +34,7 @@
       <hr>
       <form method="post" action="activities">
       <label for="all_activities"><fmt:message key="activities_page.choose"/></label>
-      <input name="all_activities" id="all_activities">
+      <select name="all_activities" id="all_activities">
       <c:forEach items="${all_activities}" var="activity_add">
       <option value="${activity_add}">
       ${activity_add}
