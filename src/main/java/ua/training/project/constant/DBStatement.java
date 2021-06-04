@@ -5,7 +5,7 @@ public interface DBStatement {
     String USER_DELETE = "delete from user where user_id = ?;";
     String USER_UPDATE = "update user set user_email = ?, user_password = ?, user_first_name = ?, user_last_name = ? where user_id =?";
     String USER_UPDATE_BY_ADMIN = "update user set user_email = ?, user_first_name = ?, user_last_name = ?, role_id = (select role_id from user_role where role_name = ?) where user_id =?";
-    String USER_CREATE_BY_ADMIN = "insert into user (user_email, user_password, user_first_name, user_last_name, role_id) values (?,'0000',?,?,(select role_id from user_role where role_name = ?));";
+    String USER_CREATE_BY_ADMIN = "insert into user (user_email, user_password, user_first_name, user_last_name, role_id) values (?,'4a7d1ed414474e4033ac29ccb8653d9b',?,?,(select role_id from user_role where role_name = ?));";
     String USER_FIND = "select*from user where user_id = ?;";
     String USER_FIND_BY_EMAIL = "select*from user where user_email = ?;";
     String GET_ALL_USERS = "select*from user";

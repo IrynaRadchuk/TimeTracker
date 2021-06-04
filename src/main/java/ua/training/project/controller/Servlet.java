@@ -120,10 +120,8 @@ public class Servlet extends HttpServlet {
             page = ERROR_PAGE;
         }
         if (page.contains(REDIRECT)) {
-            System.err.println(page);
             response.sendRedirect(page.replace(REDIRECT, TRACKER));
         } else {
-            System.err.println(page);
             request.getRequestDispatcher(page).forward(request, response);
         }
     }

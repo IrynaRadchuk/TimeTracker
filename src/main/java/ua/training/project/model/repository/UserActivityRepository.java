@@ -221,7 +221,6 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
         } catch (SQLException e) {
             connection.rollback();
             log.error(e.getMessage());
-            System.err.println(" repo + " + ERROR_PAGE);
             throw new DBException(ERROR_PAGE, ExceptionMessage.DB_CONNECTION);
         } finally {
             connection.setAutoCommit(true);
