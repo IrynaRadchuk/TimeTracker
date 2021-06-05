@@ -29,6 +29,7 @@ CREATE TABLE `activity` (
   `activity_id` int NOT NULL AUTO_INCREMENT,
   `activity_name` varchar(45) NOT NULL,
   `category_id` int NOT NULL,
+  `activity_ua` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`activity_id`),
   UNIQUE KEY `Unique_name` (`activity_name`),
   KEY `category_id_idx` (`category_id`)

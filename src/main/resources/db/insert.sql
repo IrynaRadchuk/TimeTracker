@@ -11,16 +11,16 @@ INSERT INTO activity_category (category_id, category_name) values (2, 'Result ch
 INSERT INTO activity_category (category_id, category_name) values (3, 'Day off');
 INSERT INTO activity_category (category_id, category_name) values (4, 'Organization');
 
-INSERT INTO activity (activity_name, category_id) values ('Lecture', 1);
-INSERT INTO activity (activity_name, category_id) values ('Practice', 1);
-INSERT INTO activity (activity_name, category_id) values ('Homework', 2);
-INSERT INTO activity (activity_name, category_id) values ('Grading', 2);
-INSERT INTO activity (activity_name, category_id) values ('Exam', 2);
-INSERT INTO activity (activity_name, category_id) values ('Vacation', 3);
-INSERT INTO activity (activity_name, category_id) values ('Illness', 3);
-INSERT INTO activity (activity_name, category_id) values ('Journal Fill', 4);
-INSERT INTO activity (activity_name, category_id) values ('Meeting', 4);
-INSERT INTO activity (activity_name, category_id) values ('Journal', 4);
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Lecture', 1, 'Лекція');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Practice', 1, 'Практика');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Homework', 2, 'Перевірка ДЗ');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Grading', 2, 'Оцінювання');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Exam', 2, 'Екзамен');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Vacation', 3, 'Відпустка');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Illness', 3, 'Хвороба');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Journal Fill', 4, 'Ведення журналу');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Meeting', 4, 'Збори');
+INSERT INTO activity (activity_name, category_id, activity_ua) values ('Holiday', 3, 'Свято');
 
 INSERT INTO user_allowed_activity (user_id, activity_id, status) values (1, 1, 'APPROVED');
 INSERT INTO user_allowed_activity (user_id, activity_id, status) values (1, 2, 'APPROVED');
