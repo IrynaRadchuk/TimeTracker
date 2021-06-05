@@ -29,6 +29,7 @@ public interface Attributes {
     String USERS_ID = "user_id";
     String USERS_EMAIL = "user_email";
     String USERS_PASSWORD = "user_password";
+    String USERS_PASSWORD_CONFIRM = "user_password_confirm";
     String USERS_FIRST_NAME = "user_first_name";
     String USERS_LAST_NAME = "user_last_name";
     String PENDING = "pending_activities";

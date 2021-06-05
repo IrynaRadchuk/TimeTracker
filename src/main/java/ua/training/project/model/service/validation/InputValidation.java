@@ -1,4 +1,4 @@
-package ua.training.project.model.services.validation;
+package ua.training.project.model.service.validation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;

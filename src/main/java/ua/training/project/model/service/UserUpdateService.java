@@ -1,32 +1,31 @@
-package ua.training.project.model.services;
+package ua.training.project.model.service;
 
 import ua.training.project.model.dto.UserRegistrationDTO;
-import ua.training.project.model.entity.Role;
 import ua.training.project.model.entity.User;
 import ua.training.project.model.repository.UserRepository;
 
 /**
- * Class to create new user
+ * Class to update user information
  *
  * @author Iryna Radchuk
  */
-public class UserService {
+public class UserUpdateService {
     private final UserRepository repository = UserRepository.getInstance();
 
     /**
-     * Create new user by registration
+     * Update user data
      *
      * @param userDTO User DTO data
+     * @param id      User personal identification
      * @return New user object
      */
-    public User userRegistration(UserRegistrationDTO userDTO) {
+    public User userUpdate(UserRegistrationDTO userDTO, int id) {
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
-        user.setRole(Role.USER);
-        repository.insertUser(user);
+        repository.updateUser(user, id);
         return user;
     }
 }

@@ -30,6 +30,15 @@
          <c:set var="user_password" value='${requestScope["user_password"]}' />
          <input type="password" name="user_password">
          <br>
+                  <label for="user_password_confirm">
+                     <b>
+                        <fmt:message key="login_page.password.confirm"/>
+                     </b>
+                  </label>
+                  <br>
+                  <c:set var="user_password_confirm" value='${requestScope["user_password_confirm"]}' />
+                  <input type="password" name="user_password_confirm">
+                  <br>
          <label for="user_first_name">
             <b>
                <fmt:message key="registration_page.first.name"/>
