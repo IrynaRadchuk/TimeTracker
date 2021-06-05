@@ -5,11 +5,12 @@ It allows admins to see statistics and manage activities and users.
 
 ##Before Run
 To start working change database root properties in the file **src/main/resources/db.properties**.
-To initialize database execute script from file **src/main/resources/db/init.sql**.
-To fill database with initial data execute script from file **src/main/resources/db/insert.sql**.
-Versions of used  dependencies are stored in file **pom.xml**.
+To initialize the database execute script from the file **src/main/resources/db/init.sql**.
+To fill database with initial data execute script from the file **src/main/resources/db/insert.sql**.
+You can see database diagram in the file **src/main/resources/db/dbModel.png**
+Versions of used  dependencies are stored in the file **pom.xml**.
 Run project with Tomcat servlet container plugin.
-After server successfully starts, run application on *http://localhost:8080/tracker/*
+After the server successfully starts, run application on *http://localhost:8080/tracker/*.
 
 ##After Run
 To log in as admin use credentials: 
