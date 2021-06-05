@@ -1,5 +1,6 @@
 package ua.training.project.controller.command;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.LoggerInfo;
@@ -7,7 +8,6 @@ import ua.training.project.controller.util.ServletUtil;
 import ua.training.project.model.repository.ActivityRepository;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.nio.charset.StandardCharsets;
 
 import static ua.training.project.constant.Attributes.*;
@@ -31,8 +31,10 @@ public class AdminManageActivitiesPostCommand implements Command {
         int activityId = Integer.parseInt(request.getParameter(ACTIVE_ID));
         String activityName = request.getParameter(ACTIVE_NAME);
         String activityNameUa = request.getParameter(ACTIVE_NAME_UA);
-        byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
-        activityNameUa = new String(bytes, StandardCharsets.UTF_8);
+        if (StringUtils.isNoneEmpty(activityNameUa)) {
+            byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
+            activityNameUa = new String(bytes, StandardCharsets.UTF_8);
+        }
         String category = request.getParameter(CATEGORY_LIST);
         activityRepository.updateActivity(activityId, activityName, category, activityNameUa);
         servletUtil.setPRGToSession(request, PRG_UPDATE_ACTIVITY);

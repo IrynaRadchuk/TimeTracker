@@ -1,5 +1,6 @@
 package ua.training.project.controller.command;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.LoggerInfo;
@@ -32,8 +33,10 @@ public class ActivityRequestPostCommand implements Command {
         Integer id = servletUtil.getSessionID(request);
         String activity = request.getParameter(ALL_ACTIVITIES);
         String activityUa = request.getParameter(ALL_ACTIVITIES_UA);
-        byte[] bytes = activityUa.getBytes(StandardCharsets.ISO_8859_1);
-        activityUa = new String(bytes, StandardCharsets.UTF_8);
+        if (StringUtils.isNoneEmpty(activityUa)) {
+            byte[] bytes = activityUa.getBytes(StandardCharsets.ISO_8859_1);
+            activityUa = new String(bytes, StandardCharsets.UTF_8);
+        }
         try {
             userActivityRepository.requestActivity(id, activity, activityUa);
             log.info(LoggerInfo.ACTIVITY_REQUESTED.getMessage());

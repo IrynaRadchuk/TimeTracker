@@ -36,7 +36,7 @@
                <td>
                   <option value="${active}" name="active_id" >
                      ${active.id}
-                     <input type="text" option value="${active.id}"out value=${active.name} name="active_id" readonly>
+                     <input type="text" option value="${active.id}"out value=${active.id} name="active_id" readonly>
                </td>
                <td>
                <c:set var="active_name" value='${active.name}' />
@@ -47,7 +47,7 @@
                <input type="text" option value="${active.nameUa}"out value=${active.nameUa} name="active_nameUa">
                </td>
                <td>
-               <option value="${active}" name="active_categoryId" > ${active.id}
+               <option value="${active}" name="active_categoryId" > ${active.categoryId}
                <input type="text" option value="${active.categoryId}"name="active_categoryId" out value=${active.categoryId} readonly>
                </td>
                <td>

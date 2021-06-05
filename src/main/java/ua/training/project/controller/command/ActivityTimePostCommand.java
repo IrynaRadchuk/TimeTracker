@@ -1,5 +1,6 @@
 package ua.training.project.controller.command;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.CredentialValidationRegex;
@@ -41,8 +42,10 @@ public class ActivityTimePostCommand implements Command {
         int duration = Integer.parseInt(request.getParameter(COUNT));
         String date = request.getParameter(DATE);
         String day = request.getParameter(DAY);
-        byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
-        activityNameUa = new String(bytes, StandardCharsets.UTF_8);
+        if (StringUtils.isNoneEmpty(activityNameUa)) {
+            byte[] bytes = activityNameUa.getBytes(StandardCharsets.ISO_8859_1);
+            activityNameUa = new String(bytes, StandardCharsets.UTF_8);
+        }
         String dateFormat = "";
         Pattern pattern = Pattern.compile(CredentialValidationRegex.DATE_REGEX);
         Matcher matcher = pattern.matcher(date);
