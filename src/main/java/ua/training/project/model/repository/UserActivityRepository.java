@@ -1,5 +1,6 @@
 package ua.training.project.model.repository;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ua.training.project.constant.DBStatement;
@@ -84,7 +85,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Check activity presence on certain date
      */
-    public boolean checkActivityInDB(int userId,int activityId, LocalDate date) {
+    public boolean checkActivityInDB(int userId, int activityId, LocalDate date) {
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.CHECK_ACTIVITY_PRESENCE)) {
             statement.setInt(1, activityId);
             statement.setString(2, String.valueOf(date));
@@ -103,9 +104,16 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
     /**
      * Add new activity with date and time by user
      */
-    public void addActivityForUser(int userId, String activity, String activityUA, LocalDate date, int duration) throws SQLException, PermissionDeniedException {
+    public void addActivityForUser(int userId, String activity, String activityUA, LocalDate date, String durationString) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
         int activityId = getActivityID(activity, activityUA);
+        if (StringUtils.isEmpty(durationString)) {
+            throw new PermissionDeniedException(ExceptionMessage.WRONG_TIME);
+        }
+        int duration = Integer.parseInt(durationString);
+        if (duration < 1 || duration > 8) {
+            throw new PermissionDeniedException(ExceptionMessage.WRONG_TIME);
+        }
         if (checkUserActivityStatus(userId, activity, activityUA) != ActivityStatus.APPROVED) {
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
@@ -220,7 +228,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
      */
     public void requestActivity(int userId, String activity, String activityUA) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(userId, activity,activityUA) != ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(userId, activity, activityUA) != ActivityStatus.ABSENT) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
@@ -244,7 +252,7 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
      */
     public void approveActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity,EMPTY) == ActivityStatus.APPROVED) {
+        if (checkUserActivityStatus(id, activity, EMPTY) == ActivityStatus.APPROVED) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.ACTIVITY_ALREADY_APPROVED);
         }
@@ -268,11 +276,11 @@ public class UserActivityRepository extends ConnectionHandler implements AutoClo
      */
     public void denyActivity(int id, String activity) throws SQLException, PermissionDeniedException {
         connection.setAutoCommit(false);
-        if (checkUserActivityStatus(id, activity,EMPTY) == ActivityStatus.ABSENT) {
+        if (checkUserActivityStatus(id, activity, EMPTY) == ActivityStatus.ABSENT) {
             connection.setAutoCommit(true);
             throw new PermissionDeniedException(ExceptionMessage.NOT_AVAILABLE_ACTIVITY);
         }
-        int activityId = getActivityID(activity,EMPTY);
+        int activityId = getActivityID(activity, EMPTY);
         try (PreparedStatement statement = connection.prepareStatement(DBStatement.USER_DENY_ACTIVITY)) {
             statement.setInt(1, id);
             statement.setInt(2, activityId);

@@ -14,13 +14,13 @@
    <hr>
    <table id="myTable" class="tablesorter">
       <tr>
-         <th onclick="sortTable(0)">
+         <th>
             <fmt:message key="show_page.header0"/>
          </th>
-         <th onclick="sortTable(1)">
+         <th>
             <fmt:message key="show_page.header1"/>
          </th>
-         <th onclick="sortTable(2)">
+         <th>
             <fmt:message key="show_page.header2"/>
          </th>
          <th></th>

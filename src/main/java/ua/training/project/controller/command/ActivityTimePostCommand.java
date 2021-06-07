@@ -39,7 +39,7 @@ public class ActivityTimePostCommand implements Command {
     public String execute(HttpServletRequest request) {
         String activityName = request.getParameter(USER_ACTIVITIES);
         String activityNameUa = request.getParameter(USER_ACTIVITIES_UA);
-        int duration = Integer.parseInt(request.getParameter(COUNT));
+        String duration = request.getParameter(COUNT);
         String date = request.getParameter(DATE);
         String day = request.getParameter(DAY);
         if (StringUtils.isNoneEmpty(activityNameUa)) {
